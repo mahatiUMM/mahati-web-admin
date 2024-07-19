@@ -6,5 +6,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getToken = () => {
-  return localStorage.getItem("mahatiToken");
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  return localStorage.getItem("token");
 }

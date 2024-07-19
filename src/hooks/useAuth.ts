@@ -1,16 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/lib/api/auth";
 
-const LoginAdmin = ({ callBack }: { callBack: () => void }) => {
+const LoginAdmin = (payload: { email: string; password: string}) => {
   return useMutation({
-    mutationFn: async (payload: { email: string; password: string }) => {
+    mutationFn: async () => {
       const data = await login(payload);
       return data;
     },
     onSuccess: (res) => {
-      if (res) {
-        callBack();
-      }
+      console.log(res);
     },
     onError: (error) => {
       console.log(error);

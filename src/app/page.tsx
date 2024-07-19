@@ -1,24 +1,33 @@
+"use client"
+
 import Link from "next/link";
 import useAuth from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getToken } from "@/lib/utils";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const { mutate } = useAuth.LoginAdmin({
-    callBack: () => {
+  const { mutate: logAdmin } = useAuth.LoginAdmin({ email, password });
+
+  useEffect(() => {
+    const token = getToken();
+
+    if (token) {
       router.push("/admin/dashboard");
     }
-  })
+  }, [router]);
 
-  useState(() => {
-    const token = getToken();
-  })
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    logAdmin();
+  };
 
   return (
-    <div className="container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+    <div className="container relative hidden h-screen flex-col items-center justify-center max-[766px]:grid sm:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
         <div className="absolute inset-0 bg-zinc-900"></div>
         <div className="relative z-20 flex items-center text-lg font-medium">
@@ -56,7 +65,7 @@ export default function LoginPage() {
             </p>
           </div>
           <div className="grid gap-6">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="grid gap-2">
                 <div className="grid gap-1">
                   <label
@@ -73,6 +82,8 @@ export default function LoginPage() {
                     autoComplete="email"
                     autoCorrect="off"
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                   <label
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 sr-only"
@@ -88,9 +99,15 @@ export default function LoginPage() {
                     autoCapitalize="none"
                     autoComplete="new-password"
                     autoCorrect="off"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <button className="inline-flex mt-4 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2">
+                <button
+                  className="inline-flex mt-4 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2"
+                  disabled={!email || !password}
+                  type="submit"
+                >
                   Sign In with Email
                 </button>
               </div>
@@ -113,7 +130,7 @@ export default function LoginPage() {
             </Link>.
           </p>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
