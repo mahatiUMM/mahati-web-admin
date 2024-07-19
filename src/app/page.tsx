@@ -1,29 +1,39 @@
 "use client"
 
 import Link from "next/link";
-import useAuth from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { getToken } from "@/lib/utils";
+import { login } from "@/lib/api/auth";
+import { setAuthToken } from "@/lib/instance";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const { mutate: logAdmin } = useAuth.LoginAdmin({ email, password });
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const token = getToken();
-
     if (token) {
       router.push("/admin/dashboard");
     }
   }, [router]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    logAdmin();
+    try {
+      const response = await login({ email, password });
+      if (response?.status === 200) {
+        const token = response?.data?.access_token;
+        setAuthToken(token);
+        router.push("/admin/dashboard");
+      } else {
+        setError(response?.message);
+      }
+    } catch (err) {
+      setError("Login failed. Please check your credentials.");
+    }
   };
 
   return (
@@ -65,6 +75,7 @@ export default function LoginPage() {
             </p>
           </div>
           <div className="grid gap-6">
+            {error && <p className="text-red-500">{error}</p>}
             <form onSubmit={handleSubmit}>
               <div className="grid gap-2">
                 <div className="grid gap-1">

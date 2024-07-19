@@ -6,9 +6,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getToken = () => {
-  if (typeof window === "undefined") {
-    return null;
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("token");
   }
-
-  return localStorage.getItem("token");
+  return null;
 }

@@ -1,14 +1,13 @@
-import { axiosInstance, setAuthToken } from "../instance";
+import { axiosInstance } from "../instance";
 import axios from "axios";
-import { getToken } from "../utils";
 
 export const login = async (payload: { email: string; password: string}) => {
   try {
     const response = await axiosInstance.post("/admin/signin", payload);
-    return response.data;
+    return response;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      return error;
+      return error.response?.data || error;
     }
     throw error;
   }

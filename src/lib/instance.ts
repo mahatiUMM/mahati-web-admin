@@ -10,14 +10,15 @@ export const axiosInstance = axios.create({
   baseURL: BASE_API,
   headers: {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
   }
 })
 
 export function setAuthToken(token: string) {
   if (token) {
+    localStorage.setItem("token", token);
     axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   } else {
+    localStorage.removeItem("token");
     delete axiosInstance.defaults.headers.common["Authorization"];
   }
 }
