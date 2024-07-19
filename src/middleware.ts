@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "./lib/utils";
 
-export function middleware(req: NextRequest, res: NextResponse) {
-  const token = getToken();
+export function middleware(req: NextRequest) {
+  const token = req.cookies.get("token");
 
   if (token) {
-    return NextResponse.next();
-  } else {
-    return NextResponse.redirect(new URL("/", req.url));
+    return NextResponse.redirect(new URL("/admin/dashboard", req.url));
   }
+  
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: ["/admin/:path*"],
-}
+};
