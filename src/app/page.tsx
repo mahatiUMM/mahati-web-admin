@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { getToken } from "@/lib/utils";
 import { login } from "@/lib/api/auth";
 import { setAuthToken } from "@/lib/instance";
 
@@ -12,13 +11,6 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    const token = getToken();
-    if (token) {
-      router.push("/admin/dashboard");
-    }
-  }, [router]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();

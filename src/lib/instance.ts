@@ -1,4 +1,5 @@
 import axios from "axios";
+import { cookies } from 'next/headers'
 
 const BASE_API = process.env.NEXT_PUBLIC_API_URL;
 
@@ -15,10 +16,10 @@ export const axiosInstance = axios.create({
 
 export function setAuthToken(token: string) {
   if (token) {
-    localStorage.setItem("token", token);
+    cookies().set("mahatiToken", token, { path: "/" });
     axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   } else {
-    localStorage.removeItem("token");
     delete axiosInstance.defaults.headers.common["Authorization"];
+    cookies().delete("mahatiToken");
   }
 }
