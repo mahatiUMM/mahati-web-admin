@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { login } from "@/lib/api/auth";
-import { setAuthToken } from "@/lib/instance";
+import Cookies from "js-cookie";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -12,14 +12,21 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    const token = Cookies.get("mahatiToken");
+    if (token) {
+      router.push("/admin/dashboard")
+    }
+  }, [router]);
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
       const response = await login({ email, password });
       if (response?.status === 200) {
         const token = response?.data?.access_token;
-        setAuthToken(token);
         router.push("/admin/dashboard");
+        Cookies.set("mahatiToken", token, { path: "/" });
       } else {
         setError(response?.message);
       }
