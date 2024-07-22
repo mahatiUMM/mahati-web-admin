@@ -9,6 +9,7 @@ import { useTheme } from "next-themes";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { encrypt, decrypt } from "@/lib/crypto";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -21,7 +22,12 @@ export default function LoginPage() {
   useEffect(() => {
     const token = Cookies.get("mahatiToken");
     if (token) {
-      router.push("/admin/dashboard")
+      console.log("Token ", token)
+      const decryptedToken = decrypt(token);
+      console.log("Decrypted ", decryptedToken)
+      if (decryptedToken) {
+        router.push("/admin/dashboard");
+      }
     }
   }, [router]);
 
@@ -31,8 +37,9 @@ export default function LoginPage() {
       const response = await login({ email, password });
       if (response?.status === 200) {
         const token = response?.data?.access_token;
+        const encryptedToken = encrypt(token);
+        Cookies.set("mahatiToken", encryptedToken, { path: "/" });
         router.push("/admin/dashboard");
-        Cookies.set("mahatiToken", token, { path: "/" });
       } else {
         setError(response?.message);
       }
