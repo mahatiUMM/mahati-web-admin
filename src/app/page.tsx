@@ -22,12 +22,7 @@ export default function LoginPage() {
   useEffect(() => {
     const token = Cookies.get("mahatiToken");
     if (token) {
-      console.log("Token ", token)
-      const decryptedToken = decrypt(token);
-      console.log("Decrypted ", decryptedToken)
-      if (decryptedToken) {
-        router.push("/admin/dashboard");
-      }
+      router.push("/admin/dashboard")
     }
   }, [router]);
 
@@ -35,12 +30,14 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       const response = await login({ email, password });
-      if (response?.status === 200) {
+      console.log(response?.data?.status);
+      if (response?.data?.status === 200) {
+        router.prefetch("/admin/dashboard");
         const token = response?.data?.access_token;
         const encryptedToken = encrypt(token);
         Cookies.set("mahatiToken", encryptedToken, { path: "/" });
-        router.push("/admin/dashboard");
       } else {
+        console.log("Login failed");
         setError(response?.message);
       }
     } catch (err) {

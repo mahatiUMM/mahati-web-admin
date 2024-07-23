@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import {
   Home,
   PanelLeft,
@@ -18,7 +19,8 @@ import {
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 interface NavItem {
   href: string;
@@ -64,11 +66,28 @@ const MobileNavItem = ({ href, icon: Icon, label }: NavItem) => {
 };
 
 export default function AdminSidebar() {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    Cookies.remove("mahatiToken");
+    router.push("/");
+  }
+
   return (
     <>
       <aside className="fixed inset-y-0 left-0 z-50 hidden w-14 flex-col border-r bg-background sm:flex">
         <nav className="flex flex-col items-center gap-4 px-2 sm:py-4">
-          <div className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base">MH</div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base">
+                MH
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => router.push("/admin/profile")}>My Profile</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <NavItem href="/admin/dashboard" icon={Home} label="Dashboard" />
           <NavItem href="/admin/dashboard/blood_pressures" icon={HeartPulse} label="Blood Pressures" />
           <NavItem href="/admin/dashboard/bookmarks" icon={Album} label="Bookmarks" />

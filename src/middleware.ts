@@ -7,6 +7,7 @@ export function middleware(req: NextRequest) {
   if (encryptedToken) {
     try {
       const token = decrypt(encryptedToken as any);
+
       if (token) {
         return NextResponse.redirect(new URL("/admin/dashboard", req.url));
       }
