@@ -1,9 +1,13 @@
 import { axiosInstance } from "../instance";
 import axios from "axios";
 
-export const getBloodPressure = async () => {
+export const getBloodPressure = async (token: string) => {
   try {
-    const response = await axiosInstance.get("/blood_pressure");
+    const response = await axiosInstance.get("/blood_pressure", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response;
   } catch (error) {
     if (axios.isAxiosError(error)) {
