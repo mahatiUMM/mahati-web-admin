@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
 import { getBloodPressure } from "@/lib/api/blood-pressure"
 import { getToken } from "@/lib/utils"
 
@@ -22,7 +23,7 @@ export default function AdminPressuresPage() {
         setPressures(response?.data)
       })
     }
-  })
+  }, [])
 
   return (
     <div className="flex flex-col sm:gap-4 sm:py-1 sm:pl-14 m-4">
@@ -53,9 +54,11 @@ export default function AdminPressuresPage() {
               <TableCell>{pressure.created_at}</TableCell>
               <TableCell>{pressure.updated_at}</TableCell>
               <TableCell>
-                <button>
-                  Action
-                </button>
+                <Button
+                  variant={"outline"}
+                >
+                  i
+                </Button>
               </TableCell>
             </TableRow>
           ))}

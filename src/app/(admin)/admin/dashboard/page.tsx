@@ -41,6 +41,9 @@ import { getBloodPressure } from "@/lib/api/blood-pressure";
 import { getBookmark } from "@/lib/api/bookmark";
 import { getBrochures } from "@/lib/api/brochures";
 import { getQuestionnaire } from "@/lib/api/questionnaire";
+import { getReminders } from "@/lib/api/reminders";
+import { getSchedules } from "@/lib/api/schedules";
+import { getVideos } from "@/lib/api/videos";
 
 export default function AdminDashboardPage() {
   const router = useRouter()
@@ -48,33 +51,32 @@ export default function AdminDashboardPage() {
   const [bookmarks, setBookmarks] = useState<any>([])
   const [brochures, setBrochures] = useState<any>([])
   const [questionnaires, setQuestionnaires] = useState<any>([])
+  const [reminders, setReminders] = useState<any>([])
+  const [schedules, setSchedules] = useState<any>([])
+  const [videos, setVideos] = useState<any>([])
 
   useEffect(() => {
     const token = getToken()
-
     if (!token) {
       router.push("/")
     } else {
-      getBloodPressure(token).then((response) => {
-        setPressures(response?.data);
-      });
-      getBookmark(token).then((response) => {
-        setBookmarks(response?.data);
-      });
-      getBrochures(token).then((response) => {
-        setBrochures(response?.data);
-      });
-      getQuestionnaire(token).then((response) => {
-        setQuestionnaires(response?.data);
-      });
+      getBloodPressure(token).then((response) => setPressures(response?.data));
+      getBookmark(token).then((response) => setBookmarks(response?.data));
+      getBrochures(token).then((response) => setBrochures(response?.data));
+      getQuestionnaire(token).then((response) => setQuestionnaires(response?.data));
+      getReminders(token).then((response) => setReminders(response?.data));
+      getSchedules(token).then((response) => setSchedules(response?.data));
+      getVideos(token).then((response) => setVideos(response?.data));
     }
-
   }, [router])
 
   const allPressures = pressures?.data?.length
   const allBookmarks = bookmarks?.data?.length
   const allBrochures = brochures?.data?.length
   const allQuestionnaires = questionnaires?.data?.length
+  const allReminders = reminders?.data?.length
+  const allSchedules = schedules?.data?.length
+  const allVideos = videos?.data?.length
 
   return (
     <div className="flex flex-col sm:gap-4 sm:py-1 sm:pl-14 m-4">
@@ -84,9 +86,9 @@ export default function AdminDashboardPage() {
         bookmarks={allBookmarks}
         brochures={allBrochures}
         questionnaires={allQuestionnaires}
-        reminders={573}
-        schedules={573}
-        videos={573}
+        reminders={allReminders}
+        schedules={allSchedules}
+        videos={allVideos}
       />
       <RecentTransactions />
       <RecentSales />
@@ -94,28 +96,34 @@ export default function AdminDashboardPage() {
   );
 }
 
-function DashboardStats(
-  { users, pressures, bookmarks, brochures, questionnaires, reminders, schedules, videos }:
-    Readonly<{
-      users: number,
-      pressures: number,
-      bookmarks: number,
-      brochures: number,
-      questionnaires: number,
-      reminders: number,
-      schedules: number,
-      videos: number,
-    }>
-) {
+function DashboardStats({
+  users,
+  pressures,
+  bookmarks,
+  brochures,
+  questionnaires,
+  reminders,
+  schedules,
+  videos,
+}: Readonly<{
+  users: number;
+  pressures: number;
+  bookmarks: number;
+  brochures: number;
+  questionnaires: number;
+  reminders: number;
+  schedules: number;
+  videos: number;
+}>) {
   const stats = [
     { title: "Total Users", value: "45", icon: Users, change: "+20.1% from last month" },
     { title: "Blood Pressures", value: pressures, icon: HeartPulse, change: "+180.1% from last month" },
     { title: "Bookmarks", value: bookmarks, icon: Album, change: "+19% from last month" },
     { title: "Brochures", value: brochures, icon: BookImage, change: "+201 since last hour" },
     { title: "Questionnaire", value: questionnaires, icon: FileQuestion, change: "+201 since last hour" },
-    { title: "Reminders", value: "+573", icon: BellRing, change: "+201 since last hour" },
-    { title: "Schedules", value: "+573", icon: CalendarCheck, change: "+201 since last hour" },
-    { title: "Videos", value: "+573", icon: FileVideo, change: "+201 since last hour" },
+    { title: "Reminders", value: reminders, icon: BellRing, change: "+201 since last hour" },
+    { title: "Schedules", value: schedules, icon: CalendarCheck, change: "+201 since last hour" },
+    { title: "Videos", value: videos, icon: FileVideo, change: "+201 since last hour" },
   ];
 
   return (

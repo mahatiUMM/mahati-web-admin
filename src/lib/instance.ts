@@ -19,5 +19,12 @@ export const handleError = (error: any) => {
     window.location.href = "/"; 
     removeCookies("mahatiToken");
   }
+  if (axios.isAxiosError(error) && error.response?.status === 403) {
+    window.location.href = "/"; 
+    removeCookies("mahatiToken");
+  }
+  if (axios.isAxiosError(error) && error.response?.status === 404) {
+    window.location.href = "/404";
+  }
   throw error;
 };
