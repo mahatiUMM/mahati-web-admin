@@ -3,8 +3,8 @@ import AdminSidebar from "@/components/layout/admin-sidebar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard | RH",
-  description: "Built by @rizkyhaksono",
+  title: "Admin Dashboard | mahati.",
+  description: "Built by @mahati.dev",
 };
 
 export default function AdminDashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {
