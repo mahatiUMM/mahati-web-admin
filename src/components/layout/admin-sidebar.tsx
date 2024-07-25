@@ -1,8 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useState } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Home,
   PanelLeft,
@@ -17,7 +28,22 @@ import {
   UserRound,
   FileVideo,
 } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { usePathname, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
@@ -67,11 +93,19 @@ const MobileNavItem = ({ href, icon: Icon, label }: NavItem) => {
 
 export default function AdminSidebar() {
   const router = useRouter();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleLogout = () => {
     Cookies.remove("mahatiToken");
     router.push("/");
-  }
+  };
+
+  const handleOpenDialog = () => setIsDialogOpen(true);
+  const handleCloseDialog = () => setIsDialogOpen(false);
+  const handleConfirmLogout = () => {
+    handleLogout();
+    handleCloseDialog();
+  };
 
   return (
     <>
@@ -85,7 +119,7 @@ export default function AdminSidebar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => router.push("/admin/profile")}>My Profile</DropdownMenuItem>
-              <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleOpenDialog}>Log Out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <NavItem href="/admin/dashboard" icon={Home} label="Dashboard" />
@@ -126,6 +160,21 @@ export default function AdminSidebar() {
           </SheetContent>
         </Sheet>
       </header>
+      <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <AlertDialogTrigger />
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you want to Log Out?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to log out from your account?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleCloseDialog}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmLogout}>Yes</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

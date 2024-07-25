@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
 import { getBloodPressure } from "@/lib/api/blood-pressure"
 import { getToken } from "@/lib/utils"
@@ -27,7 +28,12 @@ export default function AdminPressuresPage() {
 
   return (
     <div className="flex flex-col sm:gap-4 sm:py-1 sm:pl-14 m-4">
-      Admin Dashboard Blood Pressures
+      <CustomBreadcrumb
+        items={[
+          { href: "/admin/dashboard", label: "Home" },
+          { label: "Blood Pressures" },
+        ]}
+      />
       <Table>
         <TableHeader>
           <TableRow>

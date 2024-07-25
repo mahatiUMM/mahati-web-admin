@@ -1,6 +1,6 @@
 "use client"
 
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import {
   Card,
@@ -34,8 +34,9 @@ import {
   BellRing,
   CalendarCheck,
   FileVideo,
-  ArrowUpRight
+  ArrowUpRight,
 } from "lucide-react"
+import CustomBreadcrumb from "@/components/layout/custom-breadcrumb";
 import { getToken } from "@/lib/utils";
 import { getBloodPressure } from "@/lib/api/blood-pressure";
 import { getBookmark } from "@/lib/api/bookmark";
@@ -47,6 +48,7 @@ import { getVideos } from "@/lib/api/videos";
 
 export default function AdminDashboardPage() {
   const router = useRouter()
+  const path = usePathname()
   const [pressures, setPressures] = useState<any>([])
   const [bookmarks, setBookmarks] = useState<any>([])
   const [brochures, setBrochures] = useState<any>([])
@@ -80,6 +82,12 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="flex flex-col sm:gap-4 sm:py-1 sm:pl-14 m-4">
+      <CustomBreadcrumb
+        items={[
+          { href: `${path}`, label: "Home" },
+          { label: "Dashboard" },
+        ]}
+      />
       <DashboardStats
         users={45}
         pressures={allPressures}
