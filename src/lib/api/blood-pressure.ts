@@ -1,5 +1,4 @@
-import { axiosInstance } from "../instance";
-import axios from "axios";
+import { axiosInstance, handleError } from "../instance";
 
 export const getBloodPressure = async (token: string) => {
   try {
@@ -10,10 +9,7 @@ export const getBloodPressure = async (token: string) => {
     });
     return response;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return error.response?.data || error;
-    }
-    throw error;
+    handleError(error);
   }
 }
 
@@ -22,10 +18,7 @@ export const getBloodPressureById = async (id: number) => {
     const response = await axiosInstance.get(`/blood_pressure/${id}`);
     return response;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return error.response?.data || error;
-    }
-    throw error;
+    handleError(error);
   }
 }
 
@@ -40,10 +33,7 @@ export const postBloodPressure = async (payload: {
     const response = await axiosInstance.post("/blood_pressure", payload);
     return response;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return error.response?.data || error;
-    }
-    throw error;
+    handleError(error);
   }
 }
 
@@ -58,10 +48,7 @@ export const putBloodPressure = async (id: number, payload: {
     const response = await axiosInstance.put(`/blood_pressure/${id}`);
     return response;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return error.response?.data || error;
-    }
-    throw error;
+    handleError(error);
   }
 }
 
@@ -70,9 +57,6 @@ export const deleteBloodPressure = async (id: number) => {
     const response = await axiosInstance.delete(`/blood_pressure/${id}`);
     return response;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return error.response?.data || error;
-    }
-    throw error;
+    handleError(error);
   }
 }

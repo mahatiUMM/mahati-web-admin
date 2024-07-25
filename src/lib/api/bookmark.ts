@@ -1,5 +1,4 @@
-import { axiosInstance } from "../instance";
-import axios from "axios";
+import { axiosInstance, handleError } from "../instance";
 
 export const getBookmark = async (token: string) => {
   try {
@@ -11,9 +10,6 @@ export const getBookmark = async (token: string) => {
     );
     return response;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return error.response?.data || error;
-    }
-    throw error;
+    handleError(error);
   }
 }

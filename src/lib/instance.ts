@@ -1,4 +1,5 @@
 import axios from "axios";
+import { removeCookies } from "./utils";
 
 const BASE_API = process.env.NEXT_PUBLIC_API_URL;
 
@@ -12,3 +13,11 @@ export const axiosInstance = axios.create({
     "Content-Type": "application/json",
   }
 })
+
+export const handleError = (error: any) => {
+  if (axios.isAxiosError(error) && error.response?.status === 401) {
+    window.location.href = "/"; 
+    removeCookies("mahatiToken");
+  }
+  throw error;
+};

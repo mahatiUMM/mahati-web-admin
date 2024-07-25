@@ -18,3 +18,7 @@ export function getToken() {
 export function setToken(token: string) {
   return Cookies.set("mahatiToken", token)
 }
+
+export function removeCookies(token: string)  {
+  Cookies.remove(token);
+}

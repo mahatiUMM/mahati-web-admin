@@ -9,7 +9,7 @@ import { useTheme } from "next-themes";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { encrypt, decrypt } from "@/lib/crypto";
+import { encrypt } from "@/lib/crypto";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -32,12 +32,11 @@ export default function LoginPage() {
       const response = await login({ email, password });
       console.log(response?.data?.status);
       if (response?.data?.status === 200) {
-        router.prefetch("/admin/dashboard");
         const token = response?.data?.access_token;
         const encryptedToken = encrypt(token);
+        router.push("/admin/dashboard");
         Cookies.set("mahatiToken", encryptedToken, { path: "/" });
       } else {
-        console.log("Login failed");
         setError(response?.message);
       }
     } catch (err) {
