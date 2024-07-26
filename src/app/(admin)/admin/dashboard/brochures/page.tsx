@@ -13,8 +13,7 @@ import { Button } from "@/components/ui/button"
 import { useGetBrochures } from "@/lib/hooks/useBrochures"
 
 export default function AdminBrochuresPage() {
-
-  const { data: brochures } = useGetBrochures()
+  const { data: brochures } = useGetBrochures();
 
   return (
     <div className="flex flex-col sm:gap-4 sm:py-1 sm:pl-14 m-4">
@@ -24,7 +23,7 @@ export default function AdminBrochuresPage() {
           { label: "Brochures" },
         ]}
       />
-      <Table>
+      <Table className="my-4 lg:my-0">
         <TableHeader>
           <TableRow>
             <TableHead className="hidden lg:table-cell">ID</TableHead>

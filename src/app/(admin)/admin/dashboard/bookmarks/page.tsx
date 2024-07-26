@@ -23,7 +23,7 @@ export default function AdminBookmarksPage() {
           { label: "Bookmarks" },
         ]}
       />
-      <Table>
+      <Table className="my-4 lg:my-0">
         <TableHeader>
           <TableRow>
             <TableHead className="hidden lg:table-cell">ID</TableHead>

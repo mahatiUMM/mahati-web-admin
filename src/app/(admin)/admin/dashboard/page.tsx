@@ -115,9 +115,9 @@ function DashboardStats({
   ];
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 my-4 lg:my-0">
       {stats.map((stat, index) => (
-        <Card key={stat.title + index} x-chunk={`dashboard-01-chunk-${index}`}>
+        <Card key={stat.title + index}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
             <stat.icon className="h-4 w-4 text-muted-foreground" />
@@ -142,7 +142,7 @@ function RecentTransactions() {
   ];
 
   return (
-    <Card className="xl:col-span-2" x-chunk="dashboard-01-chunk-4">
+    <Card className="xl:col-span-2 mb-4 lg:mb-0">
       <CardHeader className="flex flex-row items-center">
         <div className="grid gap-2">
           <CardTitle>Transactions</CardTitle>
@@ -200,7 +200,7 @@ function RecentSales() {
   ];
 
   return (
-    <Card x-chunk="dashboard-01-chunk-5">
+    <Card>
       <CardHeader>
         <CardTitle>Recent Sales</CardTitle>
       </CardHeader>

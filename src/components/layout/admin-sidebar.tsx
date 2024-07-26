@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import {
   Tooltip,
@@ -28,6 +29,7 @@ import {
   UserRound,
   FileVideo,
 } from "lucide-react";
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import {
   Sheet,
   SheetContent,
@@ -47,6 +49,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { usePathname, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { useTheme } from "next-themes";
 
 interface NavItem {
   href: string;
@@ -56,6 +59,7 @@ interface NavItem {
 
 const NavItem = ({ href, icon: Icon, label }: NavItem) => {
   const pathname = usePathname();
+
   const isActive = pathname === href;
   const baseClasses = "flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8";
   const activeClasses = "text-accent-foreground hover:text-foreground";
@@ -93,6 +97,8 @@ const MobileNavItem = ({ href, icon: Icon, label }: NavItem) => {
 
 export default function AdminSidebar() {
   const router = useRouter();
+  const { setTheme } = useTheme();
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleLogout = () => {
@@ -113,9 +119,13 @@ export default function AdminSidebar() {
         <nav className="flex flex-col items-center gap-4 px-2 sm:py-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base">
-                MH
-              </div>
+              <Image
+                src="/mahati-logo.png"
+                alt="Mahati Logo"
+                width={36}
+                height={36}
+                className="rounded-full"
+              />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => router.push("/admin/profile")}>My Profile</DropdownMenuItem>
@@ -146,7 +156,37 @@ export default function AdminSidebar() {
           </SheetTrigger>
           <SheetContent side="left" className="sm:max-w-xs">
             <nav className="grid gap-6 text-lg font-medium">
-              <div className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base">RH</div>
+              <div className="flex justify-between items-center">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Image
+                      src="/mahati-logo.png"
+                      alt="Mahati Logo"
+                      width={36}
+                      height={36}
+                      className="rounded-full"
+                    />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => router.push("/admin/profile")}>My Profile</DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleOpenDialog}>Log Out</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="icon" className="mr-5">
+                      <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                      <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                      <span className="sr-only">Toggle theme</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
               <MobileNavItem href="/admin/dashboard" icon={Home} label="Dashboard" />
               <MobileNavItem href="/admin/dashboard/blood_pressures" icon={HeartPulse} label="Blood Pressures" />
               <MobileNavItem href="/admin/dashboard/bookmarks" icon={Album} label="Bookmarks" />

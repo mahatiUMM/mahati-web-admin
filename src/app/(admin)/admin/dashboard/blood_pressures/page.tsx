@@ -23,15 +23,15 @@ export default function AdminPressuresPage() {
           { label: "Blood Pressures" },
         ]}
       />
-      <Table>
+      <Table className="my-4 lg:my-0">
         <TableHeader>
           <TableRow>
             <TableHead className="hidden lg:table-cell">ID</TableHead>
             <TableHead>User ID</TableHead>
-            <TableHead className="hidden sm:table-cell">Image</TableHead>
+            <TableHead className="l">Image</TableHead>
             <TableHead className="">Sistol</TableHead>
-            <TableHead className="hidden md:table-cell">Diastol</TableHead>
-            <TableHead className="text-left hidden md:table-cell">Heartbeat</TableHead>
+            <TableHead className="">Diastol</TableHead>
+            <TableHead className="">Heartbeat</TableHead>
             <TableHead className="text-left">Created At</TableHead>
             <TableHead className="text-left">Update At</TableHead>
             <TableHead className="text-left">Action</TableHead>
@@ -40,7 +40,7 @@ export default function AdminPressuresPage() {
         <TableBody>
           {pressures?.data?.map((pressure: any) => (
             <TableRow key={pressure.id}>
-              <TableCell>{pressure.id}</TableCell>
+              <TableCell className="hidden lg:table-cell">{pressure.id}</TableCell>
               <TableCell>{pressure.user_id}</TableCell>
               <TableCell>{pressure.image}</TableCell>
               <TableCell>{pressure.sistol}</TableCell>
