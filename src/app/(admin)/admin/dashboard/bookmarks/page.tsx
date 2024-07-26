@@ -1,7 +1,5 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import {
   Table,
@@ -12,21 +10,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { getBookmark } from "@/lib/api/bookmark"
-import { getToken } from "@/lib/utils"
+import { useGetBrochures } from "@/lib/hooks/useBrochures"
 
 export default function AdminBookmarksPage() {
-  const router = useRouter()
-  const [bookmarks, setBookmarks] = useState<any>([])
-
-  useEffect(() => {
-    const token = getToken();
-    if (!token) {
-      router.push("/");
-    } else {
-      getBookmark(token).then((response) => setBookmarks(response?.data));
-    };
-  }, [router])
+  const { data: bookmarks } = useGetBrochures()
 
   return (
     <div className="flex flex-col sm:gap-4 sm:py-1 sm:pl-14 m-4">

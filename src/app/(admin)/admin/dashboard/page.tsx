@@ -1,7 +1,5 @@
 "use client"
 
-import { useRouter, usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
 import {
   Card,
   CardContent,
@@ -37,40 +35,22 @@ import {
   ArrowUpRight,
 } from "lucide-react"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb";
-import { getToken } from "@/lib/utils";
-import { getBloodPressure } from "@/lib/api/blood-pressure";
-import { getBookmark } from "@/lib/api/bookmark";
-import { getBrochures } from "@/lib/api/brochures";
-import { getQuestionnaire } from "@/lib/api/questionnaire";
-import { getReminders } from "@/lib/api/reminders";
-import { getSchedules } from "@/lib/api/schedules";
-import { getVideos } from "@/lib/api/videos";
+import { useGetBloodPressures } from "@/lib/hooks/useBloodPressures";
+import { useGetBookmark } from "@/lib/hooks/useBookmarks";
+import { useGetBrochures } from "@/lib/hooks/useBrochures";
+import { useGetQuestionnaire } from "@/lib/hooks/useQuestionnaire";
+import { useGetReminders } from "@/lib/hooks/useReminders";
+import { useGetSchedules } from "@/lib/hooks/useSchedules";
+import { useGetVideos } from "@/lib/hooks/useVideos";
 
 export default function AdminDashboardPage() {
-  const router = useRouter()
-  const path = usePathname()
-  const [pressures, setPressures] = useState<any>([])
-  const [bookmarks, setBookmarks] = useState<any>([])
-  const [brochures, setBrochures] = useState<any>([])
-  const [questionnaires, setQuestionnaires] = useState<any>([])
-  const [reminders, setReminders] = useState<any>([])
-  const [schedules, setSchedules] = useState<any>([])
-  const [videos, setVideos] = useState<any>([])
-
-  useEffect(() => {
-    const token = getToken()
-    if (!token) {
-      router.push("/")
-    } else {
-      getBloodPressure(token).then((response) => setPressures(response?.data));
-      getBookmark(token).then((response) => setBookmarks(response?.data));
-      getBrochures(token).then((response) => setBrochures(response?.data));
-      getQuestionnaire(token).then((response) => setQuestionnaires(response?.data));
-      getReminders(token).then((response) => setReminders(response?.data));
-      getSchedules(token).then((response) => setSchedules(response?.data));
-      getVideos(token).then((response) => setVideos(response?.data));
-    }
-  }, [router])
+  const { data: pressures } = useGetBloodPressures();
+  const { data: bookmarks } = useGetBookmark();
+  const { data: brochures } = useGetBrochures();
+  const { data: questionnaires } = useGetQuestionnaire();
+  const { data: reminders } = useGetReminders();
+  const { data: schedules } = useGetSchedules();
+  const { data: videos } = useGetVideos();
 
   const allPressures = pressures?.data?.length
   const allBookmarks = bookmarks?.data?.length
@@ -84,7 +64,7 @@ export default function AdminDashboardPage() {
     <div className="flex flex-col sm:gap-4 sm:py-1 sm:pl-14 m-4">
       <CustomBreadcrumb
         items={[
-          { href: `${path}`, label: "Home" },
+          { href: "/admin/dashboard", label: "Home" },
           { label: "Dashboard" },
         ]}
       />

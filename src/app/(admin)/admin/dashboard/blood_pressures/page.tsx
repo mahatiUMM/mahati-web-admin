@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import {
   Table,
   TableBody,
@@ -11,20 +10,10 @@ import {
 } from "@/components/ui/table"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
-import { getBloodPressure } from "@/lib/api/blood-pressure"
-import { getToken } from "@/lib/utils"
+import { useGetBloodPressures } from "@/lib/hooks/useBloodPressures"
 
 export default function AdminPressuresPage() {
-  const [pressures, setPressures] = useState<any>([])
-
-  useEffect(() => {
-    const token = getToken()
-    if (token) {
-      getBloodPressure(token).then((response) => {
-        setPressures(response?.data)
-      })
-    }
-  }, [])
+  const { data: pressures } = useGetBloodPressures()
 
   return (
     <div className="flex flex-col sm:gap-4 sm:py-1 sm:pl-14 m-4">

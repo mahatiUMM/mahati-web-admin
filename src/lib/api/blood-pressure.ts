@@ -1,7 +1,9 @@
 import { axiosInstance, handleError } from "../instance";
+import { getToken } from "@/lib/utils"
 
-export const getBloodPressure = async (token: string) => {
+export const getBloodPressure = async () => {
   try {
+    const token = getToken();
     const response = await axiosInstance.get("/blood_pressure", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -45,7 +47,7 @@ export const putBloodPressure = async (id: number, payload: {
   heartbeat: string,
 }) => {
   try {
-    const response = await axiosInstance.put(`/blood_pressure/${id}`);
+    const response = await axiosInstance.put(`/blood_pressure/${id}`, payload);
     return response;
   } catch (error) {
     handleError(error);

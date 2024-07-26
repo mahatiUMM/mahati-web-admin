@@ -1,7 +1,9 @@
 import { axiosInstance, handleError } from "../instance";
+import { getToken } from "../utils";
 
-export const getAllUsers = async (token: string) => {
+export const getAllUsers = async () => {
   try {
+    const token = getToken();
     const response = await axiosInstance.get("/users", {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -1,7 +1,9 @@
 import { axiosInstance, handleError } from "../instance";
+import { getToken } from "../utils";
 
-export const getSchedules = async (token: string) => {
+export const getSchedules = async () => {
   try {
+    const token = getToken();
     const response = await axiosInstance.get("/schedule", {
       headers: {
         Authorization: `Bearer ${token}`,
