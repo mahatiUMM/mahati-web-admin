@@ -10,6 +10,7 @@ import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { encrypt } from "@/lib/crypto";
+import { toast } from "sonner"
 
 export default function LoginPage() {
   const router = useRouter();
@@ -36,8 +37,12 @@ export default function LoginPage() {
         const encryptedToken = encrypt(token);
         router.push("/admin/dashboard");
         Cookies.set("mahatiToken", encryptedToken, { path: "/" });
+        toast.message('Success to Login', {
+          description: 'Welcome to Mahati Admin',
+        })
       } else {
         setError(response?.message);
+        toast.error(response?.message)
       }
     } catch (err) {
       setError("Login failed. Please check your credentials.");
