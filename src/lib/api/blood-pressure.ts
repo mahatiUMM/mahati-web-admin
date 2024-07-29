@@ -24,13 +24,13 @@ export const getBloodPressureById = async (id: number) => {
   }
 }
 
-export const postBloodPressure = async (payload: { 
+export const postBloodPressure = async (payload: {
   user_id: number,
   image: string,
   sistol: string,
   diastole: string,
   heartbeat: string,
- }) => {
+}) => {
   try {
     const response = await axiosInstance.post("/blood_pressure", payload);
     return response;

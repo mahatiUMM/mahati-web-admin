@@ -6,6 +6,8 @@ import Cookies from "js-cookie"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import Link from "next/link"
+import Image from "next/image"
 
 export default function AdminProfilePage() {
   const router = useRouter()
@@ -28,12 +30,18 @@ export default function AdminProfilePage() {
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
         <aside className="-mx-4 lg:w-1/5">
           <nav className="flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1">
-            <a
-              className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:text-accent-foreground h-9 px-4 py-2 bg-muted hover:bg-muted justify-start"
-              href="/examples/forms"
+            <Link
+              className="inline-flex items-center rounded-md text-sm font-medium hover:text-accent-foreground h-9 px-4 py-2 hover:bg-muted hover:underline hover:underline-offset-4 justify-start"
+              href="/admin/profile"
             >
               Profile
-            </a>
+            </Link>
+            <Link
+              className="inline-flex items-center rounded-md text-sm font-medium hover:text-accent-foreground h-9 px-4 py-2 hover:bg-muted hover:underline hover:underline-offset-4 justify-start"
+              href="/admin/profile/edit"
+            >
+              Edit Profile
+            </Link>
           </nav>
         </aside>
         <div className="flex-1 lg:max-w-2xl">
@@ -64,7 +72,13 @@ export default function AdminProfilePage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="number">Photo</Label>
-                <Input id="number" type="file" />
+                <Image
+                  src="/mahati-logo.png"
+                  alt="User Profile"
+                  width={100}
+                  height={100}
+                  className="rounded-full"
+                />
               </div>
             </form>
           </div>
