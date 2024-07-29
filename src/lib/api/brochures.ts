@@ -14,3 +14,17 @@ export const getBrochures = async () => {
     handleError(error);
   }
 }
+
+export const getBrochuresById = async (id: number) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.get(`/brochure/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    });
+    return response;
+  } catch (error) {
+    handleError(error);
+  }
+}

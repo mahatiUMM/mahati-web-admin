@@ -6,19 +6,21 @@ export function useGetBrochures() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await getBrochures();
+      setData(response?.data);
+    } catch (err) {
+      setError(err as Error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getBrochures();
-        setData(response?.data);
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
   }, []);
 
-  return { data, loading, error };
+  return { data, loading, error, fetchData };
 }

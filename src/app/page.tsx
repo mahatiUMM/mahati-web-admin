@@ -31,7 +31,6 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       const response = await login({ email, password });
-      console.log(response?.data?.status);
       if (response?.data?.status === 200) {
         const token = response?.data?.access_token;
         const encryptedToken = encrypt(token);

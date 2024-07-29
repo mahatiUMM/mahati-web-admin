@@ -12,7 +12,7 @@ export function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL("/admin/dashboard", req.url));
       }
     } catch (error) {
-      console.error("Failed to decrypt token:", error);
+      return NextResponse.redirect(new URL("/", req.url));
     }
   }
 

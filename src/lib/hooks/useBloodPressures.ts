@@ -12,7 +12,7 @@ export function useGetBloodPressures() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const fetchData = async () => {
+  const refetch = async () => {
     setLoading(true);
     try {
       const response = await getBloodPressure();
@@ -25,10 +25,10 @@ export function useGetBloodPressures() {
   };
 
   useEffect(() => {
-    fetchData();
+    refetch();
   }, []);
 
-  return { data, loading, error, refetch: fetchData };
+  return { data, loading, error, refetch };
 }
 
 export function useGetBloodPressureById() {
@@ -56,7 +56,7 @@ export function usePostBloodPressure() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const postData = async (payload: any) => {
+  const mutate = async (payload: any) => {
     try {
       setLoading(true);
       const response = await postBloodPressure(payload);
@@ -68,7 +68,7 @@ export function usePostBloodPressure() {
     }
   };
 
-  return { data, loading, error, postData };
+  return { data, loading, error, mutate };
 }
 
 export function usePutBloodPressure() {
