@@ -17,7 +17,12 @@ export const getBloodPressure = async () => {
 
 export const getBloodPressureById = async (id: number) => {
   try {
-    const response = await axiosInstance.get(`/blood_pressure/${id}`);
+    const token = getToken();
+    const response = await axiosInstance.get(`/blood_pressure/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response;
   } catch (error) {
     handleError(error);
@@ -47,7 +52,13 @@ export const putBloodPressure = async (id: number, payload: {
   heartbeat: string,
 }) => {
   try {
-    const response = await axiosInstance.put(`/blood_pressure/${id}`, payload);
+    const token = getToken();
+    const response = await axiosInstance.put(`/blood_pressure/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: payload
+    });
     return response;
   } catch (error) {
     handleError(error);
@@ -56,7 +67,12 @@ export const putBloodPressure = async (id: number, payload: {
 
 export const deleteBloodPressure = async (id: number) => {
   try {
-    const response = await axiosInstance.delete(`/blood_pressure/${id}`);
+    const token = getToken();
+    const response = await axiosInstance.delete(`/blood_pressure/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response;
   } catch (error) {
     handleError(error);

@@ -16,6 +16,7 @@ export default function AdminPressuresPage() {
   const { postData: postBloodPressure } = usePostBloodPressure();
 
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [dialogEditOpen, setDialogEditOpen] = useState(false)
 
   const handleDialogOpen = () => {
     setDialogOpen(true)
@@ -52,7 +53,7 @@ export default function AdminPressuresPage() {
           Add Blood Pressure
         </Button>
       </div>
-      <BloodPressureTable pressures={pressures?.data} />
+      <BloodPressureTable pressures={pressures?.data} refetchPressure={refetchPressure} />
       <CustomDialog
         isOpen={dialogOpen}
         onClose={handleDialogClose}

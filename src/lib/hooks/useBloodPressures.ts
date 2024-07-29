@@ -31,26 +31,24 @@ export function useGetBloodPressures() {
   return { data, loading, error, refetch: fetchData };
 }
 
-export function useGetBloodPressureById(id: number) {
+export function useGetBloodPressureById() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getBloodPressureById(id);
-        setData(response?.data);
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [id]);
+  const fetchData = async (id: number) => {
+    setLoading(true);
+    try {
+      const response = await getBloodPressureById(id);
+      setData(response?.data);
+    } catch (err) {
+      setError(err as Error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  return { data, loading, error };
+  return { data, loading, error, fetchData };
 }
 
 export function usePostBloodPressure() {
@@ -73,12 +71,12 @@ export function usePostBloodPressure() {
   return { data, loading, error, postData };
 }
 
-export function usePutBloodPressure(id: number, payload: any) {
+export function usePutBloodPressure() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const fetchData = async () => {
+  const putData = async (id: number, payload: any) => {
     try {
       setLoading(true);
       const response = await putBloodPressure(id, payload);
@@ -90,15 +88,15 @@ export function usePutBloodPressure(id: number, payload: any) {
     }
   };
 
-  return { data, loading, error, fetchData };
+  return { data, loading, error, putData };
 }
 
-export function useDeleteBloodPressure(id: number) {
+export function useDeleteBloodPressure() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const fetchData = async () => {
+  const deleteData = async (id: number) => {
     try {
       setLoading(true);
       const response = await deleteBloodPressure(id);
@@ -110,5 +108,5 @@ export function useDeleteBloodPressure(id: number) {
     }
   };
 
-  return { data, loading, error, fetchData };
+  return { data, loading, error, deleteData };
 }
