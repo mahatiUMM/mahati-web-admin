@@ -1,40 +1,52 @@
+"use client"
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function BloodPressureFormEdit({ pressure, onSubmit, onCancel }: {
+export default function BloodPressureFormEdit({
+  pressure,
+  onSubmit,
+  onCancel
+}: Readonly<{
   pressure: any;
   onSubmit: (data: any) => void;
   onCancel: () => void;
-}) {
+}>) {
   const [formData, setFormData] = useState({
-    user_id: '',
-    image: '',
-    sistol: '',
-    diastole: '',
-    heartbeat: ''
+    user_id: 0,
+    image: "",
+    sistol: 0,
+    diastole: 0,
+    heartbeat: 0
   });
 
   useEffect(() => {
     if (pressure) {
       setFormData({
-        user_id: pressure.user_id || '',
-        image: pressure.image || '',
-        sistol: pressure.sistol || '',
-        diastole: pressure.diastole || '',
-        heartbeat: pressure.heartbeat || ''
+        user_id: parseInt(pressure?.data?.user_id),
+        image: pressure?.data?.image,
+        sistol: parseInt(pressure?.data?.sistol),
+        diastole: parseInt(pressure?.data?.diastole),
+        heartbeat: parseInt(pressure?.data?.heartbeat)
       });
     }
   }, [pressure]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "user_id" || name === "sistol" || name === "diastole" || name === "heartbeat"
+        ? parseInt(value) || 0
+        : value
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(formData);
     onSubmit(formData);
   };
 

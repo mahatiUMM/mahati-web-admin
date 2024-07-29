@@ -16,7 +16,6 @@ export default function AdminPressuresPage() {
   const { postData: postBloodPressure } = usePostBloodPressure();
 
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [dialogEditOpen, setDialogEditOpen] = useState(false)
 
   const handleDialogOpen = () => {
     setDialogOpen(true)

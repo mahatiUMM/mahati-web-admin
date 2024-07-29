@@ -53,11 +53,10 @@ export const putBloodPressure = async (id: number, payload: {
 }) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.put(`/blood_pressure/${id}`, {
+    const response = await axiosInstance.put(`/blood_pressure/${id}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      data: payload
     });
     return response;
   } catch (error) {

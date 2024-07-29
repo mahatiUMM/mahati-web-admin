@@ -18,20 +18,21 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Info, Trash } from "lucide-react";
 import { CustomDialog } from "@/components/layout/custom-dialog";
 import {
-  useGetBloodPressures,
   useGetBloodPressureById,
   usePutBloodPressure,
   useDeleteBloodPressure
 } from "@/lib/hooks/useBloodPressures";
 import BloodPressureFormEdit from "./blood-pressure-edit";
 
-export default function BloodPressureTable({ pressures, refetchPressure }: Readonly<{
+export default function BloodPressureTable({
+  pressures,
+  refetchPressure
+}: Readonly<{
   pressures: {
     id: number;
     user_id: number;
@@ -67,6 +68,7 @@ export default function BloodPressureTable({ pressures, refetchPressure }: Reado
   const handleSubmit = async (formData: any) => {
     if (selectedPressureId !== null) {
       await updateBloodPressure(selectedPressureId, formData);
+      refetchPressure();
       handleDialogClose();
     }
   };
