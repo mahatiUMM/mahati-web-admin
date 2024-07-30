@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import {
   getBloodPressure,
@@ -66,7 +64,6 @@ export function usePostBloodPressure() {
       setLoading(true);
       const response = await postBloodPressure(payload);
       setData(response?.data);
-
       if (response?.status === 201) {
         toast.message("Success to add blood pressure", {
           description: "Blood pressure has been added successfully.",
@@ -93,10 +90,9 @@ export function usePutBloodPressure() {
       setLoading(true);
       const response = await putBloodPressure(id, payload);
       setData(response?.data);
-
       if (response?.status === 200) {
         toast.message("Success to edit blood pressure", {
-          description: "Blood pressure has been editd successfully.",
+          description: "Blood pressure has been edit successfully.",
         });
       }
     } catch (err) {
@@ -120,7 +116,6 @@ export function useDeleteBloodPressure() {
       setLoading(true);
       const response = await deleteBloodPressure(id);
       setData(response?.data);
-
       if (response?.status === 200) {
         toast.message("Success to delete blood pressure", {
           description: "Blood pressure has been deleted successfully.",

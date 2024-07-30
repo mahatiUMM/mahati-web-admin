@@ -6,6 +6,7 @@ import {
   putBookmark,
   deleteBookmark,
 } from "../api/bookmark";
+import { toast } from "sonner";
 
 export function useGetBookmark() {
   const [data, setData] = useState<any>(null);
@@ -43,6 +44,7 @@ export function useGetBookmarkById() {
       setData(response?.data);
     } catch (err) {
       setError(err as Error);
+      toast.error("Failed to fetch. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -61,8 +63,14 @@ export function usePostBookmark() {
       setLoading(true);
       const response = await postBookmark(payload);
       setData(response?.data);
+      if (response?.status === 201) {
+        toast.message("Success to add bookmark", {
+          description: "Bookmark has been added successfully.",
+        });
+      }
     } catch (err) {
       setError(err as Error);
+      toast.error("Failed to add bookmark. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -81,8 +89,14 @@ export function usePutBookmark() {
     try {
       const response = await putBookmark(id, payload);
       setData(response?.data);
+      if (response?.status === 200) {
+        toast.message("Success to edit bookmark", {
+          description: "Bookmark has been edit successfully.",
+        });
+      }
     } catch (err) {
       setError(err as Error);
+      toast.error("Failed to add bookmark. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -101,8 +115,14 @@ export function useDeleteBookmark() {
     try {
       const response = await deleteBookmark(id);
       setData(response?.data);
+      if (response?.status === 200) {
+        toast.message("Success to delete bookmark", {
+          description: "Bookmark has been deleted successfully.",
+        });
+      }
     } catch (err) {
       setError(err as Error);
+      toast.error("Failed to delete bookmark. Please try again.");
     } finally {
       setLoading(false);
     }

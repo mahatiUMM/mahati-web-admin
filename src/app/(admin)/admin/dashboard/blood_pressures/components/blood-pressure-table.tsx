@@ -73,15 +73,15 @@ export default function BloodPressureTable({
     setSelectedPressureDelete(null);
   };
 
-  const handleSubmit = async (formData: any) => {
-    if (selectedPressureEdit !== null) {
+  const handlePutPressure = async (formData: any) => {
+    if (selectedPressureEdit) {
       await updateBloodPressure(selectedPressureEdit, formData);
       refetchPressure();
       handleEditDialogClose();
     }
   };
-  const handleDeleteDialogConfirm = async () => {
-    if (selectedPressureDelete !== null) {
+  const handleDeletePressure = async () => {
+    if (selectedPressureDelete) {
       await deleteBloodPressure(selectedPressureDelete);
       refetchPressure();
       handleDeleteDialogClose();
@@ -137,7 +137,7 @@ export default function BloodPressureTable({
         >
           <BloodPressureFormEdit
             pressure={pressure}
-            onSubmit={handleSubmit}
+            onSubmit={handlePutPressure}
             onCancel={handleEditDialogClose}
           />
         </CustomDialog>
@@ -155,7 +155,7 @@ export default function BloodPressureTable({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={handleDeleteDialogClose}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteDialogConfirm}>Delete</AlertDialogAction>
+            <AlertDialogAction onClick={handleDeletePressure}>Delete</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
