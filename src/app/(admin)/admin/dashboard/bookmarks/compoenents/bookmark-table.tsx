@@ -23,7 +23,9 @@ import { Button } from "@/components/ui/button";
 import { Info, Trash } from "lucide-react";
 import { CustomDialog } from "@/components/layout/custom-dialog";
 import {
-  useGetBookmark,
+  useGetBookmarkById,
+  usePutBookmark,
+  useDeleteBookmark,
 } from "@/lib/hooks/useBookmarks";
 
 export default function BookmarkTable({
@@ -40,6 +42,10 @@ export default function BookmarkTable({
   }[];
   refetchBookmark: () => void,
 }>) {
+  const { data: bookmark, fetchData } = useGetBookmarkById();
+  const { putData: updateBookmark } = usePutBookmark();
+  const { deleteData: deleteBookmark } = useDeleteBookmark();
+
   return (
     <>
       <Table className="my-4 lg:my-0">
@@ -57,7 +63,7 @@ export default function BookmarkTable({
         <TableBody>
           {bookmarks?.map((bookmark: any) => (
             <TableRow key={bookmark.id}>
-              <TableCell>{bookmark.id}</TableCell>
+              <TableCell className="hidden lg:table-cell">{bookmark.id}</TableCell>
               <TableCell>{bookmark.video_id}</TableCell>
               <TableCell>{bookmark.user_id}</TableCell>
               <TableCell>

@@ -1,6 +1,15 @@
+"use client"
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 export default function BloodPressureForm({ onSubmit, onCancel }: Readonly<{
   onSubmit: (e: any) => void;
@@ -10,6 +19,16 @@ export default function BloodPressureForm({ onSubmit, onCancel }: Readonly<{
     <form className="flex flex-col gap-4" onSubmit={onSubmit}>
       <Label htmlFor="user_id">User ID</Label>
       <Input id="user_id" name="user_id" placeholder="User ID" />
+      {/* <Select>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Theme" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="light">Light</SelectItem>
+          <SelectItem value="dark">Dark</SelectItem>
+          <SelectItem value="system">System</SelectItem>
+        </SelectContent>
+      </Select> */}
       <Label htmlFor="image">Image URL</Label>
       <Input id="image" name="image" placeholder="Image URL" />
       <Label htmlFor="sistol">Sistol</Label>

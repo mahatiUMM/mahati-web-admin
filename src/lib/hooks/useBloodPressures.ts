@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import {
   getBloodPressure,
@@ -6,6 +8,7 @@ import {
   putBloodPressure,
   deleteBloodPressure
 } from "../api/blood-pressure";
+import { toast } from "sonner";
 
 export function useGetBloodPressures() {
   const [data, setData] = useState<any>(null);
@@ -19,6 +22,7 @@ export function useGetBloodPressures() {
       setData(response?.data);
     } catch (err) {
       setError(err as Error);
+      toast.error("Failed to fetch. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -43,6 +47,7 @@ export function useGetBloodPressureById() {
       setData(response?.data);
     } catch (err) {
       setError(err as Error);
+      toast.error("Failed to fetch. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -61,8 +66,15 @@ export function usePostBloodPressure() {
       setLoading(true);
       const response = await postBloodPressure(payload);
       setData(response?.data);
+
+      if (response?.status === 201) {
+        toast.message("Success to add blood pressure", {
+          description: "Blood pressure has been added successfully.",
+        });
+      }
     } catch (err) {
       setError(err as Error);
+      toast.error("Failed to add blood pressure. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -81,8 +93,15 @@ export function usePutBloodPressure() {
       setLoading(true);
       const response = await putBloodPressure(id, payload);
       setData(response?.data);
+
+      if (response?.status === 200) {
+        toast.message("Success to edit blood pressure", {
+          description: "Blood pressure has been editd successfully.",
+        });
+      }
     } catch (err) {
       setError(err as Error);
+      toast.error("Failed to edit blood pressure. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -101,8 +120,15 @@ export function useDeleteBloodPressure() {
       setLoading(true);
       const response = await deleteBloodPressure(id);
       setData(response?.data);
+
+      if (response?.status === 200) {
+        toast.message("Success to delete blood pressure", {
+          description: "Blood pressure has been deleted successfully.",
+        });
+      }
     } catch (err) {
       setError(err as Error);
+      toast.error("Failed to delete blood pressure. Please try again.");
     } finally {
       setLoading(false);
     }

@@ -13,7 +13,7 @@ import BloodPressureForm from "./components/blood-pressure-form"
 
 export default function AdminPressuresPage() {
   const { data: pressures, refetch: refetchPressure } = useGetBloodPressures()
-  const { mutate: postBloodPressure } = usePostBloodPressure();
+  const { data: dataPost, mutate: postBloodPressure } = usePostBloodPressure();
 
   const [dialogOpen, setDialogOpen] = useState(false)
 

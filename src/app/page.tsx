@@ -1,51 +1,23 @@
 "use client"
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-import { login } from "@/lib/api/auth";
-import Cookies from "js-cookie";
+import { useState } from "react";
 import { useTheme } from "next-themes";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { encrypt } from "@/lib/crypto";
-import { toast } from "sonner"
+import { useLogin } from "@/lib/hooks/useAuth";
 
 export default function LoginPage() {
-  const router = useRouter();
   const { setTheme } = useTheme();
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const token = Cookies.get("mahatiToken");
-    if (token) {
-      router.push("/admin/dashboard")
-    }
-  }, [router]);
+  const [password, setPassword] = useState("");;
+  const { mutate: login } = useLogin();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    try {
-      const response = await login({ email, password });
-      if (response?.data?.status === 200) {
-        const token = response?.data?.access_token;
-        const encryptedToken = encrypt(token);
-        router.push("/admin/dashboard");
-        Cookies.set("mahatiToken", encryptedToken, { path: "/" });
-        toast.message('Success to Login', {
-          description: 'Welcome to Mahati Admin',
-        })
-      } else {
-        setError(response?.message);
-        toast.error(response?.message)
-      }
-    } catch (err) {
-      setError("Login failed. Please check your credentials.");
-    }
+    await login({ email, password });
   };
 
   return (
@@ -102,7 +74,6 @@ export default function LoginPage() {
             </p>
           </div>
           <div className="grid gap-6">
-            {error && <p className="text-red-500">{error}</p>}
             <form onSubmit={handleSubmit}>
               <div className="grid gap-2">
                 <div className="grid gap-1">

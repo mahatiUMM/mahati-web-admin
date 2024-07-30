@@ -45,49 +45,46 @@ export default function BloodPressureTable({
   }[];
   refetchPressure: () => void;
 }>) {
-  const [selectedPressureId, setSelectedPressureId] = useState<number | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedPressureForDeletion, setSelectedPressureForDeletion] = useState<number | null>(null);
+  const [selectedPressureEdit, setSelectedPressureEdit] = useState<number | null>(null);
+  const [selectedPressureDelete, setSelectedPressureDelete] = useState<number | null>(null);
 
   const { data: pressure, fetchData } = useGetBloodPressureById();
   const { putData: updateBloodPressure } = usePutBloodPressure();
   const { deleteData: deleteBloodPressure } = useDeleteBloodPressure();
 
   const handleEditClick = (id: number) => {
-    setSelectedPressureId(id);
+    setSelectedPressureEdit(id);
     fetchData(id);
     setDialogOpen(true);
   };
-
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-    setSelectedPressureId(null);
-  };
-
-  const handleSubmit = async (formData: any) => {
-    if (selectedPressureId !== null) {
-      await updateBloodPressure(selectedPressureId, formData);
-      refetchPressure();
-      handleDialogClose();
-    }
-  };
-
-  const handleOpenDialog = (id: number) => {
-    setSelectedPressureForDeletion(id);
+  const handleDeleteClick = (id: number) => {
+    setSelectedPressureDelete(id);
     setIsDialogOpen(true);
   };
 
-  const handleCloseDialog = () => {
+  const handleEditDialogClose = () => {
+    setDialogOpen(false);
+    setSelectedPressureEdit(null);
+  };
+  const handleDeleteDialogClose = () => {
     setIsDialogOpen(false);
-    setSelectedPressureForDeletion(null);
+    setSelectedPressureDelete(null);
   };
 
-  const handleConfirmDelete = async () => {
-    if (selectedPressureForDeletion !== null) {
-      await deleteBloodPressure(selectedPressureForDeletion);
+  const handleSubmit = async (formData: any) => {
+    if (selectedPressureEdit !== null) {
+      await updateBloodPressure(selectedPressureEdit, formData);
       refetchPressure();
-      handleCloseDialog();
+      handleEditDialogClose();
+    }
+  };
+  const handleDeleteDialogConfirm = async () => {
+    if (selectedPressureDelete !== null) {
+      await deleteBloodPressure(selectedPressureDelete);
+      refetchPressure();
+      handleDeleteDialogClose();
     }
   };
 
@@ -122,7 +119,7 @@ export default function BloodPressureTable({
                 <Button className="rounded-full px-1 py-1" variant={"outline"} onClick={() => handleEditClick(pressure.id)}>
                   <Info className="text-blue-400 h-5 w-5" />
                 </Button>
-                <Button className="rounded-full px-1 py-1" variant={"outline"} onClick={() => handleOpenDialog(pressure.id)}>
+                <Button className="rounded-full px-1 py-1" variant={"outline"} onClick={() => handleDeleteClick(pressure.id)}>
                   <Trash className="text-red-400 h-5 w-5" />
                 </Button>
               </TableCell>
@@ -131,17 +128,17 @@ export default function BloodPressureTable({
         </TableBody>
       </Table>
 
-      {selectedPressureId !== null && (
+      {selectedPressureEdit !== null && (
         <CustomDialog
           isOpen={dialogOpen}
-          onClose={handleDialogClose}
+          onClose={handleEditDialogClose}
           title="Edit Blood Pressure"
           description="Edit the details for this blood pressure entry."
         >
           <BloodPressureFormEdit
             pressure={pressure}
             onSubmit={handleSubmit}
-            onCancel={handleDialogClose}
+            onCancel={handleEditDialogClose}
           />
         </CustomDialog>
       )}
@@ -150,15 +147,15 @@ export default function BloodPressureTable({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {selectedPressureForDeletion ? `Delete Blood Pressure ID ${selectedPressureForDeletion}` : "Delete Blood Pressure"}
+              {selectedPressureDelete ? `Delete Blood Pressure ID ${selectedPressureDelete}` : "Delete Blood Pressure"}
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this blood pressure entry? This action cannot be undone.
+              This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleCloseDialog}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmDelete}>Delete</AlertDialogAction>
+            <AlertDialogCancel onClick={handleDeleteDialogClose}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteDialogConfirm}>Delete</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
