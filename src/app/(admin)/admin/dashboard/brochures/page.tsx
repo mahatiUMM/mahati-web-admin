@@ -1,19 +1,40 @@
 "use client"
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { useState } from "react"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
-import { useGetBrochures } from "@/lib/hooks/useBrochures"
+import {
+  useGetBrochures,
+  usePostBrochure,
+} from "@/lib/hooks/useBrochure"
+import BrochureTable from "./components/brochure-table"
+import { CustomDialog } from "@/components/layout/custom-dialog"
+import BrochureForm from "./components/brochure-form"
 
 export default function AdminBrochuresPage() {
-  const { data: brochures } = useGetBrochures();
+  const { data: brochures, refetch: refetchBrochure } = useGetBrochures();
+  const { mutate: postBrochure } = usePostBrochure();
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  }
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  }
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    const formData = {
+      title: e.target.title.value,
+      image: e.target.image.value,
+    }
+    await postBrochure(formData);
+    refetchBrochure();
+    handleDialogClose();
+  }
 
   return (
     <div className="flex flex-col sm:gap-4 sm:py-1 sm:pl-14 m-4">
@@ -24,40 +45,19 @@ export default function AdminBrochuresPage() {
             { label: "Brochures" },
           ]}
         />
-        <Button>
+        <Button variant={"default"} onClick={handleDialogOpen}>
           Add Brochure
         </Button>
       </div>
-      <Table className="my-4 lg:my-0">
-        <TableHeader>
-          <TableRow>
-            <TableHead className="hidden lg:table-cell">ID</TableHead>
-            <TableHead className="">Title</TableHead>
-            <TableHead className="">Image</TableHead>
-            <TableHead className="">Created At</TableHead>
-            <TableHead className="">Updated At</TableHead>
-            <TableHead className="">Action</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {brochures?.data?.map((brochure: any) => (
-            <TableRow key={brochure.id}>
-              <TableCell>{brochure.id}</TableCell>
-              <TableCell>{brochure.title}</TableCell>
-              <TableCell>{brochure.image}</TableCell>
-              <TableCell>{brochure.created_at}</TableCell>
-              <TableCell>{brochure.updated_at}</TableCell>
-              <TableCell>
-                <Button
-                  variant={"outline"}
-                >
-                  i
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <BrochureTable brochures={brochures?.data} refetchBrochure={refetchBrochure} />
+      <CustomDialog
+        isOpen={dialogOpen}
+        onClose={handleDialogClose}
+        title="Add Brochure"
+        description="Enter the details for the new brochure entry."
+      >
+        <BrochureForm onSubmit={handleSubmit} onCancel={handleDialogClose} />
+      </CustomDialog>
     </div>
   )
 }

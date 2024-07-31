@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
-import { useGetReminders } from "@/lib/hooks/useReminders"
+import { useGetReminders } from "@/lib/hooks/useReminder"
 
 export default function AdminRemindersPage() {
   const { data: reminders } = useGetReminders();

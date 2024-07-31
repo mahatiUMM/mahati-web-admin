@@ -64,9 +64,7 @@ export function usePostBookmark() {
       const response = await postBookmark(payload);
       setData(response?.data);
       if (response?.status === 201) {
-        toast.message("Success to add bookmark", {
-          description: "Bookmark has been added successfully.",
-        });
+        toast.success("Success to add bookmark");
       }
     } catch (err) {
       setError(err as Error);
@@ -90,9 +88,7 @@ export function usePutBookmark() {
       const response = await putBookmark(id, payload);
       setData(response?.data);
       if (response?.status === 200) {
-        toast.message("Success to edit bookmark", {
-          description: "Bookmark has been edit successfully.",
-        });
+        toast.success("Success to edit bookmark.");
       }
     } catch (err) {
       setError(err as Error);
@@ -116,9 +112,7 @@ export function useDeleteBookmark() {
       const response = await deleteBookmark(id);
       setData(response?.data);
       if (response?.status === 200) {
-        toast.message("Success to delete bookmark", {
-          description: "Bookmark has been deleted successfully.",
-        });
+        toast.success("Success to delete bookmark");
       }
     } catch (err) {
       setError(err as Error);

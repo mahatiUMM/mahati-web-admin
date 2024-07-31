@@ -21,9 +21,7 @@ export function useLogin() {
         const encryptedToken = encrypt(token);
         router.push("/admin/dashboard");
         Cookies.set("mahatiToken", encryptedToken, { path: "/" });
-        toast.message("Success to Login", {
-          description: "Welcome to Mahati Admin",
-        });
+        toast.success("Success to Login");
       } else {
         setError(response?.message);
         toast.error(response?.message);
@@ -39,7 +37,7 @@ export function useLogin() {
   useEffect(() => {
     const token = Cookies.get("mahatiToken");
     if (token) {
-      toast.message("You are already logged in");
+      toast.info("You are already logged in");
       router.push("/admin/dashboard")
     }
   }, [router]);

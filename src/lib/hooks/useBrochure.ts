@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import {
-  getBloodPressure,
-  getBloodPressureById,
-  postBloodPressure,
-  putBloodPressure,
-  deleteBloodPressure
-} from "../api/blood-pressure";
+  getBrochures,
+  getBrochureById,
+  postBrochure,
+  putBrochure,
+  deleteBrochure,
+} from "@/lib/api/brochure";
 import { toast } from "sonner";
 
-export function useGetBloodPressures() {
+export function useGetBrochures() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -16,15 +16,14 @@ export function useGetBloodPressures() {
   const refetch = async () => {
     setLoading(true);
     try {
-      const response = await getBloodPressure();
+      const response = await getBrochures();
       setData(response?.data);
     } catch (err) {
       setError(err as Error);
-      toast.error("Failed to fetch. Please try again.");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   useEffect(() => {
     refetch();
@@ -33,15 +32,15 @@ export function useGetBloodPressures() {
   return { data, loading, error, refetch };
 }
 
-export function useGetBloodPressureById() {
+export function useGetBrochureById() {
   const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
   const fetchData = async (id: number) => {
     setLoading(true);
     try {
-      const response = await getBloodPressureById(id);
+      const response = await getBrochureById(id);
       setData(response?.data);
     } catch (err) {
       setError(err as Error);
@@ -49,12 +48,12 @@ export function useGetBloodPressureById() {
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return { data, loading, error, fetchData };
 }
 
-export function usePostBloodPressure() {
+export function usePostBrochure() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
@@ -62,66 +61,66 @@ export function usePostBloodPressure() {
   const mutate = async (payload: any) => {
     try {
       setLoading(true);
-      const response = await postBloodPressure(payload);
+      const response = await postBrochure(payload);
       setData(response?.data);
       if (response?.status === 201) {
-        toast.success("Success to add blood pressure");
+        toast.success("Successfully added a new brochure.");
       }
     } catch (err) {
       setError(err as Error);
-      toast.error("Failed to add blood pressure. Please try again.");
+      toast.error("Failed to add a new brochure. Please try again.");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return { data, loading, error, mutate };
 }
 
-export function usePutBloodPressure() {
+export function usePutBrochure() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
   const putData = async (id: number, payload: any) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await putBloodPressure(id, payload);
+      const response = await putBrochure(id, payload);
       setData(response?.data);
       if (response?.status === 200) {
-        toast.success("Success to edit blood pressure.");
+        toast.success("Successfully updated the brochure.");
       }
     } catch (err) {
       setError(err as Error);
-      toast.error("Failed to edit blood pressure. Please try again.");
+      toast.error("Failed to update the brochure. Please try again.");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return { data, loading, error, putData };
 }
 
-export function useDeleteBloodPressure() {
+export function useDeleteBrochure() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
   const deleteData = async (id: number) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await deleteBloodPressure(id);
+      const response = await deleteBrochure(id);
       setData(response?.data);
       if (response?.status === 200) {
-        toast.success("Success to delete blood pressure.");
+        toast.success("Successfully deleted the brochure.");
       }
     } catch (err) {
       setError(err as Error);
-      toast.error("Failed to delete blood pressure. Please try again.");
+      toast.error("Failed to delete the brochure. Please try again.");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return { data, loading, error, deleteData };
 }

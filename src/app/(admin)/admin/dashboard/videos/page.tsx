@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
-import { useGetVideos } from "@/lib/hooks/useVideos"
+import { useGetVideos } from "@/lib/hooks/useVideo"
 
 export default function AdminVideosPage() {
   const { data: videos } = useGetVideos();

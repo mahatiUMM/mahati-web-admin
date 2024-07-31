@@ -37,11 +37,11 @@ import {
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb";
 import { useGetBloodPressures } from "@/lib/hooks/useBloodPressures";
 import { useGetBookmark } from "@/lib/hooks/useBookmarks";
-import { useGetBrochures } from "@/lib/hooks/useBrochures";
+import { useGetBrochures } from "@/lib/hooks/useBrochure";
 import { useGetQuestionnaire } from "@/lib/hooks/useQuestionnaire";
-import { useGetReminders } from "@/lib/hooks/useReminders";
-import { useGetSchedules } from "@/lib/hooks/useSchedules";
-import { useGetVideos } from "@/lib/hooks/useVideos";
+import { useGetReminders } from "@/lib/hooks/useReminder";
+import { useGetSchedules } from "@/lib/hooks/useSchedule";
+import { useGetVideos } from "@/lib/hooks/useVideo";
 
 export default function AdminDashboardPage() {
   const { data: pressures } = useGetBloodPressures();
