@@ -1,9 +1,10 @@
 import { axiosInstance, handleError } from "../instance";
 import { getToken } from "@/lib/utils"
 
+const token = getToken();
+
 export const getBloodPressure = async () => {
   try {
-    const token = getToken();
     const response = await axiosInstance.get("/blood_pressure", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -17,7 +18,6 @@ export const getBloodPressure = async () => {
 
 export const getBloodPressureById = async (id: number) => {
   try {
-    const token = getToken();
     const response = await axiosInstance.get(`/blood_pressure/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -52,7 +52,6 @@ export const putBloodPressure = async (id: number, payload: {
   heartbeat: string,
 }) => {
   try {
-    const token = getToken();
     const response = await axiosInstance.put(`/blood_pressure/${id}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -66,7 +65,6 @@ export const putBloodPressure = async (id: number, payload: {
 
 export const deleteBloodPressure = async (id: number) => {
   try {
-    const token = getToken();
     const response = await axiosInstance.delete(`/blood_pressure/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,

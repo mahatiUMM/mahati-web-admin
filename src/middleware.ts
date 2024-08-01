@@ -3,11 +3,9 @@ import { decrypt } from "@/lib/crypto";
 
 export function middleware(req: NextRequest) {
   const encryptedToken = req.cookies.get("mahatiToken");
-
   if (encryptedToken) {
     try {
       const token = decrypt(encryptedToken as any);
-
       if (token) {
         return NextResponse.redirect(new URL("/admin/dashboard", req.url));
       }
@@ -15,7 +13,6 @@ export function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/", req.url));
     }
   }
-
   return NextResponse.next();
 }
 

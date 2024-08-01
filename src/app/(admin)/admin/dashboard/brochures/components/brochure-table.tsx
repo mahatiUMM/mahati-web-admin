@@ -25,6 +25,7 @@ import {
   usePutBrochure,
   useDeleteBrochure,
 } from "@/lib/hooks/useBrochure";
+import BrochureFormEdit from "./brochure-edit";
 
 export default function BrochureTable({
   brochures,
@@ -127,24 +128,26 @@ export default function BrochureTable({
           ))}
         </TableBody>
       </Table>
-      {/* {selectedBrochureEdit && brochure(
+      {selectedBrochureEdit && brochure && (
         <CustomDialog
           isOpen={dialogOpen}
           onClose={handleEditDialogClose}
           title="Edit Brochure"
-          description="Enter the details for the brochure."
+          description="Update the details for the selected brochure entry."
         >
-          <BrochureForm
+          <BrochureFormEdit
+            brochure={brochure}
             onSubmit={handlePutBrochure}
             onCancel={handleEditDialogClose}
-            brochure={brochure}
           />
         </CustomDialog>
-      )} */}
+      )}
       <AlertDialog open={isDialogOpen} onOpenChange={handleDeleteDialogClose}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Brochure</AlertDialogTitle>
+            <AlertDialogTitle>
+              {selectedBrochureDelete && `Delete Brochure ID: ${selectedBrochureDelete}`}
+            </AlertDialogTitle>
           </AlertDialogHeader>
           <AlertDialogDescription>
             Are you sure you want to delete this brochure?

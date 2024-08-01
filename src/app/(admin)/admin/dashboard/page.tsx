@@ -33,12 +33,22 @@ import {
   CalendarCheck,
   FileVideo,
   ArrowUpRight,
+  TrendingUp,
 } from "lucide-react"
+import { CartesianGrid, Bar, BarChart, XAxis } from "recharts"
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+} from "@/components/ui/chart"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb";
 import { useGetBloodPressures } from "@/lib/hooks/useBloodPressures";
 import { useGetBookmark } from "@/lib/hooks/useBookmarks";
 import { useGetBrochures } from "@/lib/hooks/useBrochure";
-import { useGetQuestionnaire } from "@/lib/hooks/useQuestionnaire";
+import { useGetQuestionnaires } from "@/lib/hooks/useQuestionnaire";
 import { useGetReminders } from "@/lib/hooks/useReminder";
 import { useGetSchedules } from "@/lib/hooks/useSchedule";
 import { useGetVideos } from "@/lib/hooks/useVideo";
@@ -47,7 +57,7 @@ export default function AdminDashboardPage() {
   const { data: pressures } = useGetBloodPressures();
   const { data: bookmarks } = useGetBookmark();
   const { data: brochures } = useGetBrochures();
-  const { data: questionnaires } = useGetQuestionnaire();
+  const { data: questionnaires } = useGetQuestionnaires();
   const { data: reminders } = useGetReminders();
   const { data: schedules } = useGetSchedules();
   const { data: videos } = useGetVideos();
@@ -59,6 +69,26 @@ export default function AdminDashboardPage() {
   const allReminders = reminders?.data?.length
   const allSchedules = schedules?.data?.length
   const allVideos = videos?.data?.length
+
+  const chartData = [
+    { month: "January", desktop: 186, mobile: 80 },
+    { month: "February", desktop: 305, mobile: 200 },
+    { month: "March", desktop: 237, mobile: 120 },
+    { month: "April", desktop: 73, mobile: 190 },
+    { month: "May", desktop: 209, mobile: 130 },
+    { month: "June", desktop: 214, mobile: 140 },
+  ]
+
+  const chartConfig = {
+    desktop: {
+      label: "Desktop",
+      color: "#2563eb",
+    },
+    mobile: {
+      label: "Mobile",
+      color: "#60a5fa",
+    },
+  } satisfies ChartConfig
 
   return (
     <div className="flex flex-col sm:gap-4 sm:py-1 sm:pl-14 m-4">
@@ -78,6 +108,22 @@ export default function AdminDashboardPage() {
         schedules={allSchedules}
         videos={allVideos}
       />
+      <ChartContainer config={chartConfig} className="h-[400px] w-full">
+        <BarChart accessibilityLayer data={chartData}>
+          <CartesianGrid vertical={false} />
+          <XAxis
+            dataKey="month"
+            tickLine={false}
+            tickMargin={10}
+            axisLine={false}
+            tickFormatter={(value) => value.slice(0, 3)}
+          />
+          <ChartTooltip content={<ChartTooltipContent />} />
+          <ChartLegend content={<ChartLegendContent />} />
+          <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+          <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+        </BarChart>
+      </ChartContainer>
       <RecentTransactions />
       <RecentSales />
     </div>

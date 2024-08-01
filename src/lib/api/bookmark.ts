@@ -1,9 +1,10 @@
 import { axiosInstance, handleError } from "../instance";
 import { getToken } from "../utils";
 
+const token = getToken();
+
 export const getBookmark = async () => {
   try {
-    const token = getToken();
     const response = await axiosInstance.get("/bookmark", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -17,7 +18,6 @@ export const getBookmark = async () => {
 
 export const getBookmarkById = async (id: number) => {
   try {
-    const token = getToken();
     const response = await axiosInstance.get(`/bookmark/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,7 +48,6 @@ export const putBookmark = async (id: number, payload: {
   is_bookmark: boolean,
 }) => {
   try {
-    const token = getToken();
     const response = await axiosInstance.put(`/bookmark/${id}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -62,7 +61,6 @@ export const putBookmark = async (id: number, payload: {
 
 export const deleteBookmark = async (id: number) => {
   try {
-    const token = getToken();
     const response = await axiosInstance.delete(`/bookmark/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
