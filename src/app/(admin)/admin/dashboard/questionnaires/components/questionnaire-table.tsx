@@ -27,6 +27,7 @@ import {
   usePutQuestionnaire,
   useDeleteQuestionnaire,
 } from "@/lib/hooks/useQuestionnaire";
+import QuestionnaireEdit from "./questionnaire-edit";
 
 export default function QuestionnaireTable({
   questionnaires,
@@ -123,7 +124,7 @@ export default function QuestionnaireTable({
               <TableCell>{questionnaire.id}</TableCell>
               <TableCell>{questionnaire.type}</TableCell>
               <TableCell>{questionnaire.title}</TableCell>
-              <TableCell className="overflow-hidden text-ellipsis whitespace-nowrap max-w-xs">
+              <TableCell>
                 <Link href={questionnaire.image} target="_blank">
                   <Image
                     src={questionnaire.image}
@@ -153,7 +154,7 @@ export default function QuestionnaireTable({
                   </div>
                 ))}
               </TableCell>
-              <TableCell className="flex items-center justify-center">
+              <TableCell className="flex items-center space-x-2">
                 <Button
                   className="rounded-full px-1 py-1"
                   variant={"outline"}
@@ -174,22 +175,27 @@ export default function QuestionnaireTable({
           ))}
         </TableBody>
       </Table>
-      {/* <CustomDialog
-        open={dialogOpen}
-        onClose={handleEditDialogClose}
-        title="Edit Questionnaire"
-      >
-        <p>Form goes here</p>
-        <Button onClick={handleEditDialogClose}>Close</Button>
-      </CustomDialog> */}
-      <AlertDialog
-        open={isDialogOpen}
-        onOpenChange={handleDeleteDialogClose}
-      >
+      {selectedQuestionnaireEdit && questionnaire && (
+        <CustomDialog
+          isOpen={dialogOpen}
+          onClose={handleEditDialogClose}
+          title={`Edit Questionnaire ID: ${selectedQuestionnaireEdit}`}
+          description="Update the details for the selected questionnaire."
+        >
+          <QuestionnaireEdit
+            questionnaire={questionnaire}
+            onSubmit={handlePutQuestionnaire}
+            onCancel={handleEditDialogClose}
+          />
+        </CustomDialog>
+      )}
+      <AlertDialog open={isDialogOpen} onOpenChange={handleDeleteDialogClose}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <Info size={24} />
-            <AlertDialogTitle>Delete Questionnaire</AlertDialogTitle>
+            <AlertDialogTitle>
+              {selectedQuestionnaireDelete && `Delete Questionnaire ID: ${selectedQuestionnaireDelete}`}
+            </AlertDialogTitle>
           </AlertDialogHeader>
           <AlertDialogDescription>
             Are you sure you want to delete this questionnaire?

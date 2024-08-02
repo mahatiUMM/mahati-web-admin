@@ -1,14 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import {
@@ -16,6 +8,8 @@ import {
   usePostQuestionnaire,
 } from "@/lib/hooks/useQuestionnaire"
 import QuestionnaireTable from "./components/questionnaire-table"
+import QuestionnaireForm from "./components/quesstionnaire-form"
+import { CustomDialog } from "@/components/layout/custom-dialog"
 
 export default function AdminQuestionnairesPage() {
   const { data: questionnaires, refetch: refetchQuestionnare } = useGetQuestionnaires();
@@ -52,11 +46,19 @@ export default function AdminQuestionnairesPage() {
             { label: "Questionnaires" },
           ]}
         />
-        <Button variant={"default"}>
+        <Button variant={"default"} onClick={handleDialogOpen}>
           Add Questionnaire
         </Button>
       </div>
       <QuestionnaireTable questionnaires={questionnaires?.data} refetchQuestionnare={refetchQuestionnare} />
+      <CustomDialog
+        isOpen={dialogOpen}
+        onClose={handleDialogClose}
+        title="Add Questionnaire"
+        description="Enter the details for the new questionnaire entry."
+      >
+        <QuestionnaireForm onSubmit={handleSubmit} onCancel={handleDialogClose} />
+      </CustomDialog>
     </div>
   )
 }

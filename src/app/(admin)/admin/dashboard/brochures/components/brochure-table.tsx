@@ -96,7 +96,7 @@ export default function BrochureTable({
             <TableHead className="">Image</TableHead>
             <TableHead className="">Created At</TableHead>
             <TableHead className="">Updated At</TableHead>
-            <TableHead className="">Action</TableHead>
+            <TableHead className="">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -107,7 +107,7 @@ export default function BrochureTable({
               <TableCell>{brochure.image}</TableCell>
               <TableCell>{brochure.created_at}</TableCell>
               <TableCell>{brochure.updated_at}</TableCell>
-              <TableCell>
+              <TableCell className="flex items-center space-x-2">
                 <Button
                   className="rounded-full px-1 py-1"
                   variant={"outline"}
@@ -121,7 +121,6 @@ export default function BrochureTable({
                   onClick={() => handleDeleteClick(brochure.id)}
                 >
                   <Trash className="text-red-400 h-5 w-5" />
-
                 </Button>
               </TableCell>
             </TableRow>
