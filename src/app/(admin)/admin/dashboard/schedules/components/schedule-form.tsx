@@ -2,9 +2,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-export default function BrochureForm({
+export default function ScheduleForm({
   onSubmit,
-  onCancel
+  onCancel,
 }: Readonly<{
   onSubmit: (e: any) => void;
   onCancel: () => void;

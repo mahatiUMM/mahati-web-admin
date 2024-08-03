@@ -107,7 +107,7 @@ export default function BrochureTable({
               <TableCell>{brochure.image}</TableCell>
               <TableCell>{brochure.created_at}</TableCell>
               <TableCell>{brochure.updated_at}</TableCell>
-              <TableCell className="flex items-center space-x-2">
+              <TableCell>
                 <Button
                   className="rounded-full px-1 py-1"
                   variant={"outline"}

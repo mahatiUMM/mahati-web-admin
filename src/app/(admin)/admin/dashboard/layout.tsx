@@ -3,7 +3,7 @@ import AdminSidebar from "@/components/layout/admin-sidebar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard | mahati.",
+  title: "Dashboard | mahati.",
   description: "Built by @mahati.dev",
 };
 
