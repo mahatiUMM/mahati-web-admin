@@ -5,7 +5,7 @@ const token = getToken();
 
 export const getReminders = async () => {
   try {
-    const response = await axiosInstance.get("/reminder", {
+    const response = await axiosInstance.get("/admin/reminders", {
       headers: {
         Authorization: `Bearer ${token}`,
       }

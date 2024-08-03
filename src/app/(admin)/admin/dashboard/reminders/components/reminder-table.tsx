@@ -25,6 +25,7 @@ import {
   usePutReminder,
   useDeleteReminder
 } from "@/lib/hooks/useReminder";
+import ReminderFormEdit from "./reminder-edit";
 
 export default function ReminderTable({
   reminders,
@@ -40,6 +41,7 @@ export default function ReminderTable({
     cause: string,
     cap_size: string,
     medicine_time: string,
+    expired_at: string,
     created_at: string,
     updated_at: string,
   }[];
@@ -105,6 +107,7 @@ export default function ReminderTable({
             <TableHead>Cause</TableHead>
             <TableHead>Cap Size</TableHead>
             <TableHead>Medicine Time</TableHead>
+            <TableHead>Expired At</TableHead>
             <TableHead>Created At</TableHead>
             <TableHead>Updated At</TableHead>
             <TableHead>Actions</TableHead>
@@ -122,22 +125,19 @@ export default function ReminderTable({
               <TableCell>{reminder.cause}</TableCell>
               <TableCell>{reminder.cap_size}</TableCell>
               <TableCell>{reminder.medicine_time}</TableCell>
+              <TableCell>{reminder.expired_at}</TableCell>
               <TableCell>{reminder.created_at}</TableCell>
               <TableCell>{reminder.updated_at}</TableCell>
               <TableCell className="flex items-center space-x-2">
                 <Button
-                  onClick={() => {
-                    setDialogOpen(true);
-                  }}
+                  onClick={() => handleEditClick(reminder.id)}
                   className="rounded-full px-1 py-1"
                   variant={"outline"}
                 >
                   <Info className="text-blue-400 h-5 w-5" />
                 </Button>
                 <Button
-                  onClick={() => {
-                    setDialogOpen(true);
-                  }}
+                  onClick={() => handleDeleteClick(reminder.id)}
                   className="rounded-full px-1 py-1"
                   variant={"outline"}
                 >
@@ -148,6 +148,36 @@ export default function ReminderTable({
           ))}
         </TableBody>
       </Table>
+      {selectedReminderEdit && reminder && (
+        <CustomDialog
+          isOpen={dialogOpen}
+          onClose={handleEditDialogClose}
+          title="Edit Reminder"
+          description="Update the details for the selected reminder entry."
+        >
+          <ReminderFormEdit
+            reminder={reminder}
+            onSubmit={handlePutReminder}
+            onCancel={handleEditDialogClose}
+          />
+        </CustomDialog>
+      )}
+      <AlertDialog open={isDialogOpen} onOpenChange={handleDeleteDialogClose}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {selectedReminderDelete && `Delete Reminder ID: ${selectedReminderDelete}`}
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogDescription>
+            Are you sure you want to delete this reminder?
+          </AlertDialogDescription>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={handleDeleteReminder}>Yes</AlertDialogAction>
+            <AlertDialogCancel onClick={handleDeleteDialogClose}>No</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   )
 }
