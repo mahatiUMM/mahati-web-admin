@@ -25,6 +25,7 @@ import {
   usePutSchedule,
   useDeleteSchedule,
 } from "@/lib/hooks/useSchedule";
+import ScheduleFormEdit from "./schedule-edit";
 
 export default function ScheduleTable({
   schedules,
@@ -111,7 +112,7 @@ export default function ScheduleTable({
             <TableHead>Status</TableHead>
             <TableHead>Created At</TableHead>
             <TableHead>Updated At</TableHead>
-            <TableHead>Reminder</TableHead>
+            <TableHead className="flex items-center justify-center">Reminder</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -125,18 +126,16 @@ export default function ScheduleTable({
               <TableCell>{schedule.created_at}</TableCell>
               <TableCell>{schedule.updated_at}</TableCell>
               <TableCell>
-                <div>
-                  <p>{schedule.reminder.medicine_name}</p>
-                  <p>{schedule.reminder.medicine_taken}</p>
-                  <p>{schedule.reminder.medicine_total}</p>
-                  <p>{schedule.reminder.amount}</p>
-                  <p>{schedule.reminder.cause}</p>
-                  <p>{schedule.reminder.cap_size}</p>
-                  <p>{schedule.reminder.medicine_time}</p>
-                  <p>{schedule.reminder.expired_at}</p>
-                  <p>{schedule.reminder.created_at}</p>
-                  <p>{schedule.reminder.updated_at}</p>
-                </div>
+                <div>{schedule.reminder.medicine_name}</div>
+                <div>{schedule.reminder.medicine_taken}</div>
+                <div>{schedule.reminder.medicine_total}</div>
+                <div>{schedule.reminder.amount}</div>
+                <div>{schedule.reminder.cause}</div>
+                <div>{schedule.reminder.cap_size}</div>
+                <div>{schedule.reminder.medicine_time}</div>
+                <div>{schedule.reminder.expired_at}</div>
+                <div>{schedule.reminder.created_at}</div>
+                <div>{schedule.reminder.updated_at}</div>
               </TableCell>
               <TableCell>
                 <Button
@@ -158,6 +157,36 @@ export default function ScheduleTable({
           ))}
         </TableBody>
       </Table>
+      {selectedScheduleEdit && schedule && (
+        <CustomDialog
+          isOpen={dialogOpen}
+          onClose={handleEditDialogClose}
+          title="Edit Schedule"
+          description="Update the details for the selected schedule entry."
+        >
+          <ScheduleFormEdit
+            schedule={schedule}
+            onSubmit={handlePutSchedule}
+            onCancel={handleEditDialogClose}
+          />
+        </CustomDialog>
+      )}
+      <AlertDialog open={isDialogOpen} onOpenChange={handleDeleteDialogClose}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {selectedScheduleDelete && `Delete Schedule ID: ${selectedScheduleDelete}`}
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogDescription>
+            Are you sure you want to delete this schedule?
+          </AlertDialogDescription>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={handleDeleteSchedule}>Yes</AlertDialogAction>
+            <AlertDialogCancel onClick={handleDeleteDialogClose}>No</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   )
 }

@@ -59,8 +59,8 @@ export function usePostBrochure() {
   const [error, setError] = useState<Error | null>(null);
 
   const mutate = async (payload: any) => {
+    setLoading(true);
     try {
-      setLoading(true);
       const response = await postBrochure(payload);
       setData(response?.data);
       if (response?.status === 201) {
