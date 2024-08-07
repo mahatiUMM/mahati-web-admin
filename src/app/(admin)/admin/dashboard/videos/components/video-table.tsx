@@ -104,9 +104,11 @@ export default function VideoTable({
           {videos?.map((video) => (
             <TableRow key={video.id}>
               <TableCell>{video.id}</TableCell>
-              <Link href={video.link} target="_blank">
-                <TableCell>{video.link}</TableCell>
-              </Link>
+              <TableCell>
+                <Link href={video.link} target="_blank">
+                  {video.link}
+                </Link>
+              </TableCell>
               <TableCell>{video.user_id}</TableCell>
               <TableCell>{video.created_at}</TableCell>
               <TableCell>{video.updated_at}</TableCell>

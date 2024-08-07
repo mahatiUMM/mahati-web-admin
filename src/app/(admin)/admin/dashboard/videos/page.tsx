@@ -10,6 +10,7 @@ import {
 import VideoTable from "./components/video-table"
 import VideoForm from "./components/video-form"
 import { CustomDialog } from "@/components/layout/custom-dialog"
+import { getToken } from "@/lib/utils"
 
 export default function AdminVideosPage() {
   const { data: videos, refetch: refetchVideo } = useGetVideos();
@@ -35,6 +36,9 @@ export default function AdminVideosPage() {
     refetchVideo();
     handleDialogClose();
   }
+
+  const token = getToken()
+  console.log(token)
 
   return (
     <div className="flex flex-col sm:gap-4 sm:py-1 sm:pl-14 m-4">
