@@ -33,18 +33,6 @@ export default function AdminProfileEditPage() {
     </div>
   );
 
-  const renderProfileImage = (src: any, alt: any) => (
-    <Image
-      loading="lazy"
-      crossOrigin="anonymous"
-      src={src}
-      alt={alt}
-      width={100}
-      height={100}
-      className="rounded-full"
-    />
-  );
-
   return (
     <div className="flex flex-col sm:gap-4 sm:py-1 sm:pl-14 m-4">
       <CustomBreadcrumb
@@ -73,16 +61,18 @@ export default function AdminProfileEditPage() {
               {renderProfileInput("username", "Username", "text", dataProfile?.user?.username)}
               {renderProfileInput("email", "Email", "email", dataProfile?.user?.email)}
               {renderProfileInput("number", "Number", "text", dataProfile?.user?.number)}
-              <div className="space-y-2">
-                <Label htmlFor="photo">Photo</Label>
-                {dataProfile?.user?.photo === "" ? (
-                  renderProfileImage("/mahati-logo.png", "User Profile")
-                ) : (
-                  renderProfileImage(dataProfile?.user?.photo, "User Profile")
-                )}
-              </div>
+              {renderProfileInput("image", "Image", "file", dataProfile?.user?.image)}
+              <Image
+                loading="lazy"
+                crossOrigin="anonymous"
+                src={dataProfile?.user?.image}
+                alt={dataProfile?.user?.image}
+                width={100}
+                height={100}
+                className="rounded-full"
+              />
               <Button variant={"default"}>
-                Save
+                Save Changes
               </Button>
             </form>
           </div>

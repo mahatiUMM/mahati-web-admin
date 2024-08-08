@@ -102,8 +102,6 @@ export default function QuestionnaireTable({
     }
   }
 
-  console.log(questionnaires)
-
   return (
     <>
       <Table className="my-4 lg:my-0">

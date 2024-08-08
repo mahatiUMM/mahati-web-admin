@@ -27,6 +27,7 @@ import {
   usePutBloodPressure,
   useDeleteBloodPressure
 } from "@/lib/hooks/useBloodPressures";
+import { useGetAllUsers } from "@/lib/hooks/useUsers"
 import BloodPressureFormEdit from "./blood-pressure-edit";
 
 export default function BloodPressureTable({
@@ -53,6 +54,9 @@ export default function BloodPressureTable({
   const { data: pressure, fetchData } = useGetBloodPressureById();
   const { putData: updateBloodPressure } = usePutBloodPressure();
   const { deleteData: deleteBloodPressure } = useDeleteBloodPressure();
+  const { data: users } = useGetAllUsers();
+
+  const userMap = new Map(users?.data?.map((user: any) => [user.id, user.username]));
 
   const handleEditClick = (id: number) => {
     setSelectedPressureEdit(id);
@@ -108,7 +112,7 @@ export default function BloodPressureTable({
           {pressures?.map((pressure: any) => (
             <TableRow key={pressure.id}>
               <TableCell className="hidden lg:table-cell">{pressure.id}</TableCell>
-              <TableCell>{pressure.user_id}</TableCell>
+              <TableCell>{userMap.get(pressure.user_id) as string || 'Unknown User'}</TableCell>
               <TableCell>{pressure.image}</TableCell>
               <TableCell>{pressure.sistol}</TableCell>
               <TableCell>{pressure.diastole}</TableCell>

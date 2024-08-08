@@ -19,11 +19,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge"
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage
-} from "@/components/ui/avatar"
-import {
   Users,
   HeartPulse,
   Album,
@@ -33,7 +28,6 @@ import {
   CalendarCheck,
   FileVideo,
   ArrowUpRight,
-  TrendingUp,
 } from "lucide-react"
 import { CartesianGrid, Bar, BarChart, XAxis } from "recharts"
 import {
@@ -52,6 +46,7 @@ import { useGetQuestionnaires } from "@/lib/hooks/useQuestionnaire";
 import { useGetReminders } from "@/lib/hooks/useReminder";
 import { useGetSchedules } from "@/lib/hooks/useSchedule";
 import { useGetVideos } from "@/lib/hooks/useVideo";
+import { useGetAllUsers } from "@/lib/hooks/useUsers";
 
 export default function AdminDashboardPage() {
   const { data: pressures } = useGetBloodPressures();
@@ -60,6 +55,7 @@ export default function AdminDashboardPage() {
   const { data: questionnaires } = useGetQuestionnaires();
   const { data: reminders } = useGetReminders();
   const { data: schedules } = useGetSchedules();
+  const { data: users } = useGetAllUsers();
   const { data: videos } = useGetVideos();
 
   const allPressures = pressures?.data?.length
@@ -69,6 +65,7 @@ export default function AdminDashboardPage() {
   const allReminders = reminders?.data?.length
   const allSchedules = schedules?.data?.length
   const allVideos = videos?.data?.length
+  const allUsers = users?.data?.length
 
   const chartData = [
     { month: "January", desktop: 186, mobile: 80 },
@@ -99,7 +96,7 @@ export default function AdminDashboardPage() {
         ]}
       />
       <DashboardStats
-        users={45}
+        users={allUsers}
         pressures={allPressures}
         bookmarks={allBookmarks}
         brochures={allBrochures}
@@ -124,8 +121,8 @@ export default function AdminDashboardPage() {
           <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
         </BarChart>
       </ChartContainer>
-      <RecentTransactions />
-      <RecentSales />
+      <RecentUsers />
+      <RecentBloodPressures />
     </div>
   );
 }
@@ -150,14 +147,14 @@ function DashboardStats({
   videos: number;
 }>) {
   const stats = [
-    { title: "Total Users", value: "45", icon: Users, change: "+20.1% from last month" },
-    { title: "Blood Pressures", value: pressures, icon: HeartPulse, change: "+180.1% from last month" },
-    { title: "Bookmarks", value: bookmarks, icon: Album, change: "+19% from last month" },
-    { title: "Brochures", value: brochures, icon: BookImage, change: "+201 since last hour" },
-    { title: "Questionnaire", value: questionnaires, icon: FileQuestion, change: "+201 since last hour" },
-    { title: "Reminders", value: reminders, icon: BellRing, change: "+201 since last hour" },
-    { title: "Schedules", value: schedules, icon: CalendarCheck, change: "+201 since last hour" },
-    { title: "Videos", value: videos, icon: FileVideo, change: "+201 since last hour" },
+    { title: "Total Users", value: users, icon: Users },
+    { title: "Blood Pressures", value: pressures, icon: HeartPulse },
+    { title: "Bookmarks", value: bookmarks, icon: Album },
+    { title: "Brochures", value: brochures, icon: BookImage },
+    { title: "Questionnaire", value: questionnaires, icon: FileQuestion },
+    { title: "Reminders", value: reminders, icon: BellRing },
+    { title: "Schedules", value: schedules, icon: CalendarCheck },
+    { title: "Videos", value: videos, icon: FileVideo },
   ];
 
   return (
@@ -170,7 +167,6 @@ function DashboardStats({
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stat.value} Records</div>
-            <p className="text-xs text-muted-foreground">{stat.change}</p>
           </CardContent>
         </Card>
       ))}
@@ -178,24 +174,18 @@ function DashboardStats({
   );
 }
 
-function RecentTransactions() {
-  const transactions = [
-    { customer: "Liam Johnson", email: "liam@example.com", type: "Sale", status: "Approved", date: "2023-06-23", amount: "$250.00" },
-    { customer: "Olivia Smith", email: "olivia@example.com", type: "Refund", status: "Declined", date: "2023-06-24", amount: "$150.00" },
-    { customer: "Noah Williams", email: "noah@example.com", type: "Subscription", status: "Approved", date: "2023-06-25", amount: "$350.00" },
-    { customer: "Emma Brown", email: "emma@example.com", type: "Sale", status: "Approved", date: "2023-06-26", amount: "$450.00" },
-    { customer: "Liam Johnson", email: "liam@example.com", type: "Sale", status: "Approved", date: "2023-06-27", amount: "$550.00" },
-  ];
+function RecentUsers() {
+  const { data: users } = useGetAllUsers();
 
   return (
     <Card className="xl:col-span-2 mb-4 lg:mb-0">
       <CardHeader className="flex flex-row items-center">
         <div className="grid gap-2">
-          <CardTitle>Transactions</CardTitle>
-          <CardDescription>Recent transactions from your store.</CardDescription>
+          <CardTitle>Users</CardTitle>
+          <CardDescription>A list of all users and their datas.</CardDescription>
         </div>
         <Button asChild size="sm" className="ml-auto gap-1">
-          <Link href="#">
+          <Link href="/admin/dashboard/users">
             View All
             <ArrowUpRight className="h-4 w-4" />
           </Link>
@@ -205,28 +195,25 @@ function RecentTransactions() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Customer</TableHead>
-              <TableHead className="hidden xl:table-column">Type</TableHead>
-              <TableHead className="hidden xl:table-column">Status</TableHead>
-              <TableHead className="hidden xl:table-column">Date</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
+              <TableHead className="text-left">ID</TableHead>
+              <TableHead className="text-left">Username</TableHead>
+              <TableHead className="text-left">Email</TableHead>
+              <TableHead className="text-left">Admin</TableHead>
+              <TableHead className="text-left">Number</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {transactions.map((transaction, index) => (
-              <TableRow key={transaction.customer + index}>
-                <TableCell>
-                  <div className="font-medium">{transaction.customer}</div>
-                  <div className="hidden text-sm text-muted-foreground md:inline">
-                    {transaction.email}
-                  </div>
+            {users?.data?.map((user: any, index: number) => (
+              <TableRow key={user.id + index}>
+                <TableCell className="text-left">{user.id}</TableCell>
+                <TableCell className="text-left">{user.username}</TableCell>
+                <TableCell className="text-left">{user.email}</TableCell>
+                <TableCell className="text-left">
+                  <Badge variant={user.isAdmin ? "default" : "secondary"}>
+                    {user.isAdmin ? "Admin" : "User"}
+                  </Badge>
                 </TableCell>
-                <TableCell className="hidden xl:table-column">{transaction.type}</TableCell>
-                <TableCell className="hidden xl:table-column">
-                  <Badge className="text-xs" variant="outline">{transaction.status}</Badge>
-                </TableCell>
-                <TableCell className="hidden md:table-cell lg:hidden xl:table-column">{transaction.date}</TableCell>
-                <TableCell className="text-right">{transaction.amount}</TableCell>
+                <TableCell className="text-left">{user.number}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -236,34 +223,51 @@ function RecentTransactions() {
   );
 }
 
-function RecentSales() {
-  const sales = [
-    { name: "Olivia Martin", email: "olivia.martin@email.com", amount: "+$1,999.00" },
-    { name: "Jackson Lee", email: "jackson.lee@email.com", amount: "+$39.00" },
-    { name: "Isabella Nguyen", email: "isabella.nguyen@email.com", amount: "+$299.00" },
-    { name: "William Kim", email: "will@email.com", amount: "+$99.00" },
-    { name: "Sofia Davis", email: "sofia.davis@email.com", amount: "+$39.00" },
-  ];
+function RecentBloodPressures() {
+  const { data: pressures } = useGetBloodPressures();
+  const { data: users } = useGetAllUsers();
+
+  const userMap = new Map(users?.data?.map((user: any) => [user.id, user.username]));
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Recent Sales</CardTitle>
+    <Card className="xl:col-span-2 mb-4 lg:mb-0">
+      <CardHeader className="flex flex-row items-center">
+        <div className="grid gap-2">
+          <CardTitle>Blood Pressures</CardTitle>
+          <CardDescription>A list of all blood pressures and their datas.</CardDescription>
+        </div>
+        <Button asChild size="sm" className="ml-auto gap-1">
+          <Link href="/admin/dashboard/blood_pressures">
+            View All
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </Button>
       </CardHeader>
-      <CardContent className="grid gap-8">
-        {sales.map((sale, index) => (
-          <div key={sale.name + index} className="flex items-center gap-4">
-            <Avatar className="hidden h-9 w-9 sm:flex">
-              <AvatarImage src="/mahati-logo.png" alt="Avatar" />
-              <AvatarFallback>{sale.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <div className="grid gap-1">
-              <p className="text-sm font-medium leading-none">{sale.name}</p>
-              <p className="text-sm text-muted-foreground">{sale.email}</p>
-            </div>
-            <div className="ml-auto font-medium">{sale.amount}</div>
-          </div>
-        ))}
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-left">ID</TableHead>
+              <TableHead className="text-left">User ID</TableHead>
+              <TableHead className="text-left">Diastole</TableHead>
+              <TableHead className="text-left">Sistol</TableHead>
+              <TableHead className="text-left">Heartbeat</TableHead>
+              <TableHead className="text-left">Created At</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {pressures?.data?.map((pressure: any, index: number) => (
+              <TableRow key={pressure.id + index}>
+                <TableCell className="text-left">{pressure.id}</TableCell>
+                <TableCell className="text-left">{userMap.get(pressure.user_id) as string || 'Unknown User'}</TableCell>
+                <TableCell className="text-left">{pressure.diastole}</TableCell>
+                <TableCell className="text-left">{pressure.sistol}</TableCell>
+                <TableCell className="text-left">{pressure.heartbeat}</TableCell>
+                <TableCell className="text-left">{pressure.created_at}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   );

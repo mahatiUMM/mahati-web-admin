@@ -5,7 +5,7 @@ const token = getToken();
 
 export const getBloodPressure = async () => {
   try {
-    const response = await axiosInstance.get("/blood_pressure", {
+    const response = await axiosInstance.get("/admin/blood_pressure", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -18,7 +18,7 @@ export const getBloodPressure = async () => {
 
 export const getBloodPressureById = async (id: number) => {
   try {
-    const response = await axiosInstance.get(`/blood_pressure/${id}`, {
+    const response = await axiosInstance.get(`/admin/blood_pressure/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
