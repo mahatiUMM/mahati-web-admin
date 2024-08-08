@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Info, Trash } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { CustomDialog } from "@/components/layout/custom-dialog";
 import {
   useGetBrochureById,
@@ -34,7 +36,11 @@ export default function BrochureTable({
   brochures: {
     id: number,
     title: string,
-    image: string,
+    images: {
+      id: number,
+      imagePath: string,
+      brochureId: number,
+    }[],
     created_at: string,
     updated_at: string,
   }[];
@@ -104,7 +110,24 @@ export default function BrochureTable({
             <TableRow key={brochure.id}>
               <TableCell>{brochure.id}</TableCell>
               <TableCell>{brochure.title}</TableCell>
-              <TableCell>{brochure.image}</TableCell>
+              <TableCell>
+                {brochure?.images?.map((image) => (
+                  <Link
+                    key={image.id}
+                    href={`https://mahati.xyzuan.my.id/${image.imagePath}`}
+                    target="_blank"
+                  >
+                    <Image
+                      key={image.id}
+                      src={`https://mahati.xyzuan.my.id/${image.imagePath}`}
+                      alt={brochure.title}
+                      width={100}
+                      height={100}
+                      className="rounded-lg my-2 bg-gray-800 dark:bg-white p-1"
+                    />
+                  </Link>
+                ))}
+              </TableCell>
               <TableCell>{brochure.created_at}</TableCell>
               <TableCell>{brochure.updated_at}</TableCell>
               <TableCell>

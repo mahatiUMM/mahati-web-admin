@@ -25,6 +25,7 @@ import {
   usePutSchedule,
   useDeleteSchedule,
 } from "@/lib/hooks/useSchedule";
+import { useGetAllUsers } from "@/lib/hooks/useUsers"
 import ScheduleFormEdit from "./schedule-edit";
 
 export default function ScheduleTable({
@@ -60,9 +61,12 @@ export default function ScheduleTable({
   const [selectedScheduleEdit, setSelectedScheduleEdit] = useState<number | null>(null);
   const [selectedScheduleDelete, setSelectedScheduleDelete] = useState<number | null>(null);
 
+  const { data: users } = useGetAllUsers();
   const { data: schedule, fetchData } = useGetScheduleById();
   const { putData: updateSchedule } = usePutSchedule();
   const { deleteData: deleteSchedule } = useDeleteSchedule();
+
+  const userMap = new Map(users?.data?.map((user: any) => [user.id, user.username]));
 
   const handleEditClick = (id: number) => {
     setSelectedScheduleEdit(id);
@@ -112,7 +116,7 @@ export default function ScheduleTable({
             <TableHead>Status</TableHead>
             <TableHead>Created At</TableHead>
             <TableHead>Updated At</TableHead>
-            <TableHead className="flex items-center justify-center">Reminder</TableHead>
+            <TableHead>Reminder</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -126,16 +130,20 @@ export default function ScheduleTable({
               <TableCell>{schedule.created_at}</TableCell>
               <TableCell>{schedule.updated_at}</TableCell>
               <TableCell>
-                <div>{schedule.reminder.medicine_name}</div>
-                <div>{schedule.reminder.medicine_taken}</div>
-                <div>{schedule.reminder.medicine_total}</div>
-                <div>{schedule.reminder.amount}</div>
-                <div>{schedule.reminder.cause}</div>
-                <div>{schedule.reminder.cap_size}</div>
-                <div>{schedule.reminder.medicine_time}</div>
-                <div>{schedule.reminder.expired_at}</div>
-                <div>{schedule.reminder.created_at}</div>
-                <div>{schedule.reminder.updated_at}</div>
+                <div>ID: {schedule.reminder.id}</div>
+                <div>
+                  Username: {userMap.get(schedule.reminder.user_id) as string || 'Unknown User'}
+                </div>
+                <div>Medicine Name: {schedule.reminder.medicine_name}</div>
+                <div>Medicine Taken: {schedule.reminder.medicine_taken}</div>
+                <div>Medicine Total: {schedule.reminder.medicine_total}</div>
+                <div>Amount: {schedule.reminder.amount}</div>
+                <div>Cause: {schedule.reminder.cause}</div>
+                <div>Cap Size: {schedule.reminder.cap_size}</div>
+                <div>Medicine Time: {schedule.reminder.medicine_time}</div>
+                <div>Expired: At: {schedule.reminder.expired_at}</div>
+                <div>Created At: {schedule.reminder.created_at}</div>
+                <div>Updated At: {schedule.reminder.updated_at}</div>
               </TableCell>
               <TableCell>
                 <Button

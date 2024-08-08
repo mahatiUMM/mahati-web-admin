@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import {
   Table,
@@ -21,6 +19,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Info, Trash } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { CustomDialog } from "@/components/layout/custom-dialog";
 import {
   useGetBloodPressureById,
@@ -51,10 +51,10 @@ export default function BloodPressureTable({
   const [selectedPressureEdit, setSelectedPressureEdit] = useState<number | null>(null);
   const [selectedPressureDelete, setSelectedPressureDelete] = useState<number | null>(null);
 
+  const { data: users } = useGetAllUsers();
   const { data: pressure, fetchData } = useGetBloodPressureById();
   const { putData: updateBloodPressure } = usePutBloodPressure();
   const { deleteData: deleteBloodPressure } = useDeleteBloodPressure();
-  const { data: users } = useGetAllUsers();
 
   const userMap = new Map(users?.data?.map((user: any) => [user.id, user.username]));
 
@@ -112,8 +112,23 @@ export default function BloodPressureTable({
           {pressures?.map((pressure: any) => (
             <TableRow key={pressure.id}>
               <TableCell className="hidden lg:table-cell">{pressure.id}</TableCell>
-              <TableCell>{userMap.get(pressure.user_id) as string || 'Unknown User'}</TableCell>
-              <TableCell>{pressure.image}</TableCell>
+              <TableCell>
+                {userMap.get(pressure.user_id) as string || 'Unknown User'}
+              </TableCell>
+              <TableCell>
+                <Link
+                  href={`https://mahati.xyzuan.my.id/${pressure.image}`}
+                  target="_blank"
+                >
+                  <Image
+                    src={`https://mahati.xyzuan.my.id/${pressure.image}`}
+                    width={100}
+                    height={100}
+                    className="rounded-lg"
+                    alt={pressure.id}
+                  />
+                </Link>
+              </TableCell>
               <TableCell>{pressure.sistol}</TableCell>
               <TableCell>{pressure.diastole}</TableCell>
               <TableCell>{pressure.heartbeat}</TableCell>
@@ -131,7 +146,6 @@ export default function BloodPressureTable({
           ))}
         </TableBody>
       </Table>
-
       {selectedPressureEdit !== null && (
         <CustomDialog
           isOpen={dialogOpen}
@@ -146,7 +160,6 @@ export default function BloodPressureTable({
           />
         </CustomDialog>
       )}
-
       <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>

@@ -25,6 +25,7 @@ import {
   usePutReminder,
   useDeleteReminder
 } from "@/lib/hooks/useReminder";
+import { useGetAllUsers } from "@/lib/hooks/useUsers";
 import ReminderFormEdit from "./reminder-edit";
 
 export default function ReminderTable({
@@ -52,9 +53,12 @@ export default function ReminderTable({
   const [selectedReminderEdit, setSelectedReminderEdit] = useState<number | null>(null);
   const [selectedReminderDelete, setSelectedReminderDelete] = useState<number | null>(null);
 
+  const { data: users } = useGetAllUsers();
   const { data: reminder, fetchData } = useGetRemiderById();
   const { putData: updateReminder } = usePutReminder();
   const { deleteData: deleteReminder } = useDeleteReminder();
+
+  const userMap = new Map(users?.data?.map((user: any) => [user.id, user.username]));
 
   const handleEditClick = (id: number) => {
     setSelectedReminderEdit(id);
@@ -117,7 +121,9 @@ export default function ReminderTable({
           {reminders?.map((reminder) => (
             <TableRow key={reminder.id}>
               <TableCell>{reminder.id}</TableCell>
-              <TableCell>{reminder.user_id}</TableCell>
+              <TableCell>
+                {userMap.get(reminder.user_id) as string || 'Unknown User'}
+              </TableCell>
               <TableCell>{reminder.medicine_name}</TableCell>
               <TableCell>{reminder.medicine_taken}</TableCell>
               <TableCell>{reminder.medicine_total}</TableCell>

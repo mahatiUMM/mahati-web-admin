@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Table,
   TableBody,
@@ -26,6 +27,7 @@ import {
   usePutVideo,
   useDeleteVideo,
 } from "@/lib/hooks/useVideo";
+import { useGetAllUsers } from "@/lib/hooks/useUsers"
 import VideoFormEdit from "./video-edit";
 
 export default function VideoTable({
@@ -36,6 +38,10 @@ export default function VideoTable({
     id: number,
     link: string,
     user_id: number,
+    title: string,
+    author_name: string,
+    author_url: string,
+    thumbnail_url: string,
     created_at: string,
     updated_at: string,
   }[];
@@ -46,9 +52,12 @@ export default function VideoTable({
   const [selectedVideoEdit, setSelectedVideoEdit] = useState<number | null>(null);
   const [selectedVideoDelete, setSelectedVideoDelete] = useState<number | null>(null);
 
+  const { data: users } = useGetAllUsers();
   const { data: video, fetchData } = useGetVideoById();
   const { putData: updateVideo } = usePutVideo();
   const { deleteData: deleteVideo } = useDeleteVideo();
+
+  const userMap = new Map(users?.data?.map((user: any) => [user.id, user.username]));
 
   const handleEditClick = (id: number) => {
     setSelectedVideoEdit(id);
@@ -93,8 +102,12 @@ export default function VideoTable({
         <TableHeader>
           <TableRow>
             <TableHead className="hidden lg:table-cell">ID</TableHead>
-            <TableHead className="">Link</TableHead>
             <TableHead className="">User ID</TableHead>
+            <TableHead className="">Link</TableHead>
+            <TableHead className="">Title</TableHead>
+            <TableHead className="">Thumbnail URL</TableHead>
+            <TableHead className="">Author Name</TableHead>
+            <TableHead className="">Author URL</TableHead>
             <TableHead className="">Created At</TableHead>
             <TableHead className="">Updated At</TableHead>
             <TableHead className="">Actions</TableHead>
@@ -105,14 +118,34 @@ export default function VideoTable({
             <TableRow key={video.id}>
               <TableCell>{video.id}</TableCell>
               <TableCell>
+                {userMap.get(video.user_id) as string || 'Unknown User'}
+              </TableCell>
+              <TableCell>
                 <Link href={video.link} target="_blank">
                   {video.link}
                 </Link>
               </TableCell>
-              <TableCell>{video.user_id}</TableCell>
+              <TableCell>{video.title}</TableCell>
+              <TableCell>
+                <Link href={video.thumbnail_url} target="_blank">
+                  <Image
+                    src={video.thumbnail_url}
+                    width={400}
+                    height={400}
+                    className="rounded-lg"
+                    alt={video.thumbnail_url}
+                  />
+                </Link>
+              </TableCell>
+              <TableCell>{video.author_name}</TableCell>
+              <TableCell>
+                <Link href={video.author_url} target="_blank">
+                  {video.author_url}
+                </Link>
+              </TableCell>
               <TableCell>{video.created_at}</TableCell>
               <TableCell>{video.updated_at}</TableCell>
-              <TableCell>
+              <TableCell className="flex items-center space-x-2">
                 <Button
                   className="rounded-full px-1 py-1"
                   variant={"outline"}
