@@ -2,19 +2,16 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import {
-  useGetBloodPressures,
-  usePostBloodPressure,
-} from "@/lib/hooks/useBloodPressures"
+import { useGetBloodPressures } from "@/lib/hooks/useBloodPressures"
+import { useGetAllUsers } from "@/lib/hooks/useUsers";
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { CustomDialog } from "@/components/layout/custom-dialog"
 import BloodPressureTable from "./components/blood-pressure-table"
 import BloodPressureForm from "./components/blood-pressure-form"
 
 export default function AdminPressuresPage() {
+  const { data: users } = useGetAllUsers();
   const { data: pressures, refetch: refetchPressure } = useGetBloodPressures()
-  const { mutate: postBloodPressure } = usePostBloodPressure();
-
   const [dialogOpen, setDialogOpen] = useState(false)
 
   const handleDialogOpen = () => {
@@ -23,20 +20,6 @@ export default function AdminPressuresPage() {
 
   const handleDialogClose = () => {
     setDialogOpen(false)
-  }
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
-    const formData = {
-      user_id: parseInt(e.target.user_id.value),
-      image: e.target.image.value,
-      sistol: parseInt(e.target.sistol.value),
-      diastole: parseInt(e.target.diastole.value),
-      heartbeat: parseInt(e.target.heartbeat.value),
-    }
-    await postBloodPressure(formData)
-    refetchPressure()
-    handleDialogClose()
   }
 
   return (
@@ -59,7 +42,11 @@ export default function AdminPressuresPage() {
         title="Add Blood Pressure"
         description="Enter the details for the new blood pressure entry."
       >
-        <BloodPressureForm onSubmit={handleSubmit} onCancel={handleDialogClose} />
+        <BloodPressureForm
+          fetchUsers={users?.data}
+          closeDialog={handleDialogClose}
+          refetchPressure={refetchPressure}
+        />
       </CustomDialog>
     </div>
   )

@@ -37,7 +37,11 @@ export const postBloodPressure = async (payload: {
   heartbeat: string,
 }) => {
   try {
-    const response = await axiosInstance.post("/blood_pressure", payload);
+    const response = await axiosInstance.post("/admin/blood_pressure", payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
     return response;
   } catch (error) {
     handleError(error);
@@ -52,7 +56,7 @@ export const putBloodPressure = async (id: number, payload: {
   heartbeat: string,
 }) => {
   try {
-    const response = await axiosInstance.put(`/blood_pressure/${id}`, payload, {
+    const response = await axiosInstance.put(`/admin/blood_pressure/${id}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -65,7 +69,7 @@ export const putBloodPressure = async (id: number, payload: {
 
 export const deleteBloodPressure = async (id: number) => {
   try {
-    const response = await axiosInstance.delete(`/blood_pressure/${id}`, {
+    const response = await axiosInstance.delete(`/admin/blood_pressure/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
