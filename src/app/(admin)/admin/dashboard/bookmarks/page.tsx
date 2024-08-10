@@ -25,9 +25,8 @@ export default function AdminBookmarksPage() {
   const handleSubmit = async (e: any) => {
     e.preventDefault()
     const formData = {
-      user_id: parseInt(e.target.user_id.value),
       video_id: parseInt(e.target.video_id.value),
-      is_bookmark: e.target.is_bookmark.checked,
+      user_id: parseInt(e.target.user_id.value),
     }
     await postBookmark(formData)
     refetchBookmark()

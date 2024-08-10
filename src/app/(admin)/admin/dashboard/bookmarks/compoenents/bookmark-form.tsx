@@ -43,10 +43,7 @@ export default function BookmarkForm({
         </SelectContent>
       </Select>
       <Label htmlFor="video_id">Video ID</Label>
-      <Input 
-        id="video_id" name="video_id" placeholder="Video ID" />
-      <Label htmlFor="is_bookmark">Is Bookmark</Label>
-      <Input id="is_bookmark" name="is_bookmark" placeholder="Is Bookmark?" type="checkbox" />
+      <Input id="video_id" name="video_id" placeholder="Video ID" />
       <div className="flex justify-end gap-2 mt-4">
         <Button type="submit" variant={"default"}>
           Save

@@ -61,14 +61,6 @@ export default function BookmarkFormEdit({
         onChange={handleChange}
         placeholder="Video ID"
       />
-      <Label htmlFor="is_bookmark">Is Bookmark</Label>
-      <Input
-        id="is_bookmark"
-        name="is_bookmark"
-        type="checkbox"
-        checked={formData.is_bookmark}
-        onChange={handleChange}
-      />
       <div className="flex justify-end gap-2 mt-4">
         <Button type="submit" variant="default">
           Save

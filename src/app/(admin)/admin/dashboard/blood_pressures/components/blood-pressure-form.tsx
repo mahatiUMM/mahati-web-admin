@@ -35,7 +35,7 @@ export default function BloodPressureForm({
 
   const formSchema = z.object({
     user_id: z.string().min(1).max(300),
-    image: z.instanceof(File),
+    image: z.string().min(1),
     sistol: z.string().min(2).max(300),
     diastole: z.string().min(2).max(300),
     heartbeat: z.string().min(2).max(300),
@@ -45,7 +45,7 @@ export default function BloodPressureForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       user_id: "",
-      image: undefined,
+      image: "",
       sistol: "",
       diastole: "",
       heartbeat: "",
@@ -58,18 +58,17 @@ export default function BloodPressureForm({
   };
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    const formData = new FormData();
-    formData.append("user_id", values.user_id);
-    formData.append("sistol", values.sistol);
-    formData.append("diastole", values.diastole);
-    formData.append("heartbeat", values.heartbeat);
-    formData.append("image", values.image);
-
+    const formData = {
+      user_id: parseInt(values.user_id),
+      image: values.image,
+      sistol: parseInt(values.sistol),
+      diastole: parseInt(values.diastole),
+      heartbeat: parseInt(values.heartbeat),
+    };
     await postBloodPressure(formData);
     refetchPressure();
     closeDialog();
   };
-
 
   return (
     <Form {...form}>
@@ -113,10 +112,7 @@ export default function BloodPressureForm({
               <FormControl>
                 <Input
                   type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    field.onChange(e.target.files?.[0] || null);
-                  }}
+                  onChange={(e) => field.onChange(e.target.files?.[0]?.name)}
                 />
               </FormControl>
               <FormMessage />

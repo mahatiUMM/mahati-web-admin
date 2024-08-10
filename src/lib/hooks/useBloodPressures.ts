@@ -17,7 +17,8 @@ export function useGetBloodPressures() {
     setLoading(true);
     try {
       const response = await getBloodPressure();
-      setData(response?.data);
+      console.log(response)
+      setData(response);
     } catch (err) {
       setError(err as Error);
       toast.error("Failed to fetch. Please try again.");

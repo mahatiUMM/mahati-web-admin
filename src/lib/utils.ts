@@ -25,5 +25,13 @@ export function removeCookies(token: string) {
 }
 
 export function formatDate(date: string) {
-  return format(new Date(date), 'dd/MM/yyyy')
+  return format(new Date(date), 'dd MMMM yyyy')
+}
+
+export const checkUpdatedAt = (date: any) => {
+  if (date == null) {
+    return null;
+  } else {
+    return formatDate(date);
+  }
 }

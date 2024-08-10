@@ -24,11 +24,10 @@ import Link from "next/link";
 import { CustomDialog } from "@/components/layout/custom-dialog";
 import {
   useGetBloodPressureById,
-  usePutBloodPressure,
   useDeleteBloodPressure
 } from "@/lib/hooks/useBloodPressures";
 import BloodPressureFormEdit from "./blood-pressure-edit";
-import { formatDate } from "../../../../../../lib/utils";
+import { formatDate, checkUpdatedAt } from "../../../../../../lib/utils";
 
 export default function BloodPressureTable({
   pressures,
@@ -37,15 +36,17 @@ export default function BloodPressureTable({
 }: Readonly<{
   fetchUsers: any;
   pressures: {
-    id: number;
-    user_id: number;
-    image: string;
-    sistol: number;
-    diastole: number;
-    heartbeat: number;
-    created_at: string;
-    updated_at: string;
-  }[];
+    data: {
+      id: number;
+      user_id: number;
+      image: string;
+      sistol: number;
+      diastole: number;
+      heartbeat: number;
+      created_at: string;
+      updated_at: string;
+    }[];
+  }
   refetchPressure: () => void;
 }>) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -54,7 +55,6 @@ export default function BloodPressureTable({
   const [selectedPressureDelete, setSelectedPressureDelete] = useState<number | null>(null);
 
   const { data: pressure, fetchData } = useGetBloodPressureById();
-  const { putData: updateBloodPressure } = usePutBloodPressure();
   const { deleteData: deleteBloodPressure } = useDeleteBloodPressure();
 
   const userMap = new Map(fetchUsers?.map((user: any) => [user.id, user.username]));
@@ -78,13 +78,6 @@ export default function BloodPressureTable({
     setSelectedPressureDelete(null);
   };
 
-  const handlePutPressure = async (formData: any) => {
-    if (selectedPressureEdit) {
-      await updateBloodPressure(selectedPressureEdit, formData);
-      refetchPressure();
-      handleEditDialogClose();
-    }
-  };
   const handleDeletePressure = async () => {
     if (selectedPressureDelete) {
       await deleteBloodPressure(selectedPressureDelete);
@@ -110,7 +103,7 @@ export default function BloodPressureTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {pressures?.map((pressure: any) => (
+          {pressures?.data?.map((pressure: any) => (
             <TableRow key={pressure.id}>
               <TableCell className="hidden lg:table-cell">{pressure.id}</TableCell>
               <TableCell>
@@ -134,7 +127,9 @@ export default function BloodPressureTable({
               <TableCell>{pressure.diastole}</TableCell>
               <TableCell>{pressure.heartbeat}</TableCell>
               <TableCell>{formatDate(pressure.created_at)}</TableCell>
-              <TableCell>{formatDate(pressure.updated_at)}</TableCell>
+              <TableCell>
+                {checkUpdatedAt(pressure.updated_at)}
+              </TableCell>
               <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">
                 <Button
                   className="rounded-full p-1 size-8"
@@ -165,8 +160,8 @@ export default function BloodPressureTable({
           <BloodPressureFormEdit
             pressure={pressure}
             fetchUsers={fetchUsers}
-            onSubmit={handlePutPressure}
-            onCancel={handleEditDialogClose}
+            refetchPressure={refetchPressure}
+            closeDialog={handleEditDialogClose}
           />
         </CustomDialog>
       )}
