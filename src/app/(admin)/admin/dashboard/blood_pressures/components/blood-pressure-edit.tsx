@@ -25,10 +25,12 @@ import { Label } from "@/components/ui/label";
 
 export default function BloodPressureFormEdit({
   pressure,
+  fetchUsers,
   onSubmit,
   onCancel
 }: Readonly<{
   pressure: any;
+  fetchUsers: any;
   onSubmit: (data: any) => void;
   onCancel: () => void;
 }>) {

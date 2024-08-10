@@ -35,7 +35,11 @@ export default function AdminPressuresPage() {
           Add Blood Pressure
         </Button>
       </div>
-      <BloodPressureTable pressures={pressures?.data} refetchPressure={refetchPressure} />
+      <BloodPressureTable
+        pressures={pressures?.data}
+        fetchUsers={users?.data}
+        refetchPressure={refetchPressure}
+      />
       <CustomDialog
         isOpen={dialogOpen}
         onClose={handleDialogClose}
@@ -44,8 +48,8 @@ export default function AdminPressuresPage() {
       >
         <BloodPressureForm
           fetchUsers={users?.data}
-          closeDialog={handleDialogClose}
           refetchPressure={refetchPressure}
+          closeDialog={handleDialogClose}
         />
       </CustomDialog>
     </div>

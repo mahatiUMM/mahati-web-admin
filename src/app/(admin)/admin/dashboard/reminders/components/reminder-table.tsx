@@ -134,18 +134,18 @@ export default function ReminderTable({
               <TableCell>{reminder.expired_at}</TableCell>
               <TableCell>{reminder.created_at}</TableCell>
               <TableCell>{reminder.updated_at}</TableCell>
-              <TableCell className="flex items-center space-x-2">
+              <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">
                 <Button
+                  className="rounded-full p-2 size-10"
+                  variant={"secondary"}
                   onClick={() => handleEditClick(reminder.id)}
-                  className="rounded-full px-1 py-1"
-                  variant={"outline"}
                 >
                   <Info className="text-blue-400 h-5 w-5" />
                 </Button>
                 <Button
+                  className="rounded-full p-2 size-10"
+                  variant={"destructive"}
                   onClick={() => handleDeleteClick(reminder.id)}
-                  className="rounded-full px-1 py-1"
-                  variant={"outline"}
                 >
                   <Trash className="text-red-400 h-5 w-5" />
                 </Button>

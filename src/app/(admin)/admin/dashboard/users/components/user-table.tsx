@@ -71,10 +71,10 @@ export default function UsersTable({
             </TableCell>
             <TableCell>{user.created_at}</TableCell>
             <TableCell>{user.updated_at}</TableCell>
-            <TableCell>
+            <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">
               <Button
-                className="rounded-full px-1 py-1"
-                variant={"outline"}
+                className="rounded-full p-2 size-10"
+                variant={"secondary"}
                 onClick={() => {
                   setSelectedUserEdit(user.id);
                   setDialogOpen(true);
@@ -83,8 +83,8 @@ export default function UsersTable({
                 <Info className="text-blue-400 h-5 w-5" />
               </Button>
               <Button
-                className="rounded-full px-1 py-1"
-                variant={"outline"}
+                className="rounded-full p-2 size-10"
+                variant={"destructive"}
                 onClick={() => {
                   setSelectedUserDelete(user.id);
                   setIsDialogOpen(true);

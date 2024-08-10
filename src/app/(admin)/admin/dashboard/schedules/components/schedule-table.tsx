@@ -145,17 +145,17 @@ export default function ScheduleTable({
                 <div>Created At: {schedule.reminder.created_at}</div>
                 <div>Updated At: {schedule.reminder.updated_at}</div>
               </TableCell>
-              <TableCell>
+              <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">
                 <Button
-                  className="rounded-full px-1 py-1"
-                  variant={"outline"}
+                  className="rounded-full p-2 size-10"
+                  variant={"secondary"}
                   onClick={() => handleEditClick(schedule.id)}
                 >
                   <Info className="text-blue-400 h-5 w-5" />
                 </Button>
                 <Button
-                  className="rounded-full px-1 py-1"
-                  variant={"outline"}
+                  className="rounded-full p-2 size-10"
+                  variant={"destructive"}
                   onClick={() => handleDeleteClick(schedule.id)}
                 >
                   <Trash className="text-red-400 h-5 w-5" />

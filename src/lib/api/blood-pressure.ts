@@ -60,6 +60,7 @@ export const putBloodPressure = async (id: number, payload: {
     const response = await axiosInstance.put(`/admin/blood_pressure/${id}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
       },
     });
     return response;

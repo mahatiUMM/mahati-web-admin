@@ -27,13 +27,15 @@ import {
   usePutBloodPressure,
   useDeleteBloodPressure
 } from "@/lib/hooks/useBloodPressures";
-import { useGetAllUsers } from "@/lib/hooks/useUsers"
 import BloodPressureFormEdit from "./blood-pressure-edit";
+import { formatDate } from "../../../../../../lib/utils";
 
 export default function BloodPressureTable({
   pressures,
+  fetchUsers,
   refetchPressure
 }: Readonly<{
+  fetchUsers: any;
   pressures: {
     id: number;
     user_id: number;
@@ -51,12 +53,11 @@ export default function BloodPressureTable({
   const [selectedPressureEdit, setSelectedPressureEdit] = useState<number | null>(null);
   const [selectedPressureDelete, setSelectedPressureDelete] = useState<number | null>(null);
 
-  const { data: users } = useGetAllUsers();
   const { data: pressure, fetchData } = useGetBloodPressureById();
   const { putData: updateBloodPressure } = usePutBloodPressure();
   const { deleteData: deleteBloodPressure } = useDeleteBloodPressure();
 
-  const userMap = new Map(users?.data?.map((user: any) => [user.id, user.username]));
+  const userMap = new Map(fetchUsers?.map((user: any) => [user.id, user.username]));
 
   const handleEditClick = (id: number) => {
     setSelectedPressureEdit(id);
@@ -97,12 +98,12 @@ export default function BloodPressureTable({
       <Table className="my-4 lg:my-0">
         <TableHeader>
           <TableRow>
-            <TableHead className="hidden lg:table-cell">ID</TableHead>
-            <TableHead>User ID</TableHead>
-            <TableHead className="">Image</TableHead>
-            <TableHead className="">Sistol</TableHead>
-            <TableHead className="">Diastole</TableHead>
-            <TableHead className="">Heartbeat</TableHead>
+            <TableHead className="hidden lg:table-cell text-left">ID</TableHead>
+            <TableHead className="text-left">User ID</TableHead>
+            <TableHead className="text-left">Image</TableHead>
+            <TableHead className="text-left">Sistol</TableHead>
+            <TableHead className="text-left">Diastole</TableHead>
+            <TableHead className="text-left">Heartbeat</TableHead>
             <TableHead className="text-left">Created At</TableHead>
             <TableHead className="text-left">Updated At</TableHead>
             <TableHead className="text-left">Action</TableHead>
@@ -132,14 +133,22 @@ export default function BloodPressureTable({
               <TableCell>{pressure.sistol}</TableCell>
               <TableCell>{pressure.diastole}</TableCell>
               <TableCell>{pressure.heartbeat}</TableCell>
-              <TableCell>{pressure.created_at}</TableCell>
-              <TableCell>{pressure.updated_at}</TableCell>
-              <TableCell className="flex items-center space-x-2">
-                <Button className="rounded-full px-1 py-1" variant={"outline"} onClick={() => handleEditClick(pressure.id)}>
-                  <Info className="text-blue-400 h-5 w-5" />
+              <TableCell>{formatDate(pressure.created_at)}</TableCell>
+              <TableCell>{formatDate(pressure.updated_at)}</TableCell>
+              <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">
+                <Button
+                  className="rounded-full p-1 size-8"
+                  variant={"secondary"}
+                  onClick={() => handleEditClick(pressure.id)}
+                >
+                  <Info className="text-blue-400 size-6" />
                 </Button>
-                <Button className="rounded-full px-1 py-1" variant={"outline"} onClick={() => handleDeleteClick(pressure.id)}>
-                  <Trash className="text-red-400 h-5 w-5" />
+                <Button
+                  className="rounded-full p-1 size-8"
+                  variant={"destructive"}
+                  onClick={() => handleDeleteClick(pressure.id)}
+                >
+                  <Trash className="text-red-400 size-6" />
                 </Button>
               </TableCell>
             </TableRow>
@@ -155,6 +164,7 @@ export default function BloodPressureTable({
         >
           <BloodPressureFormEdit
             pressure={pressure}
+            fetchUsers={fetchUsers}
             onSubmit={handlePutPressure}
             onCancel={handleEditDialogClose}
           />

@@ -94,7 +94,6 @@ export default function BookmarkTable({
             <TableHead className="hidden lg:table-cell">ID</TableHead>
             <TableHead>ID Video</TableHead>
             <TableHead>ID User</TableHead>
-            <TableHead>Is Bookmark?</TableHead>
             <TableHead>Created At</TableHead>
             <TableHead>Updated At</TableHead>
             <TableHead>Action</TableHead>
@@ -106,20 +105,19 @@ export default function BookmarkTable({
               <TableCell className="hidden lg:table-cell">{bookmark.id}</TableCell>
               <TableCell>{bookmark.video_id}</TableCell>
               <TableCell>{bookmark.user_id}</TableCell>
-              <TableCell>{bookmark.is_bookmark ? "Yes" : "No"}</TableCell>
               <TableCell>{bookmark.created_at}</TableCell>
               <TableCell>{bookmark.updated_at}</TableCell>
-              <TableCell className="flex items-center space-x-2">
+              <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">
                 <Button
-                  className="rounded-full px-1 py-1"
-                  variant="outline"
+                  className="rounded-full p-2 size-10"
+                  variant={"secondary"}
                   onClick={() => handleEditClick(bookmark.id)}
                 >
                   <Info className="text-blue-400 h-5 w-5" />
                 </Button>
                 <Button
-                  className="rounded-full px-1 py-1"
-                  variant="outline"
+                  className="rounded-full p-2 size-10"
+                  variant={"destructive"}
                   onClick={() => handleDeleteClick(bookmark.id)}
                 >
                   <Trash className="text-red-400 h-5 w-5" />
@@ -129,7 +127,6 @@ export default function BookmarkTable({
           ))}
         </TableBody>
       </Table>
-
       {selectedBookmarkEdit && bookmark && (
         <CustomDialog
           isOpen={dialogOpen}
@@ -144,7 +141,6 @@ export default function BookmarkTable({
           />
         </CustomDialog>
       )}
-
       <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
