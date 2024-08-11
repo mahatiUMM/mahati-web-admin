@@ -57,7 +57,7 @@ export default function BloodPressureForm({
     setSelectedUser(value);
   };
 
-  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const formData = new FormData();
     formData.append("user_id", values.user_id);
     formData.append("sistol", values.sistol);
@@ -72,7 +72,7 @@ export default function BloodPressureForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="user_id"

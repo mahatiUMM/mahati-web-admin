@@ -63,7 +63,7 @@ export function usePostBookmark() {
       setLoading(true);
       const response = await postBookmark(payload);
       setData(response?.data);
-      if (response?.status === 201) {
+      if (response?.status === 200) {
         toast.success("Success to add bookmark");
       }
     } catch (err) {

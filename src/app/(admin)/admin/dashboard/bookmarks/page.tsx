@@ -3,7 +3,7 @@
 import { useState } from "react"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
-import { useGetBookmark, usePostBookmark } from "@/lib/hooks/useBookmarks"
+import { useGetBookmark } from "@/lib/hooks/useBookmarks"
 import { useGetAllUsers } from "@/lib/hooks/useUsers";
 import BookmarkTable from "./compoenents/bookmark-table"
 import { CustomDialog } from "@/components/layout/custom-dialog"
@@ -12,7 +12,6 @@ import BookmarkForm from "./compoenents/bookmark-form"
 export default function AdminBookmarksPage() {
   const { data: users } = useGetAllUsers();
   const { data: bookmarks, refetch: refetchBookmark } = useGetBookmark()
-  const { mutate: postBookmark } = usePostBookmark();
 
   const [dialogOpen, setDialogOpen] = useState(false)
 
@@ -22,17 +21,6 @@ export default function AdminBookmarksPage() {
 
   const handleDialogClose = () => {
     setDialogOpen(false)
-  }
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
-    const formData = {
-      video_id: parseInt(e.target.video_id.value),
-      user_id: parseInt(e.target.user_id.value),
-    }
-    await postBookmark(formData)
-    refetchBookmark()
-    handleDialogClose()
   }
 
   return (
@@ -59,7 +47,11 @@ export default function AdminBookmarksPage() {
         title="Add Bookmark"
         description="Enter the details for the new bookmark entry."
       >
-        <BookmarkForm onSubmit={handleSubmit} onCancel={handleDialogClose} />
+        <BookmarkForm
+          fetchUsers={users?.data}
+          refetchBookmark={refetchBookmark}
+          closeDialog={handleDialogClose}
+        />
       </CustomDialog>
     </div>
   )

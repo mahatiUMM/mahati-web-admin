@@ -150,7 +150,7 @@ export default function BloodPressureTable({
           ))}
         </TableBody>
       </Table>
-      {selectedPressureEdit !== null && (
+      {selectedPressureEdit && pressure && (
         <CustomDialog
           isOpen={dialogOpen}
           onClose={handleEditDialogClose}

@@ -22,7 +22,6 @@ import { Info, Trash } from "lucide-react";
 import { CustomDialog } from "@/components/layout/custom-dialog";
 import {
   useGetBookmarkById,
-  usePutBookmark,
   useDeleteBookmark,
 } from "@/lib/hooks/useBookmarks";
 import BookmarkFormEdit from "./bookmark-edit";
@@ -49,7 +48,6 @@ export default function BookmarkTable({
   const [selectedBookmarkDelete, setSelectedBookmarkDelete] = useState<number | null>(null);
 
   const { data: bookmark, fetchData } = useGetBookmarkById();
-  const { putData: updateBookmark } = usePutBookmark();
   const { deleteData: deleteBookmark } = useDeleteBookmark();
 
   const userMap = new Map(fetchUsers?.map((user: any) => [user.id, user.username]));
@@ -73,13 +71,7 @@ export default function BookmarkTable({
     setSelectedBookmarkDelete(null);
   };
 
-  const handlePutBookmark = async (formData: any) => {
-    if (selectedBookmarkEdit) {
-      await updateBookmark(selectedBookmarkEdit, formData);
-      refetchBookmark();
-      handleEditDialogClose();
-    }
-  }
+
   const handleDeleteBookmark = async () => {
     if (selectedBookmarkDelete) {
       await deleteBookmark(selectedBookmarkDelete);
@@ -140,8 +132,9 @@ export default function BookmarkTable({
         >
           <BookmarkFormEdit
             bookmark={bookmark}
-            onSubmit={handlePutBookmark}
-            onCancel={handleEditDialogClose}
+            fetchUsers={fetchUsers}
+            refetchBookmark={refetchBookmark}
+            closeDialog={handleEditDialogClose}
           />
         </CustomDialog>
       )}

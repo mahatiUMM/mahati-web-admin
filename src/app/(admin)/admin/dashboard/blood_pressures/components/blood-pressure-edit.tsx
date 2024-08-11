@@ -21,7 +21,6 @@ import {
 import { usePutBloodPressure } from "@/lib/hooks/useBloodPressures";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getToken } from "@/lib/utils";
 
 export default function BloodPressureFormEdit({
   pressure,
@@ -45,9 +44,6 @@ export default function BloodPressureFormEdit({
     heartbeat: z.string().min(2).max(300),
   });
 
-  const token = getToken();
-  console.log(token);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,10 +62,6 @@ export default function BloodPressureFormEdit({
       form.setValue("diastole", pressure?.data?.diastole.toString());
       form.setValue("heartbeat", pressure?.data?.heartbeat.toString());
       form.setValue("image", pressure?.data?.image || null);
-      // if (pressure.data.image) {
-      //   form.setValue("image", pressure.data.image);
-      // }
-
       setSelectedUser(pressure.data.user_id.toString());
     }
   }, [pressure, form]);
@@ -79,7 +71,7 @@ export default function BloodPressureFormEdit({
     setSelectedUser(value);
   };
 
-  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const formData = new FormData();
     formData.append("user_id", values.user_id);
     formData.append("sistol", values.sistol);
@@ -95,7 +87,7 @@ export default function BloodPressureFormEdit({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="user_id"
@@ -105,7 +97,7 @@ export default function BloodPressureFormEdit({
               <FormControl>
                 <Select
                   onValueChange={handleUserSelect}
-                  value={field.value || selectedUser}
+                  value={field.value}
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a user">
@@ -125,7 +117,6 @@ export default function BloodPressureFormEdit({
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="image"
@@ -162,7 +153,6 @@ export default function BloodPressureFormEdit({
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="sistol"
@@ -180,7 +170,6 @@ export default function BloodPressureFormEdit({
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="diastole"
@@ -198,7 +187,6 @@ export default function BloodPressureFormEdit({
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="heartbeat"
@@ -216,7 +204,6 @@ export default function BloodPressureFormEdit({
             </FormItem>
           )}
         />
-
         <div className="flex justify-end gap-2 mt-4">
           <Button type="submit" variant="default">
             Save
