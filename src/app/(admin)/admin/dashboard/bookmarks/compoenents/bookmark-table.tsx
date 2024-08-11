@@ -29,6 +29,7 @@ import BookmarkFormEdit from "./bookmark-edit";
 
 export default function BookmarkTable({
   bookmarks,
+  fetchUsers,
   refetchBookmark,
 }: Readonly<{
   bookmarks: {
@@ -39,6 +40,7 @@ export default function BookmarkTable({
     created_at: string,
     updated_at: string,
   }[];
+  fetchUsers: any;
   refetchBookmark: () => void,
 }>) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -49,6 +51,8 @@ export default function BookmarkTable({
   const { data: bookmark, fetchData } = useGetBookmarkById();
   const { putData: updateBookmark } = usePutBookmark();
   const { deleteData: deleteBookmark } = useDeleteBookmark();
+
+  const userMap = new Map(fetchUsers?.map((user: any) => [user.id, user.username]));
 
   const handleEditClick = (id: number) => {
     setSelectedBookmarkEdit(id);
@@ -90,8 +94,8 @@ export default function BookmarkTable({
         <TableHeader>
           <TableRow>
             <TableHead className="hidden lg:table-cell">ID</TableHead>
+            <TableHead>Username</TableHead>
             <TableHead>ID Video</TableHead>
-            <TableHead>ID User</TableHead>
             <TableHead>Created At</TableHead>
             <TableHead>Updated At</TableHead>
             <TableHead>Action</TableHead>
@@ -101,8 +105,10 @@ export default function BookmarkTable({
           {bookmarks?.map((bookmark: any) => (
             <TableRow key={bookmark.id}>
               <TableCell className="hidden lg:table-cell">{bookmark.id}</TableCell>
+              <TableCell>
+                {userMap.get(bookmark.user_id) as string || "Unknown"}
+              </TableCell>
               <TableCell>{bookmark.video_id}</TableCell>
-              <TableCell>{bookmark.user_id}</TableCell>
               <TableCell>{bookmark.created_at}</TableCell>
               <TableCell>{bookmark.updated_at}</TableCell>
               <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">

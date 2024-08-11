@@ -15,7 +15,6 @@ export default function BookmarkFormEdit({
   const [formData, setFormData] = useState({
     user_id: 0,
     video_id: 0,
-    is_bookmark: false,
   });
 
   useEffect(() => {
@@ -23,7 +22,6 @@ export default function BookmarkFormEdit({
       setFormData({
         user_id: parseInt(bookmark?.data?.user_id),
         video_id: parseInt(bookmark?.data?.video_id),
-        is_bookmark: bookmark?.data?.is_bookmark,
       });
     }
   }, [bookmark]);

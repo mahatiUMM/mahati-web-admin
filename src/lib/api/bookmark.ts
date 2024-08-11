@@ -32,10 +32,13 @@ export const getBookmarkById = async (id: number) => {
 export const postBookmark = async (payload: {
   user_id: number,
   video_id: number,
-  is_bookmark: boolean,
 }) => {
   try {
-    const response = await axiosInstance.post("/bookmark", payload);
+    const response = await axiosInstance.post("/bookmark", payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
     return response;
   } catch (error) {
     handleError(error);

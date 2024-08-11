@@ -1,18 +1,32 @@
 import { z } from "zod";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
-import { CustomSelect } from "@/components/layout/custom-select";
-import { CustomTextField } from "@/components/layout/custom-textfield";
-import { CustomFileField } from "@/components/layout/custom-filefield";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { usePutBloodPressure } from "@/lib/hooks/useBloodPressures";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { getToken } from "@/lib/utils";
 
 export default function BloodPressureFormEdit({
   pressure,
-  fetchUsers,
   refetchPressure,
+  fetchUsers,
   closeDialog
 }: Readonly<{
   pressure: any;
@@ -20,19 +34,25 @@ export default function BloodPressureFormEdit({
   refetchPressure: () => void;
   closeDialog: () => void;
 }>) {
+  const { putData: updateBloodPressure } = usePutBloodPressure();
+  const [selectedUser, setSelectedUser] = useState<string>("");
+
   const formSchema = z.object({
     user_id: z.string().min(1).max(300),
-    image: z.instanceof(File).nullable(),
+    image: z.union([z.instanceof(File), z.string().nullable()]),
     sistol: z.string().min(2).max(300),
     diastole: z.string().min(2).max(300),
     heartbeat: z.string().min(2).max(300),
   });
 
+  const token = getToken();
+  console.log(token);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       user_id: "",
-      image: undefined,
+      image: null,
       sistol: "",
       diastole: "",
       heartbeat: "",
@@ -45,15 +65,19 @@ export default function BloodPressureFormEdit({
       form.setValue("sistol", pressure?.data?.sistol.toString());
       form.setValue("diastole", pressure?.data?.diastole.toString());
       form.setValue("heartbeat", pressure?.data?.heartbeat.toString());
-    };
+      form.setValue("image", pressure?.data?.image || null);
+      // if (pressure.data.image) {
+      //   form.setValue("image", pressure.data.image);
+      // }
+
+      setSelectedUser(pressure.data.user_id.toString());
+    }
   }, [pressure, form]);
 
-  const { putData: updateBloodPressure } = usePutBloodPressure();
-
-  const options = fetchUsers?.map((user: any) => ({
-    value: user.id.toString(),
-    label: user.username,
-  })) || [];
+  const handleUserSelect = (value: string) => {
+    form.setValue("user_id", value);
+    setSelectedUser(value);
+  };
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const formData = new FormData();
@@ -64,7 +88,7 @@ export default function BloodPressureFormEdit({
     if (values.image instanceof File) {
       formData.append("image", values.image);
     }
-    await updateBloodPressure(pressure.data.id, formData);
+    await updateBloodPressure(pressure?.data?.id, formData);
     refetchPressure();
     closeDialog();
   };
@@ -72,43 +96,129 @@ export default function BloodPressureFormEdit({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-        <CustomSelect
+        <FormField
+          control={form.control}
           name="user_id"
-          label="Select User"
-          options={options}
-          form={form}
-          placeholder="Select a user"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Select User</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={handleUserSelect}
+                  value={field.value || selectedUser}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a user">
+                      {fetchUsers?.find((user: any) => user.id.toString() === selectedUser)?.username || "Select a user"}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {fetchUsers?.map((user: any) => (
+                      <SelectItem key={user.id} value={user.id.toString()}>
+                        {user.username}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        <CustomFileField
+
+        <FormField
+          control={form.control}
           name="image"
-          label="Upload Image"
-          form={form}
-          currentImage={`https://mahati.xyzuan.my.id/${pressure?.data?.image}`}
-          onRemove={() => form.setValue("image", null)}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Upload Image</FormLabel>
+              {pressure?.data?.image && (
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={`https://mahati.xyzuan.my.id/${pressure.data.image}`}
+                    alt="Blood Pressure Image"
+                    width={100}
+                    height={100}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => field.onChange(null)}
+                  >
+                    Remove
+                  </Button>
+                </div>
+              )}
+              <FormControl>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    field.onChange(e.target.files?.[0] || null);
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        <CustomTextField
+
+        <FormField
+          control={form.control}
           name="sistol"
-          label="Sistol"
-          type="number"
-          placeholder="Sistol"
-          form={form}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Sistol</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  placeholder="Sistol"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        <CustomTextField
+
+        <FormField
+          control={form.control}
           name="diastole"
-          label="Diastole"
-          type="number"
-          placeholder="Diastole"
-          form={form}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Diastole</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  placeholder="Diastole"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        <CustomTextField
+
+        <FormField
+          control={form.control}
           name="heartbeat"
-          label="Heartbeat"
-          type="number"
-          placeholder="Heartbeat"
-          form={form}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Heartbeat</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  placeholder="Heartbeat"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
+
         <div className="flex justify-end gap-2 mt-4">
-          <Button type="submit" variant="default" >
+          <Button type="submit" variant="default">
             Save
           </Button>
           <Button type="button" variant="outline" onClick={closeDialog}>

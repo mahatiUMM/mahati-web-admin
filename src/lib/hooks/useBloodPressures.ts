@@ -17,7 +17,6 @@ export function useGetBloodPressures() {
     setLoading(true);
     try {
       const response = await getBloodPressure();
-      console.log(response)
       setData(response);
     } catch (err) {
       setError(err as Error);

@@ -4,11 +4,13 @@ import { useState } from "react"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
 import { useGetBookmark, usePostBookmark } from "@/lib/hooks/useBookmarks"
+import { useGetAllUsers } from "@/lib/hooks/useUsers";
 import BookmarkTable from "./compoenents/bookmark-table"
 import { CustomDialog } from "@/components/layout/custom-dialog"
 import BookmarkForm from "./compoenents/bookmark-form"
 
 export default function AdminBookmarksPage() {
+  const { data: users } = useGetAllUsers();
   const { data: bookmarks, refetch: refetchBookmark } = useGetBookmark()
   const { mutate: postBookmark } = usePostBookmark();
 
@@ -46,7 +48,11 @@ export default function AdminBookmarksPage() {
           Add Bookmark
         </Button>
       </div>
-      <BookmarkTable bookmarks={bookmarks?.data} refetchBookmark={refetchBookmark} />
+      <BookmarkTable
+        bookmarks={bookmarks?.data}
+        fetchUsers={users?.data}
+        refetchBookmark={refetchBookmark}
+      />
       <CustomDialog
         isOpen={dialogOpen}
         onClose={handleDialogClose}
