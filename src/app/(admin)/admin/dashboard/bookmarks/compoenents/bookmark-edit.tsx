@@ -52,10 +52,9 @@ export default function BookmarkFormEdit({
     if (bookmark) {
       form.setValue("user_id", bookmark?.data?.user_id.toString());
       form.setValue("video_id", bookmark?.data?.video_id.toString());
+      setSelectedUser(bookmark?.data?.user_id.toString());
     }
   }, [bookmark, form]);
-
-  console.log(bookmark?.data?.id);
 
   const handleUserSelect = (value: string) => {
     form.setValue("user_id", value);
@@ -76,7 +75,7 @@ export default function BookmarkFormEdit({
           name="user_id"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Select user</FormLabel>
+              <FormLabel>Select User</FormLabel>
               <FormControl>
                 <Select
                   onValueChange={handleUserSelect}
@@ -90,12 +89,13 @@ export default function BookmarkFormEdit({
                   <SelectContent>
                     {fetchUsers?.map((user: any) => (
                       <SelectItem key={user.id} value={user.id.toString()}>
-                        {user?.username}
+                        {user.username}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -120,7 +120,7 @@ export default function BookmarkFormEdit({
           <Button type="submit" variant="default">
             Save
           </Button>
-          <Button type="button" variant="outline" onClick={closeDialog}>
+          <Button variant="outline" onClick={closeDialog}>
             Cancel
           </Button>
         </div>

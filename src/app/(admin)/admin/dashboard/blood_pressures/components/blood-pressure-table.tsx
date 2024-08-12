@@ -92,7 +92,7 @@ export default function BloodPressureTable({
         <TableHeader>
           <TableRow>
             <TableHead className="hidden lg:table-cell text-left">ID</TableHead>
-            <TableHead className="text-left">User ID</TableHead>
+            <TableHead className="text-left">Username</TableHead>
             <TableHead className="text-left">Image</TableHead>
             <TableHead className="text-left">Sistol</TableHead>
             <TableHead className="text-left">Diastole</TableHead>
@@ -111,11 +111,17 @@ export default function BloodPressureTable({
               </TableCell>
               <TableCell>
                 <Link
-                  href={`https://mahati.xyzuan.my.id/${pressure.image}`}
+                  href={pressure.image === ""
+                    ? "/no-image.jpg"
+                    : `https://mahati.xyzuan.my.id/${pressure.image}`
+                  }
                   target="_blank"
                 >
                   <Image
-                    src={`https://mahati.xyzuan.my.id/${pressure.image}`}
+                    src={pressure.image === ""
+                      ? "/no-image.jpg"
+                      : `https://mahati.xyzuan.my.id/${pressure.image}`
+                    }
                     width={100}
                     height={100}
                     className="rounded-lg"

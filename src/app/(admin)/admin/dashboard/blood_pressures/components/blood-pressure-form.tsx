@@ -35,7 +35,7 @@ export default function BloodPressureForm({
 
   const formSchema = z.object({
     user_id: z.string().min(1).max(300),
-    image: z.instanceof(File),
+    image: z.instanceof(File).nullable(),
     sistol: z.string().min(2).max(300),
     diastole: z.string().min(2).max(300),
     heartbeat: z.string().min(2).max(300),
@@ -45,7 +45,7 @@ export default function BloodPressureForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       user_id: "",
-      image: undefined,
+      image: null,
       sistol: "",
       diastole: "",
       heartbeat: "",
@@ -63,7 +63,10 @@ export default function BloodPressureForm({
     formData.append("sistol", values.sistol);
     formData.append("diastole", values.diastole);
     formData.append("heartbeat", values.heartbeat);
-    formData.append("image", values.image);
+    if (values.image) {
+      formData.append("image", values.image);
+    }
+
     await postBloodPressure(formData);
     refetchPressure();
     closeDialog();
@@ -169,7 +172,7 @@ export default function BloodPressureForm({
           <Button type="submit" variant="default">
             Save
           </Button>
-          <Button type="button" variant="outline" onClick={closeDialog}>
+          <Button variant="outline" onClick={closeDialog}>
             Cancel
           </Button>
         </div>

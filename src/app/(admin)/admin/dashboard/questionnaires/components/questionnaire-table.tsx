@@ -152,21 +152,20 @@ export default function QuestionnaireTable({
                   </div>
                 ))}
               </TableCell>
-              <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">
+              <TableCell className="min-[1600px]:space-x-2 max-[1600px]:space-y-2">
                 <Button
-                  className="rounded-full p-2 size-10"
+                  className="rounded-full p-1 size-8"
                   variant={"secondary"}
                   onClick={() => handleEditClick(questionnaire.id)}
                 >
-                  <Info className="text-blue-400 h-5 w-5" />
+                  <Info className="text-blue-400 size-6" />
                 </Button>
                 <Button
-                  className="rounded-full p-2 size-10"
+                  className="rounded-full p-1 size-8"
                   variant={"destructive"}
                   onClick={() => handleDeleteClick(questionnaire.id)}
                 >
-                  <Trash className="text-red-400 h-5 w-5" />
-
+                  <Trash className="text-red-400 size-6" />
                 </Button>
               </TableCell>
             </TableRow>

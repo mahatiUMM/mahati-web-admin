@@ -168,7 +168,7 @@ export default function ReminderFormEdit({
         <Button type="submit" variant={"default"}>
           Save
         </Button>
-        <Button type="button" variant={"outline"} onClick={onCancel}>
+        <Button variant={"outline"} onClick={onCancel}>
           Cancel
         </Button>
       </div>

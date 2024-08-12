@@ -113,7 +113,7 @@ export default function BookmarkForm({
           <Button type="submit" variant="default">
             Save
           </Button>
-          <Button type="button" variant="outline" onClick={closeDialog}>
+          <Button variant="outline" onClick={closeDialog}>
             Cancel
           </Button>
         </div>

@@ -132,7 +132,6 @@ export default function BloodPressureFormEdit({
                     height={100}
                   />
                   <Button
-                    type="button"
                     variant="outline"
                     onClick={() => field.onChange(null)}
                   >
@@ -208,7 +207,7 @@ export default function BloodPressureFormEdit({
           <Button type="submit" variant="default">
             Save
           </Button>
-          <Button type="button" variant="outline" onClick={closeDialog}>
+          <Button variant="outline" onClick={closeDialog}>
             Cancel
           </Button>
         </div>
