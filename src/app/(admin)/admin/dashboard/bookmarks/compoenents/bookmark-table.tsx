@@ -25,10 +25,12 @@ import {
   useDeleteBookmark,
 } from "@/lib/hooks/useBookmarks";
 import BookmarkFormEdit from "./bookmark-edit";
+import { formatDate, checkUpdatedAt } from "@/lib/utils";
 
 export default function BookmarkTable({
   bookmarks,
   fetchUsers,
+  fetchVideos,
   refetchBookmark,
 }: Readonly<{
   bookmarks: {
@@ -40,6 +42,7 @@ export default function BookmarkTable({
     updated_at: string,
   }[];
   fetchUsers: any;
+  fetchVideos: any;
   refetchBookmark: () => void,
 }>) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -51,6 +54,7 @@ export default function BookmarkTable({
   const { deleteData: deleteBookmark } = useDeleteBookmark();
 
   const userMap = new Map(fetchUsers?.map((user: any) => [user.id, user.username]));
+  const videoMap = new Map(fetchVideos?.map((video: any) => [video.id, video.title]));
 
   const handleEditClick = (id: number) => {
     setSelectedBookmarkEdit(id);
@@ -87,7 +91,7 @@ export default function BookmarkTable({
           <TableRow>
             <TableHead className="hidden lg:table-cell">ID</TableHead>
             <TableHead>Username</TableHead>
-            <TableHead>ID Video</TableHead>
+            <TableHead>Video Title</TableHead>
             <TableHead>Created At</TableHead>
             <TableHead>Updated At</TableHead>
             <TableHead>Action</TableHead>
@@ -100,9 +104,15 @@ export default function BookmarkTable({
               <TableCell>
                 {userMap.get(bookmark.user_id) as string || "Unknown"}
               </TableCell>
-              <TableCell>{bookmark.video_id}</TableCell>
-              <TableCell>{bookmark.created_at}</TableCell>
-              <TableCell>{bookmark.updated_at}</TableCell>
+              <TableCell>
+                {videoMap.get(bookmark.video_id) as string || "Unknown"}
+              </TableCell>
+              <TableCell>
+                {formatDate(bookmark.created_at)}
+              </TableCell>
+              <TableCell>
+                {checkUpdatedAt(bookmark.updated_at)}
+              </TableCell>
               <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">
                 <Button
                   className="rounded-full p-1 size-8"
@@ -133,6 +143,7 @@ export default function BookmarkTable({
           <BookmarkFormEdit
             bookmark={bookmark}
             fetchUsers={fetchUsers}
+            fetchVideos={fetchVideos}
             refetchBookmark={refetchBookmark}
             closeDialog={handleEditDialogClose}
           />

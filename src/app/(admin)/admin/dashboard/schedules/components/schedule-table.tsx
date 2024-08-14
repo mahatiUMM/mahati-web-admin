@@ -27,6 +27,7 @@ import {
 } from "@/lib/hooks/useSchedule";
 import { useGetAllUsers } from "@/lib/hooks/useUsers"
 import ScheduleFormEdit from "./schedule-edit";
+import { formatDate, checkUpdatedAt } from "@/lib/utils";
 
 export default function ScheduleTable({
   schedules,
@@ -125,25 +126,49 @@ export default function ScheduleTable({
             <TableRow key={schedule.id}>
               <TableCell className="hidden lg:table-cell">{schedule.id}</TableCell>
               <TableCell>{schedule.reminder_id}</TableCell>
-              <TableCell>{schedule.time}</TableCell>
-              <TableCell>{schedule.status}</TableCell>
-              <TableCell>{schedule.created_at}</TableCell>
-              <TableCell>{schedule.updated_at}</TableCell>
+              <TableCell>{formatDate(schedule.time)}</TableCell>
+              <TableCell>{schedule.status === 0 ? "Belum di minum" : "Sudah di minum"}</TableCell>
+              <TableCell>{formatDate(schedule.created_at)}</TableCell>
+              <TableCell>{checkUpdatedAt(schedule.updated_at)}</TableCell>
               <TableCell>
-                <div>ID: {schedule.reminder.id}</div>
-                <div>
-                  Username: {userMap.get(schedule.reminder.user_id) as string || 'Unknown User'}
+                <div className="flex flex-col w-fit gap-2">
+                  <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                    ID: {schedule.reminder.id}
+                  </div>
+                  <div className="bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                    Username: {userMap.get(schedule.reminder.user_id) as string || 'Unknown User'}
+                  </div>
+                  <div className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+                    Medicine Name: {schedule.reminder.medicine_name}
+                  </div>
+                  <div className="bg-red-100 text-red-800 px-2 py-1 rounded-full">
+                    Medicine Taken: {schedule.reminder.medicine_taken ? 'Yes' : 'No'}
+                  </div>
+                  <div className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
+                    Medicine Total: {schedule.reminder.medicine_total}
+                  </div>
+                  <div className="bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">
+                    Amount: {schedule.reminder.amount}
+                  </div>
+                  <div className="bg-pink-100 text-pink-800 px-2 py-1 rounded-full">
+                    Cause: {schedule.reminder.cause}
+                  </div>
+                  <div className="bg-teal-100 text-teal-800 px-2 py-1 rounded-full">
+                    Cap Size: {schedule.reminder.cap_size}
+                  </div>
+                  <div className="bg-orange-100 text-orange-800 px-2 py-1 rounded-full">
+                    Medicine Time: {schedule.reminder.medicine_time}
+                  </div>
+                  <div className="bg-gray-100 text-gray-800 px-2 py-1 rounded-full">
+                    Expired At: {schedule.reminder.expired_at}
+                  </div>
+                  <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                    Created At: {formatDate(schedule.reminder.created_at)}
+                  </div>
+                  <div className="bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                    Updated At: {checkUpdatedAt(schedule.reminder.updated_at)}
+                  </div>
                 </div>
-                <div>Medicine Name: {schedule.reminder.medicine_name}</div>
-                <div>Medicine Taken: {schedule.reminder.medicine_taken}</div>
-                <div>Medicine Total: {schedule.reminder.medicine_total}</div>
-                <div>Amount: {schedule.reminder.amount}</div>
-                <div>Cause: {schedule.reminder.cause}</div>
-                <div>Cap Size: {schedule.reminder.cap_size}</div>
-                <div>Medicine Time: {schedule.reminder.medicine_time}</div>
-                <div>Expired: At: {schedule.reminder.expired_at}</div>
-                <div>Created At: {schedule.reminder.created_at}</div>
-                <div>Updated At: {schedule.reminder.updated_at}</div>
               </TableCell>
               <TableCell className="min-[1600px]:space-x-2 max-[1600px]:space-y-2">
                 <Button

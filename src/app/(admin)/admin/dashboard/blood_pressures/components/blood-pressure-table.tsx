@@ -98,7 +98,7 @@ export default function BloodPressureTable({
             <TableHead className="text-left">Diastole</TableHead>
             <TableHead className="text-left">Heartbeat</TableHead>
             <TableHead className="text-left">Created At</TableHead>
-            <TableHead className="text-left">Updated At</TableHead>
+            <TableHead className="hidden lg:table-cell text-left">Updated At</TableHead>
             <TableHead className="text-left">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -133,7 +133,7 @@ export default function BloodPressureTable({
               <TableCell>{pressure.diastole}</TableCell>
               <TableCell>{pressure.heartbeat}</TableCell>
               <TableCell>{formatDate(pressure.created_at)}</TableCell>
-              <TableCell>
+              <TableCell className="hidden lg:table-cell">
                 {checkUpdatedAt(pressure.updated_at)}
               </TableCell>
               <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">

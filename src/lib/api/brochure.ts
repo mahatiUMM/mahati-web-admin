@@ -33,7 +33,12 @@ export const postBrochure = async (payload: {
   image: string,
 }) => {
   try {
-    const response = await axiosInstance.post("/brochure", payload);
+    const response = await axiosInstance.post("/brochure", payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      }
+    });
     return response;
   } catch (error) {
     handleError(error);

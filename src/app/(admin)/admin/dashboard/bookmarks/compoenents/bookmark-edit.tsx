@@ -18,22 +18,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { usePutBookmark } from "@/lib/hooks/useBookmarks";
 
 export default function BookmarkFormEdit({
   bookmark,
   refetchBookmark,
   fetchUsers,
+  fetchVideos,
   closeDialog,
 }: Readonly<{
   bookmark: any,
   fetchUsers: any,
+  fetchVideos: any,
   refetchBookmark: () => void,
   closeDialog: () => void,
 }>) {
   const { putData: updateBookmark } = usePutBookmark();
   const [selectedUser, setSelectedUser] = useState<string>("");
+  const [selectedVideo, setSelectedVideo] = useState<string>("");
 
   const formSchema = z.object({
     user_id: z.string().min(1).max(300),
@@ -53,12 +55,18 @@ export default function BookmarkFormEdit({
       form.setValue("user_id", bookmark?.data?.user_id.toString());
       form.setValue("video_id", bookmark?.data?.video_id.toString());
       setSelectedUser(bookmark?.data?.user_id.toString());
+      setSelectedVideo(bookmark?.data?.video_id.toString());
     }
   }, [bookmark, form]);
 
   const handleUserSelect = (value: string) => {
     form.setValue("user_id", value);
     setSelectedUser(value);
+  };
+
+  const handleVideoSelect = (value: string) => {
+    form.setValue("video_id", value);
+    setSelectedVideo(value);
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -104,13 +112,25 @@ export default function BookmarkFormEdit({
           name="video_id"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Video ID</FormLabel>
+              <FormLabel>Select Video</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  type="text"
-                  placeholder="Video ID"
-                />
+                <Select
+                  onValueChange={handleVideoSelect}
+                  value={field.value}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a video">
+                      {fetchVideos?.find((video: any) => video.id.toString() === selectedVideo)?.title || "Select a video"}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {fetchVideos?.map((video: any) => (
+                      <SelectItem key={video.id} value={video.id.toString()}>
+                        {video.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>

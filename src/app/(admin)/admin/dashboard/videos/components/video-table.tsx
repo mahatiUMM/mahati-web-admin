@@ -29,6 +29,7 @@ import {
 } from "@/lib/hooks/useVideo";
 import { useGetAllUsers } from "@/lib/hooks/useUsers"
 import VideoFormEdit from "./video-edit";
+import { formatDate, checkUpdatedAt } from "@/lib/utils";
 
 export default function VideoTable({
   videos,
@@ -116,7 +117,7 @@ export default function VideoTable({
         <TableBody>
           {videos?.map((video) => (
             <TableRow key={video.id}>
-              <TableCell>{video.id}</TableCell>
+              <TableCell className="hidden lg:table-cell">{video.id}</TableCell>
               <TableCell>
                 {userMap.get(video.user_id) as string || 'Unknown User'}
               </TableCell>
@@ -143,9 +144,9 @@ export default function VideoTable({
                   {video.author_url}
                 </Link>
               </TableCell>
-              <TableCell>{video.created_at}</TableCell>
-              <TableCell>{video.updated_at}</TableCell>
-              <TableCell className="min-[1600px]:space-x-2 max-[1600px]:space-y-2">
+              <TableCell>{formatDate(video.created_at)}</TableCell>
+              <TableCell>{checkUpdatedAt(video.updated_at)}</TableCell>
+              <TableCell className="space-y-2">
                 <Button
                   className="rounded-full p-1 size-8"
                   variant={"secondary"}

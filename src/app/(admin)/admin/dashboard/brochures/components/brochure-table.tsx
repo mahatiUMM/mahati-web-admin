@@ -24,10 +24,10 @@ import Link from "next/link";
 import { CustomDialog } from "@/components/layout/custom-dialog";
 import {
   useGetBrochureById,
-  usePutBrochure,
   useDeleteBrochure,
 } from "@/lib/hooks/useBrochure";
 import BrochureFormEdit from "./brochure-edit";
+import { formatDate, checkUpdatedAt } from "@/lib/utils";
 
 export default function BrochureTable({
   brochures,
@@ -52,7 +52,6 @@ export default function BrochureTable({
   const [selectedBrochureDelete, setSelectedBrochureDelete] = useState<number | null>(null);
 
   const { data: brochure, fetchData } = useGetBrochureById();
-  const { putData: updateBrochure } = usePutBrochure();
   const { deleteData: deleteBrochure } = useDeleteBrochure();
 
   const handleEditClick = (id: number) => {
@@ -74,14 +73,6 @@ export default function BrochureTable({
   const handleDeleteDialogClose = () => {
     setSelectedBrochureDelete(null);
     setIsDialogOpen(false);
-  }
-
-  const handlePutBrochure = async (formData: any) => {
-    if (selectedBrochureEdit) {
-      await updateBrochure(selectedBrochureEdit, formData);
-      refetchBrochure();
-      handleEditDialogClose();
-    }
   }
 
   const handleDeleteBrochure = async () => {
@@ -108,7 +99,7 @@ export default function BrochureTable({
         <TableBody>
           {brochures?.map((brochure) => (
             <TableRow key={brochure.id}>
-              <TableCell>{brochure.id}</TableCell>
+              <TableCell className="hidden lg:table-cell">{brochure.id}</TableCell>
               <TableCell>{brochure.title}</TableCell>
               <TableCell>
                 {brochure?.images?.map((image) => (
@@ -123,13 +114,13 @@ export default function BrochureTable({
                       alt={brochure.title}
                       width={100}
                       height={100}
-                      className="rounded-lg my-2 bg-gray-800 dark:bg-white p-1"
+                      className="rounded-lg cursor-pointer hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out hover:duration-500 hover:ease-in-out max-w-[100px] max-h-[100px] object-cover my-2"
                     />
                   </Link>
                 ))}
               </TableCell>
-              <TableCell>{brochure.created_at}</TableCell>
-              <TableCell>{brochure.updated_at}</TableCell>
+              <TableCell>{formatDate(brochure.created_at)}</TableCell>
+              <TableCell>{checkUpdatedAt(brochure.updated_at)}</TableCell>
               <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">
                 <Button
                   className="rounded-full p-1 size-8"
@@ -159,8 +150,8 @@ export default function BrochureTable({
         >
           <BrochureFormEdit
             brochure={brochure}
-            onSubmit={handlePutBrochure}
-            onCancel={handleEditDialogClose}
+            refetchBrochure={refetchBrochure}
+            closeDialog={handleEditDialogClose}
           />
         </CustomDialog>
       )}

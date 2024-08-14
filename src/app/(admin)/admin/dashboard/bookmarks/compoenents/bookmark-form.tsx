@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { usePostBookmark } from "@/lib/hooks/useBookmarks";
 import { z } from "zod";
@@ -23,15 +22,18 @@ import {
 
 export default function BookmarkForm({
   fetchUsers,
+  fetchVideos,
   refetchBookmark,
   closeDialog
 }: Readonly<{
   fetchUsers: any;
+  fetchVideos: any;
   refetchBookmark: () => void;
   closeDialog: () => void;
 }>) {
   const { mutate: postBookmark } = usePostBookmark();
   const [selectedUser, setSelectedUser] = useState<string>("");
+  const [selectedVideo, setSelectedVideo] = useState<string>("");
 
   const formSchema = z.object({
     user_id: z.string().min(1).max(300),
@@ -46,9 +48,14 @@ export default function BookmarkForm({
     },
   });
 
-  const handleSelectChange = (value: string) => {
+  const handleSelectUser = (value: string) => {
     form.setValue("user_id", value);
     setSelectedUser(value);
+  };
+
+  const handleSelectVideo = (value: string) => {
+    form.setValue("video_id", value);
+    setSelectedVideo(value);
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -68,7 +75,7 @@ export default function BookmarkForm({
               <FormLabel>Select User</FormLabel>
               <FormControl>
                 <Select
-                  onValueChange={handleSelectChange}
+                  onValueChange={handleSelectUser}
                   value={field.value}
                 >
                   <SelectTrigger className="w-full">
@@ -94,16 +101,25 @@ export default function BookmarkForm({
           name="video_id"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Video ID</FormLabel>
+              <FormLabel>Select Video</FormLabel>
               <FormControl>
-                <Input
-                  id="video_id"
-                  name="video_id"
-                  type="text"
+                <Select
+                  onValueChange={handleSelectVideo}
                   value={field.value}
-                  onChange={field.onChange}
-                  placeholder="Video ID"
-                />
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a video">
+                      {fetchVideos?.find((video: any) => video.id.toString() === selectedVideo)?.title || "Select a video"}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {fetchVideos?.map((video: any) => (
+                      <SelectItem key={video.id} value={video.id.toString()}>
+                        {video.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>

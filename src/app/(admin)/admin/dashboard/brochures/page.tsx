@@ -3,17 +3,13 @@
 import { useState } from "react"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
-import {
-  useGetBrochures,
-  usePostBrochure,
-} from "@/lib/hooks/useBrochure"
+import { useGetBrochures } from "@/lib/hooks/useBrochure"
 import BrochureTable from "./components/brochure-table"
 import { CustomDialog } from "@/components/layout/custom-dialog"
 import BrochureForm from "./components/brochure-form"
 
 export default function AdminBrochuresPage() {
   const { data: brochures, refetch: refetchBrochure } = useGetBrochures();
-  const { mutate: postBrochure } = usePostBrochure();
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -23,17 +19,6 @@ export default function AdminBrochuresPage() {
 
   const handleDialogClose = () => {
     setDialogOpen(false);
-  }
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const formData = {
-      title: e.target.title.value,
-      image: e.target.image.value,
-    }
-    await postBrochure(formData);
-    refetchBrochure();
-    handleDialogClose();
   }
 
   return (
@@ -56,7 +41,10 @@ export default function AdminBrochuresPage() {
         title="Add Brochure"
         description="Enter the details for the new brochure entry."
       >
-        <BrochureForm onSubmit={handleSubmit} onCancel={handleDialogClose} />
+        <BrochureForm
+          refetchBrochure={refetchBrochure}
+          closeDialog={handleDialogClose}
+        />
       </CustomDialog>
     </div>
   )

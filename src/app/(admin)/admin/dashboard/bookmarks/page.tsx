@@ -5,12 +5,14 @@ import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
 import { useGetBookmark } from "@/lib/hooks/useBookmarks"
 import { useGetAllUsers } from "@/lib/hooks/useUsers";
+import { useGetVideos } from "@/lib/hooks/useVideo"
 import BookmarkTable from "./compoenents/bookmark-table"
 import { CustomDialog } from "@/components/layout/custom-dialog"
 import BookmarkForm from "./compoenents/bookmark-form"
 
 export default function AdminBookmarksPage() {
   const { data: users } = useGetAllUsers();
+  const { data: videos } = useGetVideos()
   const { data: bookmarks, refetch: refetchBookmark } = useGetBookmark()
 
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -39,6 +41,7 @@ export default function AdminBookmarksPage() {
       <BookmarkTable
         bookmarks={bookmarks?.data}
         fetchUsers={users?.data}
+        fetchVideos={videos?.data}
         refetchBookmark={refetchBookmark}
       />
       <CustomDialog
@@ -49,6 +52,7 @@ export default function AdminBookmarksPage() {
       >
         <BookmarkForm
           fetchUsers={users?.data}
+          fetchVideos={videos?.data}
           refetchBookmark={refetchBookmark}
           closeDialog={handleDialogClose}
         />

@@ -27,6 +27,7 @@ import {
 } from "@/lib/hooks/useReminder";
 import { useGetAllUsers } from "@/lib/hooks/useUsers";
 import ReminderFormEdit from "./reminder-edit";
+import { formatDate, checkUpdatedAt } from "@/lib/utils";
 
 export default function ReminderTable({
   reminders,
@@ -129,11 +130,19 @@ export default function ReminderTable({
               <TableCell>{reminder.medicine_total}</TableCell>
               <TableCell>{reminder.amount}</TableCell>
               <TableCell>{reminder.cause}</TableCell>
-              <TableCell>{reminder.cap_size}</TableCell>
+              <TableCell>
+                {Number(reminder.cap_size) === 0
+                  ? "Terbatas"
+                  : Number(reminder.cap_size) === 1
+                    ? "Bebas Keras"
+                    : Number(reminder.cap_size) === 2
+                      ? "Keras"
+                      : "Unknown"}
+              </TableCell>
               <TableCell>{reminder.medicine_time}</TableCell>
               <TableCell>{reminder.expired_at}</TableCell>
-              <TableCell>{reminder.created_at}</TableCell>
-              <TableCell>{reminder.updated_at}</TableCell>
+              <TableCell>{formatDate(reminder.created_at)}</TableCell>
+              <TableCell>{checkUpdatedAt(reminder.updated_at)}</TableCell>
               <TableCell className="min-[1600px]:space-x-2 max-[1600px]:space-y-2">
                 <Button
                   className="rounded-full p-1 size-8"

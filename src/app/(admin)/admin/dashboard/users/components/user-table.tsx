@@ -18,8 +18,15 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Info, Trash, Check, X } from "lucide-react";
+import {
+  Info,
+  Trash,
+  Check,
+  X
+} from "lucide-react";
+import Image from "next/image";
 import { CustomDialog } from "@/components/layout/custom-dialog";
+import { formatDate, checkUpdatedAt } from "@/lib/utils";
 
 export default function UsersTable({
   users,
@@ -65,12 +72,23 @@ export default function UsersTable({
             <TableCell>{user.username}</TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.number}</TableCell>
-            <TableCell>{user.photo}</TableCell>
+            <TableCell>
+              <Image
+                src={user.photo === ""
+                  ? "/no-image.jpg"
+                  : `https://mahati.xyzuan.my.id/${user.photo}`
+                }
+                alt="Blood Pressure Image"
+                className="rounded-lg"
+                width={100}
+                height={100}
+              />
+            </TableCell>
             <TableCell>
               {user.isAdmin ? <Check /> : <X />}
             </TableCell>
-            <TableCell>{user.created_at}</TableCell>
-            <TableCell>{user.updated_at}</TableCell>
+            <TableCell>{formatDate(user.created_at)}</TableCell>
+            <TableCell>{checkUpdatedAt(user.updated_at)}</TableCell>
             <TableCell className="min-[1600px]:space-x-2 max-[1600px]:space-y-2">
               <Button
                 className="rounded-full p-1 size-8"
