@@ -58,7 +58,7 @@ export default function AdminDashboardPage() {
   const { data: users } = useGetAllUsers();
   const { data: videos } = useGetVideos();
 
-  const allPressures = pressures?.data?.length
+  const allPressures = pressures?.data?.data?.length
   const allBookmarks = bookmarks?.data?.length
   const allBrochures = brochures?.data?.length
   const allQuestionnaires = questionnaires?.data?.length

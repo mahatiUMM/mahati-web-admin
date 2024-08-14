@@ -5,7 +5,7 @@ const token = getToken();
 
 export const getVideos = async () => {
   try {
-    const response = await axiosInstance.get("/video", {
+    const response = await axiosInstance.get("/videos", {
       headers: {
         Authorization: `Bearer ${token}`,
       }
@@ -18,7 +18,7 @@ export const getVideos = async () => {
 
 export const getVideoById = async (id: number) => {
   try {
-    const response = await axiosInstance.get(`/video/${id}`, {
+    const response = await axiosInstance.get(`/videos/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -34,7 +34,7 @@ export const postVideo = async (payload: {
   user_id: number,
 }) => {
   try {
-    const response = await axiosInstance.post("/video", payload);
+    const response = await axiosInstance.post("/videos", payload);
     return response;
   } catch (error) {
     handleError(error);
@@ -46,7 +46,7 @@ export const putVideo = async (id: number, payload: {
   user_id: number,
 }) => {
   try {
-    const response = await axiosInstance.put(`/video/${id}`, payload, {
+    const response = await axiosInstance.put(`/videos/${id}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       }
@@ -59,7 +59,7 @@ export const putVideo = async (id: number, payload: {
 
 export const deleteVideo = async (id: number) => {
   try {
-    const response = await axiosInstance.delete(`/video/${id}`, {
+    const response = await axiosInstance.delete(`/videos/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       }

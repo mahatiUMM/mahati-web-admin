@@ -5,7 +5,7 @@ const token = getToken();
 
 export const getAllUsers = async () => {
   try {
-    const response = await axiosInstance.get("/admin/users", {
+    const response = await axiosInstance.get("/users", {
       headers: {
         Authorization: `Bearer ${token}`,
       }
