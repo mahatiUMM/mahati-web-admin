@@ -3,17 +3,15 @@
 import { useState } from "react"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
-import {
-  useGetReminders,
-  usePostReminder,
-} from "@/lib/hooks/useReminder"
+import { useGetReminders } from "@/lib/hooks/useReminder"
+import { useGetAllUsers } from "@/lib/hooks/useUsers";
 import ReminderTable from "./components/reminder-table"
 import ReminderForm from "./components/reminder-form"
 import { CustomDialog } from "@/components/layout/custom-dialog"
 
 export default function AdminRemindersPage() {
+  const { data: users } = useGetAllUsers();
   const { data: reminders, refetch: refetchReminder } = useGetReminders();
-  const { mutate: postReminder } = usePostReminder();
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -23,24 +21,6 @@ export default function AdminRemindersPage() {
 
   const handleDialogClose = () => {
     setDialogOpen(false);
-  }
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const payload = {
-      user_id: Number(e.target.user_id.value),
-      medicine_name: e.target.medicine_name.value,
-      medicine_taken: Number(e.target.medicine_taken.value),
-      medicine_total: Number(e.target.amount.value - e.target.medicine_taken.value),
-      amount: Number(e.target.amount.value),
-      cause: e.target.cause.value,
-      cap_size: Number(e.target.cap_size.value),
-      medicine_time: e.target.medicine_time.value,
-      expired_at: new Date(e.target.expired_at.value),
-    };
-    await postReminder(payload);
-    refetchReminder();
-    handleDialogClose();
   }
 
   return (
@@ -63,7 +43,11 @@ export default function AdminRemindersPage() {
         title="Add Reminder"
         description="Enter the details for the new reminder entry."
       >
-        <ReminderForm onSubmit={handleSubmit} onCancel={handleDialogClose} />
+        <ReminderForm
+          fetchUsers={users?.data}
+          refetchReminder={refetchReminder}
+          closeDialog={handleDialogClose}
+        />
       </CustomDialog>
     </div>
   )

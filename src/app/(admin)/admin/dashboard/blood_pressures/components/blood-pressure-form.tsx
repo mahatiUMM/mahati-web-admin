@@ -105,7 +105,6 @@ export default function BloodPressureForm({
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="image"
@@ -125,7 +124,6 @@ export default function BloodPressureForm({
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="sistol"
@@ -139,7 +137,6 @@ export default function BloodPressureForm({
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="diastole"
@@ -153,7 +150,6 @@ export default function BloodPressureForm({
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="heartbeat"
@@ -167,7 +163,6 @@ export default function BloodPressureForm({
             </FormItem>
           )}
         />
-
         <div className="flex justify-end gap-2 mt-4">
           <Button type="submit" variant="default">
             Save

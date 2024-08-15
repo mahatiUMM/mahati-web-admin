@@ -41,7 +41,7 @@ export default function ReminderTable({
     medicine_total: number,
     amount: number,
     cause: string,
-    cap_size: string,
+    cap_size: number,
     medicine_time: string,
     expired_at: string,
     created_at: string,
@@ -60,6 +60,19 @@ export default function ReminderTable({
   const { deleteData: deleteReminder } = useDeleteReminder();
 
   const userMap = new Map(users?.data?.map((user: any) => [user.id, user.username]));
+
+  const capSize = (capSize: number) => {
+    switch (capSize) {
+      case 1:
+        return <div className="bg-green-400/50 text-black dark:text-white rounded-full px-2 py-1 text-xs text-center font-semibold uppercase tracking-wide">Terbatas</div>;
+      case 2:
+        return <div className="bg-yellow-400/50 text-black dark:text-white rounded-full px-2 py-1 text-xs text-center font-semibold uppercase tracking-wide">Bebas Keras</div>;
+      case 3:
+        return <div className="bg-red-400/50 text-black dark:text-white rounded-full px-2 py-1 text-xs text-center font-semibold uppercase tracking-wide">Keras</div>;
+      default:
+        return "Unknown";
+    }
+  }
 
   const handleEditClick = (id: number) => {
     setSelectedReminderEdit(id);
@@ -130,15 +143,7 @@ export default function ReminderTable({
               <TableCell>{reminder.medicine_total}</TableCell>
               <TableCell>{reminder.amount}</TableCell>
               <TableCell>{reminder.cause}</TableCell>
-              <TableCell>
-                {Number(reminder.cap_size) === 0
-                  ? "Terbatas"
-                  : Number(reminder.cap_size) === 1
-                    ? "Bebas Keras"
-                    : Number(reminder.cap_size) === 2
-                      ? "Keras"
-                      : "Unknown"}
-              </TableCell>
+              <TableCell>{capSize(reminder.cap_size)}</TableCell>
               <TableCell>{reminder.medicine_time}</TableCell>
               <TableCell>{reminder.expired_at}</TableCell>
               <TableCell>{formatDate(reminder.created_at)}</TableCell>
