@@ -7,16 +7,6 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Info,
@@ -44,13 +34,7 @@ export default function UsersTable({
   }[];
   refetchUsers: () => void,
 }>) {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedUserEdit, setSelectedUserEdit] = useState<number | null>(null);
-  const [selectedUserDelete, setSelectedUserDelete] = useState<number | null>(null);
-
   return (
-
     <Table className="my-4 lg:my-0">
       <TableHeader>
         <TableRow>

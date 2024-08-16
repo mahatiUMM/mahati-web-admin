@@ -101,7 +101,7 @@ export function usePutReminder() {
     cause: string,
     cap_size: number,
     medicine_time: string,
-    expired_at: Date,
+    expired_at: any,
   }) => {
     setLoading(true);
     try {

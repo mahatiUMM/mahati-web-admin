@@ -7,16 +7,6 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Info, Trash } from "lucide-react";
 import Image from "next/image";
@@ -28,6 +18,7 @@ import {
 } from "@/lib/hooks/useBrochure";
 import BrochureFormEdit from "./brochure-edit";
 import { formatDate, checkUpdatedAt } from "@/lib/utils";
+import { CustomAlert } from "@/components/layout/custom-alert";
 
 export default function BrochureTable({
   brochures,
@@ -124,17 +115,17 @@ export default function BrochureTable({
               <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">
                 <Button
                   className="rounded-full p-1 size-8"
-                  variant={"secondary"}
+                  variant={"outline"}
                   onClick={() => handleEditClick(brochure.id)}
                 >
-                  <Info className="text-blue-400 size-6" />
+                  <Info className="text-blue-600 dark:text-blue-400 size-6" />
                 </Button>
                 <Button
                   className="rounded-full p-1 size-8"
-                  variant={"destructive"}
+                  variant={"outline"}
                   onClick={() => handleDeleteClick(brochure.id)}
                 >
-                  <Trash className="text-red-400 size-6" />
+                  <Trash className="text-red-600 dark:text-red-400 size-6" />
                 </Button>
               </TableCell>
             </TableRow>
@@ -155,22 +146,13 @@ export default function BrochureTable({
           />
         </CustomDialog>
       )}
-      <AlertDialog open={isDialogOpen} onOpenChange={handleDeleteDialogClose}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {selectedBrochureDelete && `Delete Brochure ID: ${selectedBrochureDelete}`}
-            </AlertDialogTitle>
-          </AlertDialogHeader>
-          <AlertDialogDescription>
-            Are you sure you want to delete this brochure?
-          </AlertDialogDescription>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={handleDeleteBrochure}>Yes</AlertDialogAction>
-            <AlertDialogCancel onClick={handleDeleteDialogClose}>No</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <CustomAlert
+        open={isDialogOpen}
+        onOpenChange={handleDeleteDialogClose}
+        onClick={handleDeleteBrochure}
+        title={`Delete Brochure ID: ${selectedBrochureDelete}`}
+        description="Are you sure you want to delete this brochure?"
+      />
     </>
   )
 }

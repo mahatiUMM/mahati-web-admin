@@ -7,16 +7,6 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Info, Trash } from "lucide-react";
 import Image from "next/image";
@@ -27,7 +17,8 @@ import {
   useDeleteBloodPressure
 } from "@/lib/hooks/useBloodPressures";
 import BloodPressureFormEdit from "./blood-pressure-edit";
-import { formatDate, checkUpdatedAt } from "../../../../../../lib/utils";
+import { formatDate, checkUpdatedAt } from "@/lib/utils";
+import { CustomAlert } from "@/components/layout/custom-alert";
 
 export default function BloodPressureTable({
   pressures,
@@ -139,17 +130,17 @@ export default function BloodPressureTable({
               <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">
                 <Button
                   className="rounded-full p-1 size-8"
-                  variant={"secondary"}
+                  variant={"outline"}
                   onClick={() => handleEditClick(pressure.id)}
                 >
-                  <Info className="text-blue-400 size-6" />
+                  <Info className="text-blue-600 dark:text-blue-400 size-6" />
                 </Button>
                 <Button
                   className="rounded-full p-1 size-8"
-                  variant={"destructive"}
+                  variant={"outline"}
                   onClick={() => handleDeleteClick(pressure.id)}
                 >
-                  <Trash className="text-red-400 size-6" />
+                  <Trash className="text-red-600 dark:text-red-400 size-6" />
                 </Button>
               </TableCell>
             </TableRow>
@@ -171,22 +162,13 @@ export default function BloodPressureTable({
           />
         </CustomDialog>
       )}
-      <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {selectedPressureDelete ? `Delete Blood Pressure ID ${selectedPressureDelete}` : "Delete Blood Pressure"}
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleDeleteDialogClose}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeletePressure}>Delete</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <CustomAlert
+        open={isDialogOpen}
+        onOpenChange={handleDeleteDialogClose}
+        onClick={handleDeletePressure}
+        title={`Delete Blood Pressure ID: ${selectedPressureDelete}`}
+        description="Are you sure you want to delete this blood pressure entry?"
+      />
     </>
   );
 }

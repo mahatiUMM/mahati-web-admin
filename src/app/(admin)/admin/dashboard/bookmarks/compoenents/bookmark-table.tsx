@@ -7,16 +7,7 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { CustomAlert } from "@/components/layout/custom-alert";
 import { Button } from "@/components/ui/button";
 import { Info, Trash } from "lucide-react";
 import { CustomDialog } from "@/components/layout/custom-dialog";
@@ -116,17 +107,17 @@ export default function BookmarkTable({
               <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">
                 <Button
                   className="rounded-full p-1 size-8"
-                  variant={"secondary"}
+                  variant={"outline"}
                   onClick={() => handleEditClick(bookmark.id)}
                 >
-                  <Info className="text-blue-400 size-6" />
+                  <Info className="text-blue-600 dark:text-blue-400 size-6" />
                 </Button>
                 <Button
                   className="rounded-full p-1 size-8"
-                  variant={"destructive"}
+                  variant={"outline"}
                   onClick={() => handleDeleteClick(bookmark.id)}
                 >
-                  <Trash className="text-red-400 size-6" />
+                  <Trash className="text-red-600 dark:text-red-400 size-6" />
                 </Button>
               </TableCell>
             </TableRow>
@@ -149,22 +140,13 @@ export default function BookmarkTable({
           />
         </CustomDialog>
       )}
-      <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {selectedBookmarkDelete ? `Delete Bookmark ID ${selectedBookmarkDelete}` : "Delete Bookmark"}
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleDeleteDialogClose}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteBookmark}>Delete</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <CustomAlert
+        open={isDialogOpen}
+        onOpenChange={handleDeleteDialogClose}
+        onClick={handleDeleteBookmark}
+        title={`Delete Bookmark ID: ${selectedBookmarkDelete}`}
+        description="Are you sure you want to delete this bookmark entry?"
+      />
     </>
   )
 }

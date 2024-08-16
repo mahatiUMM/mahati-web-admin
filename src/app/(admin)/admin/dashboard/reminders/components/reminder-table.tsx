@@ -7,30 +7,20 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { CustomAlert } from "@/components/layout/custom-alert";
 import { Button } from "@/components/ui/button";
 import { Info, Trash } from "lucide-react";
 import { CustomDialog } from "@/components/layout/custom-dialog";
 import {
   useGetRemiderById,
-  usePutReminder,
   useDeleteReminder
 } from "@/lib/hooks/useReminder";
-import { useGetAllUsers } from "@/lib/hooks/useUsers";
 import ReminderFormEdit from "./reminder-edit";
 import { formatDate, checkUpdatedAt } from "@/lib/utils";
 
 export default function ReminderTable({
   reminders,
+  fetchUsers,
   refetchReminder,
 }: Readonly<{
   reminders: {
@@ -47,6 +37,7 @@ export default function ReminderTable({
     created_at: string,
     updated_at: string,
   }[];
+  fetchUsers: any;
   refetchReminder: () => void,
 }>) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -54,12 +45,10 @@ export default function ReminderTable({
   const [selectedReminderEdit, setSelectedReminderEdit] = useState<number | null>(null);
   const [selectedReminderDelete, setSelectedReminderDelete] = useState<number | null>(null);
 
-  const { data: users } = useGetAllUsers();
   const { data: reminder, fetchData } = useGetRemiderById();
-  const { putData: updateReminder } = usePutReminder();
   const { deleteData: deleteReminder } = useDeleteReminder();
 
-  const userMap = new Map(users?.data?.map((user: any) => [user.id, user.username]));
+  const userMap = new Map(fetchUsers?.map((user: any) => [user.id, user.username]));
 
   const capSize = (capSize: number) => {
     switch (capSize) {
@@ -93,14 +82,6 @@ export default function ReminderTable({
   const handleDeleteDialogClose = () => {
     setSelectedReminderDelete(null);
     setIsDialogOpen(false);
-  }
-
-  const handlePutReminder = async (formData: any) => {
-    if (selectedReminderEdit) {
-      await updateReminder(selectedReminderEdit, formData);
-      refetchReminder();
-      handleEditDialogClose();
-    }
   }
 
   const handleDeleteReminder = async () => {
@@ -151,17 +132,17 @@ export default function ReminderTable({
               <TableCell className="min-[1600px]:space-x-2 max-[1600px]:space-y-2">
                 <Button
                   className="rounded-full p-1 size-8"
-                  variant={"secondary"}
+                  variant={"outline"}
                   onClick={() => handleEditClick(reminder.id)}
                 >
-                  <Info className="text-blue-400 size-6" />
+                  <Info className="text-blue-600 dark:text-blue-400 size-6" />
                 </Button>
                 <Button
                   className="rounded-full p-1 size-8"
-                  variant={"destructive"}
+                  variant={"outline"}
                   onClick={() => handleDeleteClick(reminder.id)}
                 >
-                  <Trash className="text-red-400 size-6" />
+                  <Trash className="text-red-600 dark:text-red-400 size-6" />
                 </Button>
               </TableCell>
             </TableRow>
@@ -177,27 +158,19 @@ export default function ReminderTable({
         >
           <ReminderFormEdit
             reminder={reminder}
-            onSubmit={handlePutReminder}
-            onCancel={handleEditDialogClose}
+            fetchUsers={fetchUsers}
+            refetchReminder={refetchReminder}
+            closeDialog={handleEditDialogClose}
           />
         </CustomDialog>
       )}
-      <AlertDialog open={isDialogOpen} onOpenChange={handleDeleteDialogClose}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {selectedReminderDelete && `Delete Reminder ID: ${selectedReminderDelete}`}
-            </AlertDialogTitle>
-          </AlertDialogHeader>
-          <AlertDialogDescription>
-            Are you sure you want to delete this reminder?
-          </AlertDialogDescription>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={handleDeleteReminder}>Yes</AlertDialogAction>
-            <AlertDialogCancel onClick={handleDeleteDialogClose}>No</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <CustomAlert
+        open={isDialogOpen}
+        onOpenChange={handleDeleteDialogClose}
+        onClick={handleDeleteReminder}
+        title={`Delete Reminder ID: ${selectedReminderDelete}`}
+        description="Are you sure you want to delete this reminder entry?"
+      />
     </>
   )
 }

@@ -7,19 +7,9 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { CustomDialog } from "@/components/layout/custom-dialog";
 import { Button } from "@/components/ui/button";
 import { Info, Trash } from "lucide-react";
-import { CustomDialog } from "@/components/layout/custom-dialog";
 import {
   useGetScheduleById,
   usePutSchedule,
@@ -28,6 +18,7 @@ import {
 import { useGetAllUsers } from "@/lib/hooks/useUsers"
 import ScheduleFormEdit from "./schedule-edit";
 import { formatDate, checkUpdatedAt } from "@/lib/utils";
+import { CustomAlert } from "@/components/layout/custom-alert";
 
 export default function ScheduleTable({
   schedules,
@@ -173,17 +164,17 @@ export default function ScheduleTable({
               <TableCell className="min-[1600px]:space-x-2 max-[1600px]:space-y-2">
                 <Button
                   className="rounded-full p-1 size-8"
-                  variant={"secondary"}
+                  variant={"outline"}
                   onClick={() => handleEditClick(schedule.id)}
                 >
-                  <Info className="text-blue-400 size-6" />
+                  <Info className="text-blue-600 dark:text-blue-400 size-6" />
                 </Button>
                 <Button
                   className="rounded-full p-1 size-8"
-                  variant={"destructive"}
+                  variant={"outline"}
                   onClick={() => handleDeleteClick(schedule.id)}
                 >
-                  <Trash className="text-red-400 size-6" />
+                  <Trash className="text-red-600 dark:text-red-400 size-6" />
                 </Button>
               </TableCell>
             </TableRow>
@@ -204,22 +195,13 @@ export default function ScheduleTable({
           />
         </CustomDialog>
       )}
-      <AlertDialog open={isDialogOpen} onOpenChange={handleDeleteDialogClose}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {selectedScheduleDelete && `Delete Schedule ID: ${selectedScheduleDelete}`}
-            </AlertDialogTitle>
-          </AlertDialogHeader>
-          <AlertDialogDescription>
-            Are you sure you want to delete this schedule?
-          </AlertDialogDescription>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={handleDeleteSchedule}>Yes</AlertDialogAction>
-            <AlertDialogCancel onClick={handleDeleteDialogClose}>No</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <CustomAlert
+        open={isDialogOpen}
+        onOpenChange={handleDeleteDialogClose}
+        onClick={handleDeleteSchedule}
+        title={`Delete Schedule ID: ${selectedScheduleDelete}`}
+        description="Are you sure you want to delete this schedule entry?"
+      />
     </>
   )
 }

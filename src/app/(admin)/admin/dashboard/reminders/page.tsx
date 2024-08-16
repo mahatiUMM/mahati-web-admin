@@ -36,7 +36,11 @@ export default function AdminRemindersPage() {
           Add Reminder
         </Button>
       </div>
-      <ReminderTable reminders={reminders?.data} refetchReminder={refetchReminder} />
+      <ReminderTable
+        reminders={reminders?.data}
+        fetchUsers={users?.data}
+        refetchReminder={refetchReminder}
+      />
       <CustomDialog
         isOpen={dialogOpen}
         onClose={handleDialogClose}
