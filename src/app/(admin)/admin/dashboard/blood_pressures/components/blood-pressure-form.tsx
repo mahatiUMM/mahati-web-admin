@@ -66,7 +66,6 @@ export default function BloodPressureForm({
     if (values.image) {
       formData.append("image", values.image);
     }
-
     await postBloodPressure(formData);
     refetchPressure();
     closeDialog();

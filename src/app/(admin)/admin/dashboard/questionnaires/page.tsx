@@ -3,17 +3,13 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
-import {
-  useGetQuestionnaires,
-  usePostQuestionnaire,
-} from "@/lib/hooks/useQuestionnaire"
+import { useGetQuestionnaires } from "@/lib/hooks/useQuestionnaire"
 import QuestionnaireTable from "./components/questionnaire-table"
 import QuestionnaireForm from "./components/quesstionnaire-form"
 import { CustomDialog } from "@/components/layout/custom-dialog"
 
 export default function AdminQuestionnairesPage() {
   const { data: questionnaires, refetch: refetchQuestionnare } = useGetQuestionnaires();
-  const { mutate: postQuestionnaire } = usePostQuestionnaire();
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -23,18 +19,6 @@ export default function AdminQuestionnairesPage() {
 
   const handleDialogClose = () => {
     setDialogOpen(false);
-  }
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const formData = {
-      type: e.target.type.value,
-      image: e.target.image.value,
-      title: e.target.title.value,
-      description: e.target.description.value,
-    }
-    await postQuestionnaire(formData);
-    handleDialogClose();
   }
 
   return (
@@ -50,14 +34,20 @@ export default function AdminQuestionnairesPage() {
           Add Questionnaire
         </Button>
       </div>
-      <QuestionnaireTable questionnaires={questionnaires?.data} refetchQuestionnare={refetchQuestionnare} />
+      <QuestionnaireTable
+        questionnaires={questionnaires?.data}
+        refetchQuestionnare={refetchQuestionnare}
+      />
       <CustomDialog
         isOpen={dialogOpen}
         onClose={handleDialogClose}
         title="Add Questionnaire"
         description="Enter the details for the new questionnaire entry."
       >
-        <QuestionnaireForm onSubmit={handleSubmit} onCancel={handleDialogClose} />
+        <QuestionnaireForm
+          refetchQuestionnaire={refetchQuestionnare}
+          closeDialog={handleDialogClose}
+        />
       </CustomDialog>
     </div>
   )

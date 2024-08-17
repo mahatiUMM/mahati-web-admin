@@ -3,6 +3,7 @@ import {
   getQuestionnaires,
   getQuestionnaireById,
   postQuestionnaire,
+  postQuestionnaireQuestion,
   putQuestionnaire,
   deleteQuestionnaire,
 } from "../api/questionnaire";
@@ -63,13 +64,36 @@ export function usePostQuestionnaire() {
     try {
       const response = await postQuestionnaire(payload);
       setData(response?.data);
-      toast.success("Questionnaire created successfully.");
       if (response?.status === 201) {
         toast.success("Successfully added a new questionnaire.");
       }
     } catch (err) {
       setError(err as Error);
       toast.error("Failed to add a new questionnaire. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return { data, loading, error, mutate };
+}
+
+export function usePostQuestionnaireQuestion() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = async (payload: any) => {
+    setLoading(true);
+    try {
+      const response = await postQuestionnaireQuestion(payload);
+      setData(response?.data);
+      if (response?.status === 201) {
+        toast.success("Successfully added a new question.");
+      }
+    } catch (err) {
+      setError(err as Error);
+      toast.error("Failed to add a new question. Please try again.");
     } finally {
       setLoading(false);
     }

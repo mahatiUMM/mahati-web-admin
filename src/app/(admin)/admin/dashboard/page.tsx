@@ -71,7 +71,7 @@ export default function AdminDashboardPage() {
   const usersData = users?.data?.filter((user: any) => user.isAdmin === false).length
 
   const chartUsers = [
-    { month: "Users", admins: adminsData, users: usersData },
+    { allUser: "All Users", admins: adminsData, users: usersData },
   ]
 
   const chartAllData = [
@@ -194,11 +194,10 @@ export default function AdminDashboardPage() {
               <BarChart accessibilityLayer data={chartUsers}>
                 <CartesianGrid vertical={false} />
                 <XAxis
-                  dataKey="month"
+                  dataKey="allUser"
                   tickLine={false}
                   tickMargin={10}
                   axisLine={false}
-                  tickFormatter={(value) => value.slice(0, 3)}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <ChartLegend content={<ChartLegendContent />} />
@@ -206,7 +205,6 @@ export default function AdminDashboardPage() {
                 <Bar dataKey="users" fill="var(--color-users)" radius={4} />
               </BarChart>
             </ChartContainer>
-
           </CardContent>
           <CardFooter className="flex-col items-start gap-2 text-sm">
             <div className="flex gap-2 font-medium leading-none">

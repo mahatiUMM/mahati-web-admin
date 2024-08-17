@@ -31,23 +31,8 @@ export const getQuestionnaireById = async (id: number) => {
 
 export const postQuestionnaire = async (payload: {
   type: string,
-  image: string,
   title: string,
   description: string,
-  questionnaire_question: {
-    id?: number;
-    questionnaire_id?: number;
-    question: string;
-    created_at?: string;
-    updated_at?: string;
-    available_answers?: {
-      id?: number;
-      questionnaireQuestionId?: number;
-      answer_text: string;
-      created_at: string;
-      updated_at: string | null;
-    }
-  }
 }) => {
   try {
     const response = await axiosInstance.post("/questionnaire", payload);
@@ -57,25 +42,28 @@ export const postQuestionnaire = async (payload: {
   }
 }
 
+export const postQuestionnaireQuestion = async (
+  payload: {
+    questionnaire_id: number,
+    question: string,
+    available_answer: {
+      answer_text: string,
+    }[]
+  }) => {
+  try {
+    const response = await axiosInstance.post("/questionnaire_question", payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    return response;
+  } catch (error) {
+    handleError(error);
+  }
+}
+
 export const putQuestionnaire = async (id: number, payload: {
   type: string,
-  image: string,
-  title: string,
-  description: string,
-  questionnaire_question: {
-    id?: number;
-    questionnaire_id?: number;
-    question: string;
-    created_at?: string;
-    updated_at?: string;
-    available_answers?: {
-      id?: number;
-      questionnaireQuestionId?: number;
-      answer_text: string;
-      created_at: string;
-      updated_at: string | null;
-    }
-  }
 }) => {
   try {
     const response = await axiosInstance.put(`/questionnaire/${id}`, payload, {
