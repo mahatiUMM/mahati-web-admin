@@ -26,6 +26,18 @@ export default function AdminProfileEditPage() {
     </Link>
   );
 
+  const renderProfileImage = (src: any, alt: any) => (
+    <Image
+      loading="lazy"
+      crossOrigin="anonymous"
+      src={src}
+      alt={alt}
+      width={100}
+      height={100}
+      className="rounded-full"
+    />
+  );
+
   const renderProfileInput = (id: any, label: string, type: string, placeholder: string) => (
     <div className="space-y-2">
       <Label htmlFor={id}>{label}</Label>
@@ -58,19 +70,18 @@ export default function AdminProfileEditPage() {
             </div>
             <div className="shrink-0 bg-border h-[1px] w-full" role="none"></div>
             <form className="space-y-8">
-              {renderProfileInput("username", "Username", "text", dataProfile?.user?.username)}
-              {renderProfileInput("email", "Email", "email", dataProfile?.user?.email)}
-              {renderProfileInput("number", "Number", "text", dataProfile?.user?.number)}
-              {renderProfileInput("image", "Image", "file", dataProfile?.user?.image)}
-              <Image
-                loading="lazy"
-                crossOrigin="anonymous"
-                src={dataProfile?.user?.image}
-                alt={dataProfile?.user?.image}
-                width={100}
-                height={100}
-                className="rounded-full"
-              />
+              {renderProfileInput("username", "Username", "text", dataProfile?.data?.username)}
+              {renderProfileInput("email", "Email", "email", dataProfile?.data?.email)}
+              {renderProfileInput("number", "Number", "text", dataProfile?.data?.number)}
+              {renderProfileInput("image", "Image", "file", dataProfile?.data?.image)}
+              <div className="space-y-2">
+                <Label htmlFor="photo">Photo</Label>
+                {dataProfile?.data?.photo === "" ? (
+                  renderProfileImage("/mahati-logo.png", "User Profile")
+                ) : (
+                  renderProfileImage(dataProfile?.data?.photo, "User Profile")
+                )}
+              </div>
               <Button variant={"default"}>
                 Save Changes
               </Button>

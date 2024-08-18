@@ -12,6 +12,8 @@ export default function AdminProfilePage() {
   const pathname = usePathname();
   const { data: dataProfile } = useGetProfile();
 
+  console.log(dataProfile)
+
   const renderProfileLink = (href: string, label: string) => (
     <Link
       className={`inline-flex items-center rounded-md text-sm font-medium hover:text-accent-foreground h-9 px-4 py-2 hover:bg-muted hover:underline hover:underline-offset-4 justify-start ${pathname === href ? "underline underline-offset-4" : ""}`}
@@ -65,15 +67,15 @@ export default function AdminProfilePage() {
             </div>
             <div className="shrink-0 bg-border h-[1px] w-full" role="none"></div>
             <form className="space-y-8">
-              {renderProfileInput("username", "Username", "text", dataProfile?.user?.username)}
-              {renderProfileInput("email", "Email", "email", dataProfile?.user?.email)}
-              {renderProfileInput("number", "Number", "text", dataProfile?.user?.number)}
+              {renderProfileInput("username", "Username", "text", dataProfile?.data?.username)}
+              {renderProfileInput("email", "Email", "email", dataProfile?.data?.email)}
+              {renderProfileInput("number", "Number", "text", dataProfile?.data?.number)}
               <div className="space-y-2">
                 <Label htmlFor="photo">Photo</Label>
-                {dataProfile?.user?.photo === "" ? (
+                {dataProfile?.data?.photo === "" ? (
                   renderProfileImage("/mahati-logo.png", "User Profile")
                 ) : (
-                  renderProfileImage(dataProfile?.user?.photo, "User Profile")
+                  renderProfileImage(dataProfile?.data?.photo, "User Profile")
                 )}
               </div>
             </form>
