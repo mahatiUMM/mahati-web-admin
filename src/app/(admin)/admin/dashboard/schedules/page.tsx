@@ -3,17 +3,15 @@
 import { useState } from "react"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
-import {
-  useGetSchedules,
-  usePostSchedule,
-} from "@/lib/hooks/useSchedule"
+import { useGetSchedules } from "@/lib/hooks/useSchedule"
+import { useGetReminders } from "@/lib/hooks/useReminder"
 import ScheduleTable from "./components/schedule-table"
 import ScheduleForm from "./components/schedule-form"
 import { CustomDialog } from "@/components/layout/custom-dialog"
 
 export default function AdminSchedulesPage() {
   const { data: schedules, refetch: refetchSchedule } = useGetSchedules();
-  const { mutate: postSchedule } = usePostSchedule();
+  const { data: reminders } = useGetReminders();
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -23,18 +21,6 @@ export default function AdminSchedulesPage() {
 
   const handleDialogClose = () => {
     setDialogOpen(false);
-  }
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const formData = {
-      reminder_id: e.target.reminder_id.value,
-      time: e.target.time.value,
-      status: e.target.status.value,
-    }
-    await postSchedule(formData);
-    refetchSchedule();
-    handleDialogClose();
   }
 
   return (
@@ -57,7 +43,11 @@ export default function AdminSchedulesPage() {
         title="Add Schedule"
         description="Enter the details for the new schedule entry."
       >
-        <ScheduleForm onSubmit={handleSubmit} onCancel={handleDialogClose} />
+        <ScheduleForm
+          fetchReminders={reminders}
+          refetchSchedule={refetchSchedule}
+          closeDialog={handleDialogClose}
+        />
       </CustomDialog>
     </div>
   )

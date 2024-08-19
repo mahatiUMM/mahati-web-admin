@@ -105,7 +105,7 @@ export default function ScheduleTable({
             <TableHead className="hidden lg:table-cell">ID</TableHead>
             <TableHead>Reminder ID</TableHead>
             <TableHead>Time</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>Taken</TableHead>
             <TableHead>Created At</TableHead>
             <TableHead>Updated At</TableHead>
             <TableHead>Reminder</TableHead>
@@ -118,48 +118,41 @@ export default function ScheduleTable({
               <TableCell className="hidden lg:table-cell">{schedule.id}</TableCell>
               <TableCell>{schedule.reminder_id}</TableCell>
               <TableCell>{formatDate(schedule.time)}</TableCell>
-              <TableCell>{schedule.status === 0 ? "Belum di minum" : "Sudah di minum"}</TableCell>
+              <TableCell className="text-center">
+                {schedule.status === 0 ?
+                  <div className="bg-red-100 text-red-800 px-2 py-1 rounded-full">
+                    No
+                  </div>
+                  :
+                  <div className="bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                    Yes
+                  </div>}
+              </TableCell>
               <TableCell>{formatDate(schedule.created_at)}</TableCell>
               <TableCell>{checkUpdatedAt(schedule.updated_at)}</TableCell>
               <TableCell>
-                <div className="flex flex-col w-fit gap-2">
-                  <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                    ID: {schedule.reminder.id}
-                  </div>
-                  <div className="bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                    Username: {userMap.get(schedule.reminder.user_id) as string || 'Unknown User'}
-                  </div>
-                  <div className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
-                    Medicine Name: {schedule.reminder.medicine_name}
-                  </div>
-                  <div className="bg-red-100 text-red-800 px-2 py-1 rounded-full">
-                    Medicine Taken: {schedule.reminder.medicine_taken ? 'Yes' : 'No'}
-                  </div>
-                  <div className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
-                    Medicine Total: {schedule.reminder.medicine_total}
-                  </div>
-                  <div className="bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">
-                    Amount: {schedule.reminder.amount}
-                  </div>
-                  <div className="bg-pink-100 text-pink-800 px-2 py-1 rounded-full">
-                    Cause: {schedule.reminder.cause}
-                  </div>
-                  <div className="bg-teal-100 text-teal-800 px-2 py-1 rounded-full">
-                    Cap Size: {schedule.reminder.cap_size}
-                  </div>
-                  <div className="bg-orange-100 text-orange-800 px-2 py-1 rounded-full">
-                    Medicine Time: {schedule.reminder.medicine_time}
-                  </div>
-                  <div className="bg-gray-100 text-gray-800 px-2 py-1 rounded-full">
-                    Expired At: {schedule.reminder.expired_at}
-                  </div>
-                  <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                    Created At: {formatDate(schedule.reminder.created_at)}
-                  </div>
-                  <div className="bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                    Updated At: {checkUpdatedAt(schedule.reminder.updated_at)}
-                  </div>
-                </div>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-40">User</TableHead>
+                    <TableHead className="w-40">Medicine</TableHead>
+                    <TableHead>Taken</TableHead>
+                    <TableHead>Total</TableHead>
+                    <TableHead>Amount</TableHead>
+                    <TableHead className="w-40">Cause</TableHead>
+                    <TableHead>Cap Size</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>{userMap.get(schedule.reminder.user_id) as string || 'Unknown User'}</TableCell>
+                    <TableCell>{schedule.reminder.medicine_name}</TableCell>
+                    <TableCell>{schedule.reminder.medicine_taken}</TableCell>
+                    <TableCell>{schedule.reminder.medicine_total}</TableCell>
+                    <TableCell>{schedule.reminder.amount}</TableCell>
+                    <TableCell>{schedule.reminder.cause}</TableCell>
+                    <TableCell>{schedule.reminder.cap_size}</TableCell>
+                  </TableRow>
+                </TableBody>
               </TableCell>
               <TableCell className="min-[1600px]:space-x-2 max-[1600px]:space-y-2">
                 <Button
