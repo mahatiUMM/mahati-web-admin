@@ -87,6 +87,9 @@ export function usePutSchedule() {
     try {
       const response = await putSchedule(id, payload);
       setData(response?.data);
+      if (response?.status === 200) {
+        toast.success("Schedule updated successfully.");
+      }
     } catch (err) {
       setError(err as Error);
       toast.error("Failed to update. Please try again.");

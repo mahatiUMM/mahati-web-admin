@@ -36,7 +36,11 @@ export default function AdminSchedulesPage() {
           Add Schedule
         </Button>
       </div>
-      <ScheduleTable schedules={schedules?.data} refetchSchedule={refetchSchedule} />
+      <ScheduleTable
+        schedules={schedules?.data}
+        fetchReminders={reminders}
+        refetchSchedule={refetchSchedule}
+      />
       <CustomDialog
         isOpen={dialogOpen}
         onClose={handleDialogClose}

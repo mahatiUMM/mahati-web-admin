@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Info, Trash } from "lucide-react";
 import {
   useGetScheduleById,
-  usePutSchedule,
   useDeleteSchedule,
 } from "@/lib/hooks/useSchedule";
 import { useGetAllUsers } from "@/lib/hooks/useUsers"
@@ -22,6 +21,7 @@ import { CustomAlert } from "@/components/layout/custom-alert";
 
 export default function ScheduleTable({
   schedules,
+  fetchReminders,
   refetchSchedule,
 }: Readonly<{
   schedules: {
@@ -46,6 +46,7 @@ export default function ScheduleTable({
       updated_at: string,
     }
   }[];
+  fetchReminders: any,
   refetchSchedule: () => void,
 }>) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -55,7 +56,6 @@ export default function ScheduleTable({
 
   const { data: users } = useGetAllUsers();
   const { data: schedule, fetchData } = useGetScheduleById();
-  const { putData: updateSchedule } = usePutSchedule();
   const { deleteData: deleteSchedule } = useDeleteSchedule();
 
   const userMap = new Map(users?.data?.map((user: any) => [user.id, user.username]));
@@ -79,14 +79,6 @@ export default function ScheduleTable({
   const handleDeleteDialogClose = () => {
     setSelectedScheduleDelete(null);
     setIsDialogOpen(false);
-  }
-
-  const handlePutSchedule = async (formData: any) => {
-    if (selectedScheduleEdit) {
-      await updateSchedule(selectedScheduleEdit, formData);
-      refetchSchedule();
-      handleEditDialogClose();
-    }
   }
 
   const handleDeleteSchedule = async () => {
@@ -139,7 +131,6 @@ export default function ScheduleTable({
                     <TableHead>Total</TableHead>
                     <TableHead>Amount</TableHead>
                     <TableHead className="w-40">Cause</TableHead>
-                    <TableHead>Cap Size</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -150,7 +141,6 @@ export default function ScheduleTable({
                     <TableCell>{schedule.reminder.medicine_total}</TableCell>
                     <TableCell>{schedule.reminder.amount}</TableCell>
                     <TableCell>{schedule.reminder.cause}</TableCell>
-                    <TableCell>{schedule.reminder.cap_size}</TableCell>
                   </TableRow>
                 </TableBody>
               </TableCell>
@@ -183,8 +173,9 @@ export default function ScheduleTable({
         >
           <ScheduleFormEdit
             schedule={schedule}
-            onSubmit={handlePutSchedule}
-            onCancel={handleEditDialogClose}
+            fetchReminders={fetchReminders}
+            refetchSchedule={refetchSchedule}
+            closeDialog={handleEditDialogClose}
           />
         </CustomDialog>
       )}
