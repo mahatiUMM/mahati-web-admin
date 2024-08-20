@@ -12,8 +12,6 @@ export default function AdminProfilePage() {
   const pathname = usePathname();
   const { data: dataProfile } = useGetProfile();
 
-  console.log(dataProfile)
-
   const renderProfileLink = (href: string, label: string) => (
     <Link
       className={`inline-flex items-center rounded-md text-sm font-medium hover:text-accent-foreground h-9 px-4 py-2 hover:bg-muted hover:underline hover:underline-offset-4 justify-start ${pathname === href ? "underline underline-offset-4" : ""}`}

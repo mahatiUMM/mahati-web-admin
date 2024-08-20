@@ -3,18 +3,15 @@
 import { useState } from "react"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
-import {
-  useGetVideos,
-  usePostVideo,
-} from "@/lib/hooks/useVideo"
+import { useGetVideos } from "@/lib/hooks/useVideo"
+import { useGetAllUsers } from "@/lib/hooks/useUsers"
 import VideoTable from "./components/video-table"
 import VideoForm from "./components/video-form"
 import { CustomDialog } from "@/components/layout/custom-dialog"
-import { getToken } from "@/lib/utils"
 
 export default function AdminVideosPage() {
+  const { data: users } = useGetAllUsers();
   const { data: videos, refetch: refetchVideo } = useGetVideos();
-  const { mutate: postVideo } = usePostVideo();
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -24,17 +21,6 @@ export default function AdminVideosPage() {
 
   const handleDialogClose = () => {
     setDialogOpen(false);
-  }
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const formData = {
-      link: e.target.link.value,
-      user_id: Number(e.target.user_id.value),
-    }
-    await postVideo(formData);
-    refetchVideo();
-    handleDialogClose();
   }
 
   return (
@@ -50,14 +36,21 @@ export default function AdminVideosPage() {
           Add Video
         </Button>
       </div>
-      <VideoTable videos={videos?.data} refetchVideo={refetchVideo} />
+      <VideoTable
+        videos={videos?.data}
+        refetchVideo={refetchVideo}
+      />
       <CustomDialog
         isOpen={dialogOpen}
         onClose={handleDialogClose}
         title="Add Video"
         description="Enter the details for the new video entry."
       >
-        <VideoForm onSubmit={handleSubmit} onCancel={handleDialogClose} />
+        <VideoForm
+          fetchUsers={users?.data}
+          refetchVideo={refetchVideo}
+          closeDialog={handleDialogClose}
+        />
       </CustomDialog>
     </div>
   )

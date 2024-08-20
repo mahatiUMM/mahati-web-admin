@@ -14,7 +14,6 @@ import { Info, Trash } from "lucide-react";
 import { CustomDialog } from "@/components/layout/custom-dialog";
 import {
   useGetVideoById,
-  usePutVideo,
   useDeleteVideo,
 } from "@/lib/hooks/useVideo";
 import { useGetAllUsers } from "@/lib/hooks/useUsers"
@@ -46,7 +45,6 @@ export default function VideoTable({
 
   const { data: users } = useGetAllUsers();
   const { data: video, fetchData } = useGetVideoById();
-  const { putData: updateVideo } = usePutVideo();
   const { deleteData: deleteVideo } = useDeleteVideo();
 
   const userMap = new Map(users?.data?.map((user: any) => [user.id, user.username]));
@@ -70,14 +68,6 @@ export default function VideoTable({
   const handleDeleteDialogClose = () => {
     setSelectedVideoDelete(null);
     setIsDialogOpen(false);
-  }
-
-  const handlePutVideo = async (formData: any) => {
-    if (selectedVideoEdit) {
-      await updateVideo(selectedVideoEdit, formData);
-      refetchVideo();
-      handleEditDialogClose();
-    }
   }
 
   const handleDeleteVideo = async () => {
@@ -166,8 +156,9 @@ export default function VideoTable({
         >
           <VideoFormEdit
             video={video}
-            onSubmit={handlePutVideo}
-            onCancel={handleEditDialogClose}
+            fetchUsers={users?.data}
+            refetchVideo={refetchVideo}
+            closeDialog={handleEditDialogClose}
           />
         </CustomDialog>
       )}
