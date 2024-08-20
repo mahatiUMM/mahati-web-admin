@@ -108,7 +108,7 @@ export function usePutReminder() {
       const response = await putReminder(id, payload);
       setData(response?.data);
       if (response?.status === 200) {
-        toast.success("Successfully updated.");
+        toast.success("Successfully updated reminder.");
       }
     } catch (err) {
       setError(err as Error);

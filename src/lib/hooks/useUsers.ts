@@ -61,18 +61,14 @@ export function usePutProfile() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const putData = async (payload: {
-    id: number,
-    username: string,
-    email: string,
-    number: string,
-    photo: string,
-  }) => {
+  const putData = async (payload: any) => {
     setLoading(true);
     try {
       const response = await putProfile(payload);
       setData(response?.data);
-      toast.success("Profile updated successfully.");
+      if (response?.status === 200) {
+        toast.success("Successfully updated profile.");
+      }
     } catch (err) {
       setError(err as Error);
       toast.error("Failed to update. Please try again.");

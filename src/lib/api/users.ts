@@ -29,17 +29,12 @@ export const getProfile = async () => {
   }
 }
 
-export const putProfile = async (payload: {
-  id: number,
-  username: string,
-  email: string,
-  number: string,
-  photo: string,
-}) => {
+export const putProfile = async (payload: any) => {
   try {
     const response = await axiosInstance.put("/profile", payload, {
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
       }
     });
     return response;

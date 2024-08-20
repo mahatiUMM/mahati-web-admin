@@ -7,6 +7,8 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useGetProfile } from "@/lib/hooks/useUsers"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { formatDate } from "@/lib/utils"
 
 export default function AdminProfilePage() {
   const pathname = usePathname();
@@ -14,7 +16,7 @@ export default function AdminProfilePage() {
 
   const renderProfileLink = (href: string, label: string) => (
     <Link
-      className={`inline-flex items-center rounded-md text-sm font-medium hover:text-accent-foreground h-9 px-4 py-2 hover:bg-muted hover:underline hover:underline-offset-4 justify-start ${pathname === href ? "underline underline-offset-4" : ""}`}
+      className={`mt-4 inline-flex items-center rounded-md text-sm font-medium hover:text-accent-foreground h-9 px-4 py-2 hover:bg-muted hover:underline hover:underline-offset-4 justify-start ${pathname === href ? "underline underline-offset-4" : ""}`}
       href={href}
     >
       {label}
@@ -34,8 +36,8 @@ export default function AdminProfilePage() {
       crossOrigin="anonymous"
       src={src}
       alt={alt}
-      width={100}
-      height={100}
+      width={150}
+      height={150}
       className="rounded-full"
     />
   );
@@ -56,27 +58,41 @@ export default function AdminProfilePage() {
           </nav>
         </aside>
         <div className="flex-1 lg:max-w-2xl">
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-medium">Profile</h3>
-              <p className="text-sm text-muted-foreground">
-                This is how others will see you on the site.
-              </p>
-            </div>
-            <div className="shrink-0 bg-border h-[1px] w-full" role="none"></div>
-            <form className="space-y-8">
-              {renderProfileInput("username", "Username", "text", dataProfile?.data?.username)}
-              {renderProfileInput("email", "Email", "email", dataProfile?.data?.email)}
-              {renderProfileInput("number", "Number", "text", dataProfile?.data?.number)}
-              <div className="space-y-2">
-                <Label htmlFor="photo">Photo</Label>
-                {dataProfile?.data?.photo === "" ? (
-                  renderProfileImage("/mahati-logo.png", "User Profile")
-                ) : (
-                  renderProfileImage(dataProfile?.data?.photo, "User Profile")
-                )}
-              </div>
-            </form>
+          <div className="space-y-2">
+            <h3 className="text-lg font-medium">Profile</h3>
+            <p className="text-sm text-muted-foreground">
+              This is how others will see you on the site.
+            </p>
+            <Tabs defaultValue="profile" className="w-full">
+              <TabsList>
+                <TabsTrigger value="profile">Profile</TabsTrigger>
+                <TabsTrigger value="refresh_token">Refresh Token</TabsTrigger>
+              </TabsList>
+              <TabsContent value="profile">
+                <div className="space-y-4">
+                  <div className="flex justify-center items-center">
+                    {dataProfile?.data?.photo === "" ? (
+                      renderProfileImage("/mahati-logo.png", "User Profile")
+                    ) : (
+                      renderProfileImage(`https://mahati.xyzuan.my.id/${dataProfile?.data?.photo}`, "User Profile")
+                    )}
+                  </div>
+                  {renderProfileInput("username", "Username", "text", dataProfile?.data?.username)}
+                  {renderProfileInput("email", "Email", "email", dataProfile?.data?.email)}
+                  {renderProfileInput("number", "Number", "text", dataProfile?.data?.number)}
+                </div>
+              </TabsContent>
+              <TabsContent value="refresh_token">
+                <div className="space-y-4 mt-5">
+                  {dataProfile?.data?.RefreshToken?.map((data: any) => (
+                    <>
+                      {renderProfileInput("token", "Token", "text", data?.token)}
+                      {renderProfileInput("created_at", "Created At", "text", formatDate(data?.created_at))}
+                    </>
+                  ))}
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </div>
