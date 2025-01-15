@@ -105,7 +105,6 @@ export default function QuestionnaireTable({
       <Table className="my-4 lg:my-0">
         <TableHeader>
           <TableRow>
-            <TableHead className="hidden lg:table-cell">ID</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Title</TableHead>
             <TableHead>Image</TableHead>
@@ -117,20 +116,31 @@ export default function QuestionnaireTable({
         <TableBody>
           {questionnaires?.map((questionnaire) => (
             <TableRow key={questionnaire.id}>
-              <TableCell>{questionnaire.id}</TableCell>
               <TableCell>{questionnaire.type}</TableCell>
               <TableCell>{questionnaire.title}</TableCell>
               <TableCell>
                 <Link href={questionnaire?.image ?? "/no-image.jpg"} target="_blank">
-                  <Image
-                    src={questionnaire.image ?? "/no-image.jpg"}
-                    loading="lazy"
-                    crossOrigin="anonymous"
-                    width={500}
-                    height={500}
-                    alt={questionnaire.title}
-                    className="rounded-sm"
-                  />
+                  {questionnaire?.image ? (
+                    <Image
+                      src={`https://mahati.xyzuan.my.id/${questionnaire.image}`}
+                      loading="lazy"
+                      crossOrigin="anonymous"
+                      width={500}
+                      height={500}
+                      alt={questionnaire.title}
+                      className="rounded-sm"
+                    />
+                  ) : (
+                    <Image
+                      src={"/no-image.jpg"}
+                      loading="lazy"
+                      crossOrigin="anonymous"
+                      width={500}
+                      height={500}
+                      alt={questionnaire.title}
+                      className="rounded-sm"
+                    />
+                  )}
                 </Link>
               </TableCell>
               <TableCell>{questionnaire.description}</TableCell>

@@ -14,13 +14,20 @@ export const axiosInstance = axios.create({
   }
 })
 
+export const axiosInstanceFormData = axios.create({
+  baseURL: BASE_API,
+  headers: {
+    "Content-Type": "multipart/form-data",
+  }
+})
+
 export const handleError = (error: any) => {
   if (axios.isAxiosError(error) && error.response?.status === 401) {
-    window.location.href = "/"; 
+    window.location.href = "/";
     removeCookies("mahatiToken");
   }
   if (axios.isAxiosError(error) && error.response?.status === 403) {
-    window.location.href = "/"; 
+    window.location.href = "/";
     removeCookies("mahatiToken");
   }
   if (axios.isAxiosError(error) && error.response?.status === 404) {
