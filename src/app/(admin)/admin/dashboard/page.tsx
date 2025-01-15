@@ -14,6 +14,8 @@ import { useGetReminders } from "@/lib/hooks/useReminder";
 import { useGetSchedules } from "@/lib/hooks/useSchedule";
 import { useGetVideos } from "@/lib/hooks/useVideo";
 import { useGetAllUsers } from "@/lib/hooks/useUsers";
+import { useGetQuestionnaireQuestions } from "@/lib/hooks/useQuestionnaireQuestion";
+import { useGetQuestionnaireAnswers } from "@/lib/hooks/useQuestionnaireAnswer";
 
 export default function AdminDashboardPage() {
   const { data: pressures } = useGetBloodPressures();
@@ -24,6 +26,8 @@ export default function AdminDashboardPage() {
   const { data: schedules } = useGetSchedules();
   const { data: users } = useGetAllUsers();
   const { data: videos } = useGetVideos();
+  const { data: questionnaireQuestions } = useGetQuestionnaireQuestions();
+  const { data: questionnaireAnswers } = useGetQuestionnaireAnswers();
 
   const allPressures = pressures?.data?.data?.length
   const allBookmarks = bookmarks?.data?.length
@@ -33,6 +37,8 @@ export default function AdminDashboardPage() {
   const allSchedules = schedules?.data?.length
   const allVideos = videos?.data?.length
   const allUsers = users?.data?.length
+  const allQuestionnaireQuestions = questionnaireQuestions?.data?.length
+  const allQuestionnaireAnswers = questionnaireAnswers?.data?.length
 
   return (
     <div className="flex flex-col sm:gap-4 sm:py-1 sm:pl-14 m-4">
@@ -48,8 +54,8 @@ export default function AdminDashboardPage() {
         bookmarks={allBookmarks}
         brochures={allBrochures}
         questionnaires={allQuestionnaires}
-        questionniare_questions={allQuestionnaires}
-        questionniare_answers={allQuestionnaires}
+        questionniare_questions={allQuestionnaireQuestions}
+        questionniare_answers={allQuestionnaireAnswers}
         reminders={allReminders}
         schedules={allSchedules}
         videos={allVideos}
