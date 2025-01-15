@@ -46,26 +46,6 @@ export const postQuestionnaire = async (payload: {
   }
 }
 
-export const postQuestionnaireQuestion = async (
-  payload: {
-    questionnaire_id: number,
-    question: string,
-    available_answer: {
-      answer_text: string,
-    }[]
-  }) => {
-  try {
-    const response = await axiosInstance.post("/questionnaire_question", payload, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    });
-    return response;
-  } catch (error) {
-    handleError(error);
-  }
-}
-
 export const putQuestionnaire = async (id: number, payload: {
   type: string,
 }) => {

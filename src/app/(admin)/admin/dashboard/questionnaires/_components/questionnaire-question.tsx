@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { usePostQuestionnaireQuestion } from "@/lib/hooks/useQuestionnaire";
+import { usePostQuestionnaireQuestion } from "@/lib/hooks/useQuestionnaireQuestion";
 
 export default function QuestionnaireQuestion({
   questionnaire,

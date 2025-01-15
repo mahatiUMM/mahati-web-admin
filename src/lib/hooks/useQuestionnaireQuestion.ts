@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import {
-  getQuestionnaires,
-  getQuestionnaireById,
-  postQuestionnaire,
-  putQuestionnaire,
-  deleteQuestionnaire,
-} from "../api/questionnaire";
 import { toast } from "sonner";
+import {
+  getQuestionnaireQuestions,
+  getQuestionnaireQuestionById,
+  postQuestionnaireQuestion,
+  putQuestionnaireQuestion,
+  deleteQuestionnaireQuestion
+} from "../api/questionnaire-question";
 
-export function useGetQuestionnaires() {
+export function useGetQuestionnaireQuestions() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -16,7 +16,7 @@ export function useGetQuestionnaires() {
   const refetch = async () => {
     setLoading(true);
     try {
-      const response = await getQuestionnaires();
+      const response = await getQuestionnaireQuestions();
       setData(response?.data);
     } catch (err) {
       setError(err as Error);
@@ -30,9 +30,9 @@ export function useGetQuestionnaires() {
   }, []);
 
   return { data, loading, error, refetch };
-}
+};
 
-export function useGetQuestionnaireById() {
+export function useGetQuestionnaireQuestionById() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
@@ -40,7 +40,7 @@ export function useGetQuestionnaireById() {
   const fetchData = async (id: number) => {
     setLoading(true);
     try {
-      const response = await getQuestionnaireById(id);
+      const response = await getQuestionnaireQuestionById(id);
       setData(response?.data);
     } catch (err) {
       setError(err as Error);
@@ -53,7 +53,7 @@ export function useGetQuestionnaireById() {
   return { data, loading, error, fetchData };
 }
 
-export function usePostQuestionnaire() {
+export function usePostQuestionnaireQuestion() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
@@ -61,14 +61,14 @@ export function usePostQuestionnaire() {
   const mutate = async (payload: any) => {
     setLoading(true);
     try {
-      const response = await postQuestionnaire(payload);
+      const response = await postQuestionnaireQuestion(payload);
       setData(response?.data);
       if (response?.status === 201) {
-        toast.success("Successfully added a new questionnaire.");
+        toast.success("Successfully added a new question.");
       }
     } catch (err) {
       setError(err as Error);
-      toast.error("Failed to add a new questionnaire. Please try again.");
+      toast.error("Failed to add a new question. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -77,50 +77,50 @@ export function usePostQuestionnaire() {
   return { data, loading, error, mutate };
 }
 
-export function usePutQuestionnaire() {
+export function usePutQuestionnaireQuestion() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const putData = async (id: number, payload: any) => {
+  const mutate = async (id: number, payload: any) => {
     setLoading(true);
     try {
-      const response = await putQuestionnaire(id, payload);
+      const response = await putQuestionnaireQuestion(id, payload);
       setData(response?.data);
       if (response?.status === 200) {
-        toast.success("Successfully updated the questionnaire.");
+        toast.success("Successfully updated the question.");
       }
     } catch (err) {
       setError(err as Error);
-      toast.error("Failed to update the questionnaire. Please try again.");
+      toast.error("Failed to update the question. Please try again.");
     } finally {
       setLoading(false);
     }
   }
 
-  return { data, loading, error, putData };
+  return { data, loading, error, mutate };
 }
 
-export function useDeleteQuestionnaire() {
+export function useDeleteQuestionnaireQuestion() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const deleteData = async (id: number) => {
+  const mutate = async (id: number) => {
     setLoading(true);
     try {
-      const response = await deleteQuestionnaire(id);
+      const response = await deleteQuestionnaireQuestion(id);
       setData(response?.data);
       if (response?.status === 200) {
-        toast.success("Successfully deleted the questionnaire.");
+        toast.success("Successfully deleted the question.");
       }
     } catch (err) {
       setError(err as Error);
-      toast.error("Failed to delete the questionnaire. Please try again.");
+      toast.error("Failed to delete the question. Please try again.");
     } finally {
       setLoading(false);
     }
   }
 
-  return { data, loading, error, deleteData };
+  return { data, loading, error, mutate };
 }
