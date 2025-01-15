@@ -4,7 +4,7 @@ import { useState } from "react"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
 import { useGetAllUsers } from "@/lib/hooks/useUsers"
-import UsersTable from "./components/user-table"
+import UsersTable from "./_components/user-table"
 
 export default function AdminUsersPage() {
   const { data: users, refetch: refetchUsers } = useGetAllUsers();

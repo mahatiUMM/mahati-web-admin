@@ -5,8 +5,8 @@ import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
 import { useGetSchedules } from "@/lib/hooks/useSchedule"
 import { useGetReminders } from "@/lib/hooks/useReminder"
-import ScheduleTable from "./components/schedule-table"
-import ScheduleForm from "./components/schedule-form"
+import ScheduleTable from "./_components/schedule-table"
+import ScheduleForm from "./_components/schedule-form"
 import { CustomDialog } from "@/components/layout/custom-dialog"
 
 export default function AdminSchedulesPage() {

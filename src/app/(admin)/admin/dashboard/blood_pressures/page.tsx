@@ -6,8 +6,8 @@ import { useGetBloodPressures } from "@/lib/hooks/useBloodPressures"
 import { useGetAllUsers } from "@/lib/hooks/useUsers";
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { CustomDialog } from "@/components/layout/custom-dialog"
-import BloodPressureTable from "./components/blood-pressure-table"
-import BloodPressureForm from "./components/blood-pressure-form"
+import BloodPressureTable from "./_components/blood-pressure-table"
+import BloodPressureForm from "./_components/blood-pressure-form"
 
 export default function AdminPressuresPage() {
   const { data: users } = useGetAllUsers();

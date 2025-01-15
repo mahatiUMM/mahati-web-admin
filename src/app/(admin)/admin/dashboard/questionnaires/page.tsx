@@ -4,8 +4,8 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { useGetQuestionnaires } from "@/lib/hooks/useQuestionnaire"
-import QuestionnaireTable from "./components/questionnaire-table"
-import QuestionnaireForm from "./components/quesstionnaire-form"
+import QuestionnaireTable from "./_components/questionnaire-table"
+import QuestionnaireForm from "./_components/quesstionnaire-form"
 import { CustomDialog } from "@/components/layout/custom-dialog"
 
 export default function AdminQuestionnairesPage() {

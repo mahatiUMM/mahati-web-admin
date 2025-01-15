@@ -5,8 +5,8 @@ import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
 import { useGetReminders } from "@/lib/hooks/useReminder"
 import { useGetAllUsers } from "@/lib/hooks/useUsers";
-import ReminderTable from "./components/reminder-table"
-import ReminderForm from "./components/reminder-form"
+import ReminderTable from "./_components/reminder-table"
+import ReminderForm from "./_components/reminder-form"
 import { CustomDialog } from "@/components/layout/custom-dialog"
 
 export default function AdminRemindersPage() {

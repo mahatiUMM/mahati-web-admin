@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -15,7 +14,6 @@ import {
   X
 } from "lucide-react";
 import Image from "next/image";
-import { CustomDialog } from "@/components/layout/custom-dialog";
 import { formatDate, checkUpdatedAt } from "@/lib/utils";
 
 export default function UsersTable({

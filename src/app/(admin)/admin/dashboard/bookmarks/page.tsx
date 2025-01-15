@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button"
 import { useGetBookmark } from "@/lib/hooks/useBookmarks"
 import { useGetAllUsers } from "@/lib/hooks/useUsers";
 import { useGetVideos } from "@/lib/hooks/useVideo"
-import BookmarkTable from "./compoenents/bookmark-table"
+import BookmarkTable from "./_compoenents/bookmark-table"
 import { CustomDialog } from "@/components/layout/custom-dialog"
-import BookmarkForm from "./compoenents/bookmark-form"
+import BookmarkForm from "./_compoenents/bookmark-form"
 
 export default function AdminBookmarksPage() {
   const { data: users } = useGetAllUsers();

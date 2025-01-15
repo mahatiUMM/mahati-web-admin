@@ -4,9 +4,9 @@ import { useState } from "react"
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
 import { useGetBrochures } from "@/lib/hooks/useBrochure"
-import BrochureTable from "./components/brochure-table"
+import BrochureTable from "./_components/brochure-table"
 import { CustomDialog } from "@/components/layout/custom-dialog"
-import BrochureForm from "./components/brochure-form"
+import BrochureForm from "./_components/brochure-form"
 
 export default function AdminBrochuresPage() {
   const { data: brochures, refetch: refetchBrochure } = useGetBrochures();

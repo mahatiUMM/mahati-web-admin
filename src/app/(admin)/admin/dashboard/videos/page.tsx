@@ -5,8 +5,8 @@ import CustomBreadcrumb from "@/components/layout/custom-breadcrumb"
 import { Button } from "@/components/ui/button"
 import { useGetVideos } from "@/lib/hooks/useVideo"
 import { useGetAllUsers } from "@/lib/hooks/useUsers"
-import VideoTable from "./components/video-table"
-import VideoForm from "./components/video-form"
+import VideoTable from "./_components/video-table"
+import VideoForm from "./_components/video-form"
 import { CustomDialog } from "@/components/layout/custom-dialog"
 
 export default function AdminVideosPage() {
