@@ -66,17 +66,13 @@ export default function ScheduleFormEdit({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { reminder_id, time, status } = values;
-    try {
-      await updateSchedule(schedule?.data?.id, {
-        reminder_id: Number(reminder_id),
-        time,
-        status: Number(status),
-      });
-      refetchSchedule();
-      closeDialog();
-    } catch (error) {
-      console.error(error);
-    }
+    await updateSchedule(schedule?.data?.id, {
+      reminder_id: Number(reminder_id),
+      time,
+      status: Number(status),
+    });
+    refetchSchedule();
+    closeDialog();
   };
 
   return (

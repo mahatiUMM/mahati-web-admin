@@ -27,6 +27,7 @@ export default function QuestionnaireFormEdit({
 
   const formSchema = z.object({
     type: z.string().min(1).max(300),
+    image: z.any().optional(),
     title: z.string().min(5).max(300),
     description: z.string().min(5).max(300),
   })
@@ -35,6 +36,7 @@ export default function QuestionnaireFormEdit({
     resolver: zodResolver(formSchema),
     defaultValues: {
       type: "",
+      image: "",
       title: "",
       description: "",
     },
@@ -49,10 +51,19 @@ export default function QuestionnaireFormEdit({
   }, [questionnaire, form]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await updateQuestionnaire(questionnaire?.data?.id, values);
+    const formData = new FormData();
+    formData.append('type', values.type);
+    if (values.image) {
+      formData.append('image', values.image[0]);
+    }
+    formData.append('title', values.title);
+    formData.append('description', values.description);
+
+    await updateQuestionnaire(questionnaire?.data?.id, formData);
     refetchQuestionnaire();
     closeDialog();
-  }
+  };
+
 
   return (
     <Form {...form}>
@@ -65,6 +76,26 @@ export default function QuestionnaireFormEdit({
               <FormLabel>Type</FormLabel>
               <FormControl>
                 <Input placeholder="Type" {...field} disabled />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field: { value, onChange, ...field } }) => (
+            <FormItem>
+              <FormLabel>Image</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    onChange(e.target.files);
+                  }}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -70,7 +70,7 @@ export const putQuestionnaire = async (id: number, payload: {
   type: string,
 }) => {
   try {
-    const response = await axiosInstance.put(`/questionnaire/${id}`, payload, {
+    const response = await axiosInstanceFormData.put(`/questionnaire/${id}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       }

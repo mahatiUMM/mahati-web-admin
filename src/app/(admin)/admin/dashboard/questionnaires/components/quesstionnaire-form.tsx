@@ -73,11 +73,18 @@ export default function QuestionnaireForm({
         <FormField
           control={form.control}
           name="image"
-          render={({ field }) => (
+          render={({ field: { value, onChange, ...field } }) => (
             <FormItem>
               <FormLabel>Image</FormLabel>
               <FormControl>
-                <Input type="file" accept="image/*" placeholder="Select the image" {...field} />
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    onChange(e.target.files);
+                  }}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

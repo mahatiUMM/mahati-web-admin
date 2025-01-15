@@ -55,17 +55,13 @@ export default function ScheduleForm({
 
   const onSubmit = async (values: z.infer<typeof fomrSchema>) => {
     const { reminder_id, time, status } = values;
-    try {
-      await postSchedule({
-        reminder_id: Number(reminder_id),
-        time,
-        status,
-      });
-      refetchSchedule();
-      closeDialog();
-    } catch (error) {
-      console.error(error);
-    }
+    await postSchedule({
+      reminder_id: Number(reminder_id),
+      time,
+      status,
+    });
+    refetchSchedule();
+    closeDialog();
   };
 
   return (
