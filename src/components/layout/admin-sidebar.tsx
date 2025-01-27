@@ -49,6 +49,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator"
 import { usePathname, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { useTheme } from "next-themes";
@@ -160,7 +161,7 @@ export default function AdminSidebar() {
           </SheetTrigger>
           <SheetContent side="left" className="sm:max-w-xs">
             <nav className="grid gap-6 text-lg font-medium">
-              <div className="flex justify-between items-center">
+              <div className="flex justify-start gap-2 items-center">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Image
@@ -176,6 +177,7 @@ export default function AdminSidebar() {
                     <DropdownMenuItem onClick={handleOpenDialog}>Log Out</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
+                <Separator className="w-5" />
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="icon" className="mr-5">
@@ -196,6 +198,8 @@ export default function AdminSidebar() {
               <MobileNavItem href="/admin/dashboard/bookmarks" icon={Album} label="Bookmarks" />
               <MobileNavItem href="/admin/dashboard/brochures" icon={BookImage} label="Brochures" />
               <MobileNavItem href="/admin/dashboard/questionnaires" icon={FileQuestion} label="Questionnaires" />
+              <MobileNavItem href="/admin/dashboard/questionnaire_questions" icon={CircleHelp} label="Questionnaire Questions" />
+              <MobileNavItem href="/admin/dashboard/questionnaire_answers" icon={MessageCircleQuestion} label="Questionnaire Answers" />
               <MobileNavItem href="/admin/dashboard/reminders" icon={BellRing} label="Reminders" />
               <MobileNavItem href="/admin/dashboard/schedules" icon={CalendarCheck} label="Schedules" />
               <MobileNavItem href="/admin/dashboard/users" icon={UserRound} label="Users" />
