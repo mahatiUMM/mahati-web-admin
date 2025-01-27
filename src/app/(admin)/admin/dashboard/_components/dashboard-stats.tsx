@@ -24,7 +24,7 @@ const DashboardStats = ({
   brochures,
   questionnaires,
   questionniare_questions,
-  questionniare_answers,
+  questionniare_histories,
   reminders,
   schedules,
   videos,
@@ -35,7 +35,7 @@ const DashboardStats = ({
   brochures: number;
   questionnaires: number;
   questionniare_questions: number;
-  questionniare_answers: number;
+  questionniare_histories: number;
   reminders: number;
   schedules: number;
   videos: number;
@@ -47,7 +47,7 @@ const DashboardStats = ({
     { title: "Brochures", value: brochures, icon: BookImage },
     { title: "Questionnaire", value: questionnaires, icon: FileQuestion },
     { title: "Questionnaire Questions", value: questionniare_questions, icon: CircleHelp },
-    { title: "Questionnaire Answers", value: questionniare_answers, icon: MessageCircleQuestion },
+    { title: "Questionnaire Histories", value: questionniare_histories, icon: MessageCircleQuestion },
     { title: "Reminders", value: reminders, icon: BellRing },
     { title: "Schedules", value: schedules, icon: CalendarCheck },
     { title: "Videos", value: videos, icon: FileVideo },

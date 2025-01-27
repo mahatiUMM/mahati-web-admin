@@ -26,6 +26,7 @@ import {
   FileQuestion,
   CircleHelp,
   MessageCircleQuestion,
+  FileStack,
   BellRing,
   CalendarCheck,
   UserRound,
@@ -141,7 +142,8 @@ export default function AdminSidebar() {
           <NavItem href="/admin/dashboard/brochures" icon={BookImage} label="Brochures" />
           <NavItem href="/admin/dashboard/questionnaires" icon={FileQuestion} label="Questionnaires" />
           <NavItem href="/admin/dashboard/questionnaire_questions" icon={CircleHelp} label="Questionnaire Questions" />
-          <NavItem href="/admin/dashboard/questionnaire_answers" icon={MessageCircleQuestion} label="Questionnaire Answers" />
+          <NavItem href="/admin/dashboard/questionnaire_answers" icon={MessageCircleQuestion} label="Questionnaire Answer" />
+          <NavItem href="/admin/dashboard/questionnaire_histories" icon={FileStack} label="Questionnaire Histories" />
           <NavItem href="/admin/dashboard/reminders" icon={BellRing} label="Reminders" />
           <NavItem href="/admin/dashboard/schedules" icon={CalendarCheck} label="Schedules" />
           <NavItem href="/admin/dashboard/users" icon={UserRound} label="Users" />
@@ -200,6 +202,7 @@ export default function AdminSidebar() {
               <MobileNavItem href="/admin/dashboard/questionnaires" icon={FileQuestion} label="Questionnaires" />
               <MobileNavItem href="/admin/dashboard/questionnaire_questions" icon={CircleHelp} label="Questionnaire Questions" />
               <MobileNavItem href="/admin/dashboard/questionnaire_answers" icon={MessageCircleQuestion} label="Questionnaire Answers" />
+              <MobileNavItem href="/admin/dashboard/questionnaire_histories" icon={FileStack} label="Questionnaire Histories" />
               <MobileNavItem href="/admin/dashboard/reminders" icon={BellRing} label="Reminders" />
               <MobileNavItem href="/admin/dashboard/schedules" icon={CalendarCheck} label="Schedules" />
               <MobileNavItem href="/admin/dashboard/users" icon={UserRound} label="Users" />

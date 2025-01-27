@@ -6,6 +6,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Info, Trash } from "lucide-react";
 
 interface AvailableAnswer {
   id: number;
@@ -14,7 +16,7 @@ interface AvailableAnswer {
   updated_at: string | null;
 }
 
-interface QuestionnaireAnswer {
+interface QuestionnaireHistories {
   id: number;
   question_id: number;
   answer: number;
@@ -40,7 +42,7 @@ interface QuestionnaireQuestion {
   created_at: string;
   updated_at: string | null;
   questionnaire: Questionnaire;
-  questionnaire_answers: QuestionnaireAnswer[];
+  questionnaire_histories: QuestionnaireHistories[];
   available_answers: AvailableAnswer[];
 }
 
@@ -64,6 +66,7 @@ export default function QuestionnaireQuestionTable({
           <TableHead>Questionnaire</TableHead>
           <TableHead>Created At</TableHead>
           <TableHead>Updated At</TableHead>
+          <TableHead>Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -74,6 +77,22 @@ export default function QuestionnaireQuestionTable({
             <TableCell>{questionnaireQuestion.questionnaire.title}</TableCell>
             <TableCell>{questionnaireQuestion.created_at}</TableCell>
             <TableCell>{questionnaireQuestion.updated_at}</TableCell>
+            <TableCell className="min-[800px]:space-x-2 max-[800px]:space-y-2">
+              <Button
+                className="rounded-full p-1 size-8"
+                variant={"outline"}
+              // onClick={() => handleEditClick(brochure.id)}
+              >
+                <Info className="text-blue-600 dark:text-blue-400 size-6" />
+              </Button>
+              <Button
+                className="rounded-full p-1 size-8"
+                variant={"outline"}
+              // onClick={() => handleDeleteClick(brochure.id)}
+              >
+                <Trash className="text-red-600 dark:text-red-400 size-6" />
+              </Button>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

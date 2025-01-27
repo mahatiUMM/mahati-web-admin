@@ -1,7 +1,6 @@
 "use client";
 
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb";
-import { Button } from "@/components/ui/button";
 import QuestionnaireQuestionTable from "./_components/questionnaire-question-table";
 import { useGetQuestionnaireQuestions } from "@/lib/hooks/useQuestionnaireQuestion";
 
@@ -13,13 +12,10 @@ export default function AdminQuestioannireQuestionsPage() {
       <div className="flex items-center justify-between">
         <CustomBreadcrumb
           items={[
-            { href: "/admin/questionnaire_questions", label: "Home" },
-            { label: "Questionnaire Questions [working on progress]" },
+            { href: "/admin/dashboard", label: "Home" },
+            { label: "Questionnaire Questions" },
           ]}
         />
-        <Button variant={"default"}>
-          Add Questionnaire Questions
-        </Button>
       </div>
       <QuestionnaireQuestionTable
         questionnaireQuestions={questionnaireQuestions}

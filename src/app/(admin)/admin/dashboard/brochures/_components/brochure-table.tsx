@@ -80,11 +80,11 @@ export default function BrochureTable({
         <TableHeader>
           <TableRow>
             <TableHead className="hidden lg:table-cell">ID</TableHead>
-            <TableHead className="">Title</TableHead>
-            <TableHead className="">Image</TableHead>
-            <TableHead className="">Created At</TableHead>
-            <TableHead className="">Updated At</TableHead>
-            <TableHead className="">Actions</TableHead>
+            <TableHead>Title</TableHead>
+            <TableHead>Image</TableHead>
+            <TableHead>Created At</TableHead>
+            <TableHead>Updated At</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

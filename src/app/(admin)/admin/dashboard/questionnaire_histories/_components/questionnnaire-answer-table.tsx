@@ -32,7 +32,7 @@ interface User {
   updated_at: string | null;
 }
 
-interface QuestionnaireAnswer {
+interface QuestionnaireHistory {
   id: number;
   question_id: number;
   answer: number;
@@ -41,35 +41,36 @@ interface QuestionnaireAnswer {
   updated_at: string | null;
   user: User;
   question: Question;
+  selectedAnswer: string;
 }
 
-interface QuestionnaireAnswerTableProps {
-  data: QuestionnaireAnswer[];
+interface QuestionnaireHistoryTableProps {
+  data: QuestionnaireHistory[];
 }
 
-export default function QuestionnaireAnswerTable({
-  questionnaireAnswer,
-  refetchQuestionnaireAnswer,
+export default function QuestionnaireHistoryTable({
+  questionnaireHistory,
+  refetchQuestionnaireHistory,
 }: Readonly<{
-  questionnaireAnswer: QuestionnaireAnswerTableProps;
-  refetchQuestionnaireAnswer: () => void;
+  questionnaireHistory: QuestionnaireHistoryTableProps;
+  refetchQuestionnaireHistory: () => void;
 }>) {
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableCell>Username</TableCell>
-          <TableCell>Question</TableCell>
-          <TableCell>Answer</TableCell>
-          <TableCell>Created At</TableCell>
+          <TableHead>Username</TableHead>
+          <TableHead>Question</TableHead>
+          <TableHead>Answer</TableHead>
+          <TableHead>Created At</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {questionnaireAnswer?.data.map((answer) => (
+        {questionnaireHistory?.data.map((answer) => (
           <TableRow key={answer.id}>
             <TableCell>{answer.user.username}</TableCell>
             <TableCell>{answer.question.question}</TableCell>
-            <TableCell>{answer.question.available_answers[answer.answer - 1]?.answer_text}</TableCell>
+            <TableCell>{answer.selectedAnswer}</TableCell>
             <TableCell>{new Date(answer.created_at).toLocaleString()}</TableCell>
           </TableRow>
         ))}

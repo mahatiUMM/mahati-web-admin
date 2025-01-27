@@ -5,7 +5,7 @@ import {
   postQuestionnaireAnswer
 } from "../api/questionnaire-answer";
 
-export function useGetQuestionnaireAnswers() {
+export function useGetQuestionnaireHistories() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
