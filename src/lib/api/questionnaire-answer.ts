@@ -3,9 +3,9 @@ import { getToken } from "../utils";
 
 const token = getToken();
 
-export const getQuestionnaireAnswers = async () => {
+export const getQuestionnaireAnswer = async () => {
   try {
-    const response = await axiosInstance.get("/questionnaire_question_answer", {
+    const response = await axiosInstance.get("/questionnaire_answer", {
       headers: {
         Authorization: `Bearer ${token}`,
       }
@@ -14,14 +14,13 @@ export const getQuestionnaireAnswers = async () => {
   } catch (error) {
     handleError(error);
   }
-}
+};
 
-export const postQuestionnaireAnswer = async (payload: {
-  user_id: number,
-  answers: Array<{ questionnaireQuestionId: number, answerId: string }>
+export const putQuestionnaireAnswer = async (id: number, payload: {
+  answer_text: string
 }) => {
   try {
-    const response = await axiosInstance.post("/questionnaire_question_answer", payload, {
+    const response = await axiosInstance.put(`/questionnaire_answer/${id}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       }
@@ -31,3 +30,16 @@ export const postQuestionnaireAnswer = async (payload: {
     handleError(error);
   }
 };
+
+export const deleteQuestionnaireAnswer = async (id: number) => {
+  try {
+    const response = await axiosInstance.delete(`/questionnaire_answer/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    return response;
+  } catch (error) {
+    handleError(error);
+  }
+}
