@@ -2,7 +2,7 @@
 
 import CustomBreadcrumb from "@/components/layout/custom-breadcrumb";
 import { useGetQuestionnaireHistories } from "@/lib/hooks/useQuestionnaireHistories";
-import QuestionnaireAnswerTable from "./_components/questionnnaire-answer-table";
+import QuestionnaireAnswerTable from "./_components/questionnnaire-histories-table";
 
 export default function AdminQuestionnaireHistoriesPage() {
   const { data: questionnaireHistories, refetch: refetchQuestionnaireHistories } = useGetQuestionnaireHistories();
