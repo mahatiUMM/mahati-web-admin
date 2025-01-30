@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import {
-  getQuestionnaireAnswers,
-  postQuestionnaireAnswer
-} from "../api/questionnaire-answer";
+  getQuestionnaireQuestionAnswers,
+  postQuestionnaireQuestionAnswer
+} from "../api/questionnaire-question-answer";
 
 export function useGetQuestionnaireHistories() {
   const [data, setData] = useState<any>(null);
@@ -13,7 +13,7 @@ export function useGetQuestionnaireHistories() {
   const refetch = async () => {
     setLoading(true);
     try {
-      const response = await getQuestionnaireAnswers();
+      const response = await getQuestionnaireQuestionAnswers();
       setData(response?.data);
     } catch (err) {
       setError(err as Error);
@@ -40,7 +40,7 @@ export function usePostQuestionnaireAnswer() {
   }) => {
     setLoading(true);
     try {
-      const response = await postQuestionnaireAnswer(payload);
+      const response = await postQuestionnaireQuestionAnswer(payload);
       setData(response?.data);
     } catch (err) {
       setError(err as Error);
