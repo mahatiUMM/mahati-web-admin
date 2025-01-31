@@ -16,6 +16,7 @@ import { useGetVideos } from "@/lib/hooks/useVideo";
 import { useGetAllUsers } from "@/lib/hooks/useUsers";
 import { useGetQuestionnaireQuestions } from "@/lib/hooks/useQuestionnaireQuestion";
 import { useGetQuestionnaireHistories } from "@/lib/hooks/useQuestionnaireHistories";
+import { useGetQuestionnaireAnswer } from "@/lib/hooks/useQuestionnaireAnswer";
 
 export default function AdminDashboardPage() {
   const { data: pressures } = useGetBloodPressures();
@@ -28,6 +29,7 @@ export default function AdminDashboardPage() {
   const { data: videos } = useGetVideos();
   const { data: questionnaireQuestions } = useGetQuestionnaireQuestions();
   const { data: questionnaireHistories } = useGetQuestionnaireHistories();
+  const { data: questionnaireAnswers } = useGetQuestionnaireAnswer();
 
   const allPressures = pressures?.data?.data?.length
   const allBookmarks = bookmarks?.data?.length
@@ -39,6 +41,26 @@ export default function AdminDashboardPage() {
   const allUsers = users?.data?.length
   const allQuestionnaireQuestions = questionnaireQuestions?.data?.length
   const allQuestionnaireHistories = questionnaireHistories?.data?.length
+
+  const calculateAnswerTextLengths = (answers: any) => {
+    const allLengths = (answers || []).flat().map((answer: { answer_text: string | any[]; }) => answer.answer_text.length);
+
+    const totalAnswers = allLengths.length;
+    const uniqueLengths = [...new Set(allLengths)];
+    const lengthCounts = allLengths.reduce((acc: { [x: string]: any; }, len: string | number) => {
+      acc[len] = (acc[len] || 0) + 1;
+      return acc;
+    }, {});
+
+    return {
+      allLengths,
+      totalAnswers,
+      uniqueLengths,
+      lengthCounts
+    };
+  };
+
+  const allQuestionnaireAnswer = calculateAnswerTextLengths(questionnaireAnswers?.data.map((v: { available_answers: any; }) => v.available_answers));
 
   return (
     <div className="flex flex-col sm:gap-4 sm:py-1 sm:pl-14 m-4">
@@ -55,6 +77,7 @@ export default function AdminDashboardPage() {
         brochures={allBrochures}
         questionnaires={allQuestionnaires}
         questionniare_questions={allQuestionnaireQuestions}
+        questionniare_answers={allQuestionnaireAnswer.totalAnswers}
         questionniare_histories={allQuestionnaireHistories}
         reminders={allReminders}
         schedules={allSchedules}
@@ -62,8 +85,8 @@ export default function AdminDashboardPage() {
       />
       <div className="grid grid-cols-3 space-x-4 max-[1400px]:grid-cols-1 max-[1400px]:space-y-4 max-[1200px]:space-x-0">
         <DashboardBarChart users={users} />
-        <DashboardPieChart />
-        <DashboardLineChart />
+        <DashboardPieChart medicineTaken={schedules} />
+        <DashboardLineChart questionnaireHistories={questionnaireHistories} />
       </div>
     </div>
   );
