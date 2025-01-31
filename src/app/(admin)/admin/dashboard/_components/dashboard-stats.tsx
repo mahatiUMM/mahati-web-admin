@@ -6,6 +6,7 @@ import {
   FileQuestion,
   CircleHelp,
   MessageCircleQuestion,
+  FileStack,
   BellRing,
   CalendarCheck,
   FileVideo,
@@ -25,6 +26,7 @@ const DashboardStats = ({
   questionnaires,
   questionniare_questions,
   questionniare_histories,
+  questionniare_answers,
   reminders,
   schedules,
   videos,
@@ -36,6 +38,7 @@ const DashboardStats = ({
   questionnaires: number;
   questionniare_questions: number;
   questionniare_histories: number;
+  questionniare_answers: number;
   reminders: number;
   schedules: number;
   videos: number;
@@ -47,7 +50,8 @@ const DashboardStats = ({
     { title: "Brochures", value: brochures, icon: BookImage },
     { title: "Questionnaire", value: questionnaires, icon: FileQuestion },
     { title: "Questionnaire Questions", value: questionniare_questions, icon: CircleHelp },
-    { title: "Questionnaire Histories", value: questionniare_histories, icon: MessageCircleQuestion },
+    { title: "Questionnaire Answers", value: questionniare_answers, icon: MessageCircleQuestion },
+    { title: "Questionnaire Histories", value: questionniare_histories, icon: FileStack },
     { title: "Reminders", value: reminders, icon: BellRing },
     { title: "Schedules", value: schedules, icon: CalendarCheck },
     { title: "Videos", value: videos, icon: FileVideo },
