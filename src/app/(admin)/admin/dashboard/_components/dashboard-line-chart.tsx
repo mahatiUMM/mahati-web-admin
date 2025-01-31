@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Card,
   CardContent,
@@ -21,81 +21,103 @@ import {
   LineChart,
 } from "recharts"
 
-const DashboardLineChart = () => {
-  const [activeChart, setActiveChart] = useState<keyof typeof chartLogConfig>("desktop")
+interface QuestionnaireHistory {
+  created_at: string;
+  selectedAnswer: string;
+}
 
-  const chartLogData = [
-    { date: "2024-04-01", desktop: 222, mobile: 150 },
-    { date: "2024-04-02", desktop: 97, mobile: 180 },
-    { date: "2024-04-03", desktop: 167, mobile: 120 },
-    { date: "2024-04-04", desktop: 242, mobile: 260 },
-    { date: "2024-04-05", desktop: 373, mobile: 290 },
-    { date: "2024-04-06", desktop: 301, mobile: 340 },
-    { date: "2024-04-07", desktop: 245, mobile: 180 },
-    { date: "2024-04-08", desktop: 409, mobile: 320 },
-    { date: "2024-04-09", desktop: 59, mobile: 110 },
-    { date: "2024-04-10", desktop: 261, mobile: 190 },
-    { date: "2024-04-11", desktop: 327, mobile: 350 },
-    { date: "2024-04-12", desktop: 292, mobile: 210 },
-    { date: "2024-04-13", desktop: 342, mobile: 380 },
-    { date: "2024-04-14", desktop: 137, mobile: 220 },
-    { date: "2024-04-15", desktop: 120, mobile: 170 },
-    { date: "2024-04-16", desktop: 138, mobile: 190 },
-    { date: "2024-04-17", desktop: 446, mobile: 360 },
-    { date: "2024-04-18", desktop: 364, mobile: 410 },
-    { date: "2024-04-19", desktop: 243, mobile: 180 },
-    { date: "2024-04-20", desktop: 89, mobile: 150 },
-    { date: "2024-04-21", desktop: 137, mobile: 200 },
-    { date: "2024-04-22", desktop: 224, mobile: 170 },
-    { date: "2024-04-23", desktop: 138, mobile: 230 },
-    { date: "2024-04-24", desktop: 387, mobile: 290 },
-    { date: "2024-04-25", desktop: 215, mobile: 250 },
-    { date: "2024-04-26", desktop: 75, mobile: 130 },
-    { date: "2024-04-27", desktop: 383, mobile: 420 },
-  ];
+interface DailyCount {
+  completed: number;
+  pending: number;
+}
+
+interface ChartDataPoint extends DailyCount {
+  date: string;
+}
+
+interface QuestionnaireHistoriesData {
+  data: QuestionnaireHistory[];
+}
+
+const DashboardLineChart = ({
+  questionnaireHistories
+}: {
+  questionnaireHistories: QuestionnaireHistoriesData;
+}) => {
+  const [activeChart, setActiveChart] = useState<'completed' | 'pending'>('completed');
+
+  const chartLogData = useMemo(() => {
+    if (!questionnaireHistories?.data) {
+      return [];
+    }
+
+    const groupedByDate = questionnaireHistories.data.reduce((acc: Record<string, DailyCount>, curr) => {
+      const date = new Date(curr.created_at).toISOString().split('T')[0];
+
+      if (!acc[date]) {
+        acc[date] = {
+          completed: 0,
+          pending: 0
+        };
+      }
+
+      if (curr.selectedAnswer === "TP") {
+        acc[date].completed++;
+      } else {
+        acc[date].pending++;
+      }
+
+      return acc;
+    }, {});
+
+    return Object.entries(groupedByDate).map(([date, counts]): ChartDataPoint => ({
+      date,
+      ...counts,
+    }));
+  }, [questionnaireHistories]);
 
   const chartLogConfig = {
     views: {
-      label: "Page Views",
+      label: "Answer Finished",
+      color: "hsl(var(--chart-0))",
     },
-    desktop: {
-      label: "Desktop",
+    completed: {
+      label: "Completed",
       color: "hsl(var(--chart-1))",
     },
-    mobile: {
-      label: "Mobile",
+    pending: {
+      label: "Pending",
       color: "hsl(var(--chart-2))",
     },
-  } satisfies ChartConfig
+  } satisfies ChartConfig;
 
   return (
     <Card>
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>Line Chart - Log Data</CardTitle>
+          <CardTitle>
+            Questionnaire Statistics
+          </CardTitle>
           <CardDescription>
-            Showing total log for the last {`January until ${new Date().toLocaleString('default', { month: 'long' })}`}
+            Showing the date of the questionnaire finished
           </CardDescription>
         </div>
         <div className="flex">
-          {["desktop", "mobile"].map((key) => {
-            const chart = key as keyof typeof chartLogConfig
-            return (
-              <button
-                key={chart}
-                data-active={activeChart === chart}
-                className="flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
-                onClick={() => setActiveChart(chart)}
-              >
-                <span className="text-xs text-muted-foreground">
-                  {chartLogConfig[chart].label}
-                </span>
-                <span className="text-lg font-bold leading-none sm:text-3xl">
-                  {chartLogData.reduce((acc: any, curr: any) => acc + curr[chart], 0)}
-                </span>
-              </button>
-            )
-          })}
+          {(["completed", "pending"] as const).map((key) => (
+            <button
+              key={key}
+              data-active={activeChart === key}
+              className="flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+              onClick={() => setActiveChart(key)}
+            >
+              <span className="text-xs text-muted-foreground">
+                {chartLogConfig[key].label}
+              </span>
+              <span className="text-lg font-bold leading-none sm:text-3xl">
+                {chartLogData.reduce((acc, curr) => acc + (curr[key] || 0), 0)}
+              </span>
+            </button>
+          ))}
         </div>
       </CardHeader>
       <CardContent className="px-2 sm:p-6">
@@ -152,9 +174,9 @@ const DashboardLineChart = () => {
         </ChartContainer>
       </CardContent>
     </Card>
-  )
+  );
 };
 
 export {
   DashboardLineChart,
-}
+};

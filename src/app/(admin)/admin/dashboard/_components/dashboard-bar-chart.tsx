@@ -4,7 +4,6 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from "@/components/ui/card";
 import {
   ChartConfig,
@@ -47,8 +46,12 @@ const DashboardBarChart = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Bar Chart - Users</CardTitle>
-        <CardDescription>January - {new Date().toLocaleString('default', { month: 'long' })} 2024</CardDescription>
+        <CardTitle>
+          Users Distribution
+        </CardTitle>
+        <CardDescription>
+          Showing the distribution of users
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer config={chartUsersConfig} className="h-[400px] w-full">
@@ -67,14 +70,6 @@ const DashboardBarChart = ({
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last {new Date().toLocaleString('default', { month: 'long' })}
-        </div>
-      </CardFooter>
     </Card>
   )
 }
